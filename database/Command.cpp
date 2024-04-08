@@ -8,7 +8,7 @@
 using StringVector = std::vector<std::string>;
 using String = std::string;
 
-Command::Command(CommandName name, StringVector args) 
+Command::Command(CommandType name, StringVector args) 
 	: name(name), args(args) 
 {}
 
@@ -16,14 +16,14 @@ Command::Command(CommandName name, StringVector args)
 Command Command::create(String line)
 {
 	String name = line.substr(0, line.find_first_of(' '));
-	CommandName commandName = getCommandNameAsEnum(name);
+	CommandType commandName = getCommandNameAsEnum(name);
 	line = line.substr(line.find_first_of(' ') + 1);
 	StringVector args = splitString(line, ' ');
 
 	return Command(commandName, args);
 }
 
-CommandName Command::getCommandName() const
+CommandType Command::getCommandName() const
 {
 	return name;
 }
@@ -33,18 +33,18 @@ const StringVector& Command::getArgs() const
 	return args;
 }
 
-CommandName getCommandNameAsEnum(const String& name) {
-	for (int i = 0; i < (int)CommandName::COMMANDS_COUNT; i++) {
-		if (name == getCommandName((CommandName)i)) {
-			return (CommandName)i;
+CommandType getCommandNameAsEnum(const String& name) {
+	for (int i = 0; i < (int)CommandType::COMMANDS_COUNT; i++) {
+		if (name == getCommandName((CommandType)i)) {
+			return (CommandType)i;
 		}
 	}
 }
 
-const char* getCommandName(CommandName commandName) {
+const char* getCommandName(CommandType commandName) {
 	switch (commandName)
 	{
-	case CommandName::CREATE:
+	case CommandType::CREATE:
 		return "create";
 	}
 }

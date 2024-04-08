@@ -6,22 +6,21 @@
 using StringVector = std::vector<std::string>;
 using String = std::string;
 
-class Command {
-private:
-	CommandName name;
-	StringVector args;
-
-	Command(CommandName name, StringVector args);
-public:
-	Command() = default;
-	static Command create(String line);
-
-	CommandName getCommandName() const;
-	const StringVector& getArgs() const;
-};
-
-enum class CommandName {
+enum class CommandType {
 	CREATE,
 
 	COMMANDS_COUNT
+};
+
+class Command {
+private:
+	CommandType name;
+	StringVector args;
+
+	Command(CommandType name, StringVector args);
+public:
+	static Command create(String line);
+
+	CommandType getCommandName() const;
+	const StringVector& getArgs() const;
 };
