@@ -20,7 +20,6 @@ int main()
 	{
 		Controller c;
 		String line;
-		Command command;
 
 		while (true)
 		{
@@ -33,7 +32,7 @@ int main()
 				if (line == "exit")
 					break;
 				
-				command = Command::create(line);
+				Command command = Command::create(line);
 				c.execute(command);
 			}
 			catch (std::exception& err)
