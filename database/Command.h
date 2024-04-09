@@ -7,6 +7,7 @@ using StringVector = std::vector<std::string>;
 using String = std::string;
 
 enum class CommandType {
+	SHOWTABLES,
 	CREATE,
 
 	COMMANDS_COUNT
@@ -24,3 +25,7 @@ public:
 	CommandType getCommandName() const;
 	const StringVector& getArgs() const;
 };
+
+CommandType getCommandNameAsEnum(const String& name);
+const char* getCommandName(CommandType commandName);
+StringVector splitString(const String& str, char delimiter);

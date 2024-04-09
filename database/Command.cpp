@@ -15,10 +15,14 @@ Command::Command(CommandType name, StringVector args)
 // command is in the form: commandName arg1 arg2 ... argN
 Command Command::create(String line)
 {
+	size_t posOfArgs = line.find_first_of(' ');
 	String name = line.substr(0, line.find_first_of(' '));
 	CommandType commandName = getCommandNameAsEnum(name);
-	line = line.substr(line.find_first_of(' ') + 1);
-	StringVector args = splitString(line, ' ');
+	StringVector args;
+	if (posOfArgs != String::npos) {
+		line = line.substr(posOfArgs + 1);
+		args = splitString(line, ' ');
+	}
 
 	return Command(commandName, args);
 }
@@ -39,6 +43,8 @@ CommandType getCommandNameAsEnum(const String& name) {
 			return (CommandType)i;
 		}
 	}
+
+	throw std::exception("no such command available");
 }
 
 const char* getCommandName(CommandType commandName) {
@@ -46,7 +52,11 @@ const char* getCommandName(CommandType commandName) {
 	{
 	case CommandType::CREATE:
 		return "create";
+	case CommandType::SHOWTABLES:
+		return "showtables";
 	}
+
+	throw std::exception("no such command available");
 }
 
 // TODO: move this to MyString or Helper
