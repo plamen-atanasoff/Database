@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <stdlib.h> // TODO: ask is it's okay to use <stdlib.h>(to clear console), <iomanip>(to print table columns better),
 // <limits>(to mark null for int and double) and <sstram>(for splitting strings by ' ' easily)
 
@@ -17,13 +18,27 @@ using String = std::string;
 
 int main()
 {
+	//size_t count = 3;
+	//StringPair p1{"Table1", "table1.dat"};
+	//StringPair p2{ "Table2", "table2.dat" };
+	//StringPair p3{ "Table3", "table3.dat" };
+	//std::ofstream ofile("tables.dat", std::ios::binary);
+	//if (!ofile.is_open()) {
+	//	return 1;
+	//}
+	//ofile.write(reinterpret_cast<const char*>(&count), sizeof(count));
+	//ofile.write(reinterpret_cast<const char*>(&p1), sizeof(p1));
+	//ofile.write(reinterpret_cast<const char*>(&p2), sizeof(p2));
+	//ofile.write(reinterpret_cast<const char*>(&p3), sizeof(p3));
+	//
+	//ofile.close();
 	{
-		Controller c;
-		String line;
-
-		while (true)
+		try
 		{
-			try
+			Controller c;
+			String line;
+
+			while (true)
 			{
 				std::cout << "Enter command: ";
 				std::getline(std::cin, line);
@@ -31,19 +46,20 @@ int main()
 
 				if (line == "exit")
 					break;
-				
+
 				Command command = Command::create(line);
 				c.execute(command);
 			}
-			catch (std::exception& err)
-			{
-				std::cout << err.what() << std::endl;
-			}
-			catch (...)
-			{
-				std::cout << "catched unknown exception" << std::endl;
-			}
+		}
+		catch (std::exception& err)
+		{
+			std::cout << err.what() << std::endl;
+		}
+		catch (...)
+		{
+			std::cout << "Catched unknown exception" << std::endl;
 		}
 	}
+	
 	_CrtDumpMemoryLeaks();
 }
