@@ -1,6 +1,7 @@
 #include "Controller.h"
 
 #include <fstream>
+#include <iostream>
 
 #include "Command.h"
 
@@ -20,11 +21,19 @@ void Controller::readTables()
 	tables.reserve(size);
 
 	for (size_t i = 0; i < size; i++) {
-		ifile.read(reinterpret_cast<char*>(&temp), sizeof(temp)); // would this work with std::string?
+		ifile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 		tables.push_back(temp);
 	}
 
 	ifile.close();
+}
+
+void Controller::printTableNames() const
+{
+	for (const StringPair& pair : tables) {
+		std::cout << pair.tableName << '\n';
+	}
+	std::cout << std::endl;
 }
 
 Controller::Controller()
@@ -38,6 +47,9 @@ void Controller::execute(const Command& command)
 	{
 	case CommandType::CREATE:
 		createTable(command.getArgs());
+		break;
+	case CommandType::SHOWTABLES:
+		printTableNames();
 		break;
 	}
 }

@@ -8,8 +8,9 @@
 using StringVector = std::vector<std::string>;
 
 struct StringPair {
-	String tableName;
-	String fileName;
+	static constexpr int MAX_SIZE_STRING = 33;
+	char tableName[MAX_SIZE_STRING];
+	char fileName[MAX_SIZE_STRING];
 };
 
 class Controller
@@ -25,4 +26,5 @@ private:
 
 	void createTable(const StringVector& args);
 	void readTables();
+	void printTableNames() const;
 };
