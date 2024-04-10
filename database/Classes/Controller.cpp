@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "Command.h"
+#include "Helpers/Command.h"
 
 void Controller::createTable(const StringVector& args)
 {}

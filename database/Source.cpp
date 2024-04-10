@@ -4,7 +4,7 @@
 #include <stdlib.h> // TODO: ask is it's okay to use <stdlib.h>(to clear console), <iomanip>(to print table columns better),
 // <limits>(to mark null for int and double) and <sstram>(for splitting strings by ' ' easily)
 
-#include "Controller.h"
+#include "Classes/Controller.h"
 
 // TODO: check if everywhere dynamic memory is deleted !
 #ifdef _DEBUG
