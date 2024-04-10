@@ -14,16 +14,16 @@ enum class CommandType {
 };
 
 class Command {
-private:
-	CommandType name;
-	StringVector args;
-
-	Command(CommandType name, StringVector args);
 public:
 	static Command create(String line);
 
 	CommandType getCommandName() const;
 	const StringVector& getArgs() const;
+private:
+	CommandType name;
+	StringVector args;
+
+	Command(CommandType name, StringVector args);
 };
 
 CommandType getCommandNameAsEnum(const String& name);
