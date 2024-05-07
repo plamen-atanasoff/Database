@@ -58,7 +58,7 @@ void Controller::execute(const Command& command)
 	switch (command.getCommandName()) 
 	{
 	case CommandType::CREATE:
-		createTable(command.getArgs());
+		createTable(command.getArgs()[0]);
 		break;
 	case CommandType::SHOWTABLES:
 		printTableNames();
