@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Table/Table.h"
+
 using StringVector = std::vector<std::string>;
 
 struct StringPair {
@@ -20,11 +22,13 @@ public:
 
 	void execute(const Command& command);
 private:
-	std::vector<StringPair> tables;
+	std::vector<StringPair> tablesInfo;
+	Table table;
 
-	static constexpr const char* TABLES_FILE = "tables.dat"; //.dat or .txt for the tables file?
+	static constexpr const char* TABLES_FILE = "tables.dat"; //.dat or .txt for the tablesInfo file?
 
-	void createTable(const StringVector& args);
+	void createTable(const std::string& name);
+	void addColumn(const std::string& name, ColumnType type);
 	void readTables();
 	void printTableNames() const;
 };

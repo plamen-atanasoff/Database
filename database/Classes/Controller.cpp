@@ -4,9 +4,21 @@
 #include <iostream>
 
 #include "Helpers/Command.h"
+#include "Helpers/ColumnFactory.h"
 
-void Controller::createTable(const StringVector& args)
-{}
+void Controller::createTable(const std::string& name)
+{
+	table = Table(name);
+}
+
+void Controller::addColumn(const std::string& name, ColumnType type)
+{
+	Column* col = getColumn(name, type);
+	// addColumn clones the newly created col
+	table.addColumn(*col);
+
+	//delete[] col;
+}
 
 void Controller::readTables()
 {
@@ -18,11 +30,11 @@ void Controller::readTables()
 	StringPair temp;
 	size_t size;
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
-	tables.reserve(size);
+	tablesInfo.reserve(size);
 
 	for (size_t i = 0; i < size; i++) {
 		ifile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-		tables.push_back(temp);
+		tablesInfo.push_back(temp);
 	}
 
 	ifile.close();
@@ -30,7 +42,7 @@ void Controller::readTables()
 
 void Controller::printTableNames() const
 {
-	for (const StringPair& pair : tables) {
+	for (const StringPair& pair : tablesInfo) {
 		std::cout << pair.tableName << '\n';
 	}
 	std::cout << std::endl;
