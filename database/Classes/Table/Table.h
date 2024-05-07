@@ -16,6 +16,7 @@ using ColumnArray = std::vector<Column*>;
 class Table
 {
 public:
+	Table() : Table("") {}
 	Table(const std::string& name);
 	Table(const Table& other);
 	Table& operator=(const Table& other);
