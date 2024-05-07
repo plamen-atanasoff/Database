@@ -6,7 +6,7 @@
 
 #include "Classes/Controller.h"
 
-// TODO: check if everywhere dynamic memory is deleted !
+// TODO: check if everywhere dynamic memory is deleted!
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC_NEW
@@ -22,7 +22,7 @@ int main()
 	//StringPair p1{"Table1", "table1.dat"};
 	//StringPair p2{ "Table2", "table2.dat" };
 	//StringPair p3{ "Table3", "table3.dat" };
-	//std::ofstream ofile("tables.dat", std::ios::binary);
+	//std::ofstream ofile("tablesInfo.dat", std::ios::binary);
 	//if (!ofile.is_open()) {
 	//	return 1;
 	//}
