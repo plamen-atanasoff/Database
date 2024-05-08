@@ -12,19 +12,19 @@ Command::Command(CommandType name, StringVector args)
 	: name(name), args(args) 
 {}
 
-// command is in the form: commandName arg1 arg2 ... argN
+// command is in the form: commandType arg1 arg2 ... argN
 Command Command::create(String line)
 {
-	size_t posOfArgs = line.find_first_of(' ');
-	String name = line.substr(0, line.find_first_of(' '));
-	CommandType commandName = getCommandNameAsEnum(name);
+	size_t delimiterPos = line.find_first_of(' ');
+	String name = line.substr(0, delimiterPos);
+	CommandType commandType = getCommandTypeAsEnum(name);
 	StringVector args;
-	if (posOfArgs != String::npos) {
-		line = line.substr(posOfArgs + 1);
+	if (delimiterPos != String::npos) {
+		line = line.substr(delimiterPos + 1);
 		args = splitString(line, ' ');
 	}
 
-	return Command(commandName, args);
+	return Command(commandType, args);
 }
 
 CommandType Command::getCommandName() const
@@ -37,7 +37,7 @@ const StringVector& Command::getArgs() const
 	return args;
 }
 
-CommandType getCommandNameAsEnum(const String& name) {
+CommandType getCommandTypeAsEnum(const String& name) {
 	for (int i = 0; i < (int)CommandType::COMMANDS_COUNT; i++) {
 		if (name == getCommandName((CommandType)i)) {
 			return (CommandType)i;
