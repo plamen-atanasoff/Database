@@ -27,7 +27,7 @@ private:
 
 	static constexpr const char* TABLES_FILE = "tables.dat"; //.dat or .txt for the tablesInfo file?
 
-	void createTable(const std::string& name);
+	void createTable(const std::vector<std::string>& args);
 	void addColumn(const std::string& name, ColumnType type);
 	void readTables();
 	void printTableNames() const;

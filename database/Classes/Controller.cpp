@@ -6,15 +6,15 @@
 #include "Helpers/Command.h"
 #include "Helpers/ColumnFactory.h"
 
-void Controller::createTable(const std::string& name)
+void Controller::createTable(const std::vector<std::string>& args)
 {
-	table = Table(name);
+	table = Table(args[0]);
 }
 
 void Controller::addColumn(const std::string& name, ColumnType type)
 {
 	Column* col = getColumn(name, type);
-	// addColumn clones the newly created col
+	// addColumn clones the newly created column
 	table.addColumn(*col);
 
 	//delete[] col;
@@ -58,7 +58,7 @@ void Controller::execute(const Command& command)
 	switch (command.getCommandName()) 
 	{
 	case CommandType::CREATE:
-		createTable(command.getArgs()[0]);
+		createTable(command.getArgs());
 		break;
 	case CommandType::SHOWTABLES:
 		printTableNames();
