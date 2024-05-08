@@ -3,15 +3,10 @@
 #include <string>
 #include <vector>
 
+#include "../Factories/CommandFactory.h"
+
 using StringVector = std::vector<std::string>;
 using String = std::string;
-
-enum class CommandType {
-	SHOWTABLES,
-	CREATE,
-
-	COMMANDS_COUNT
-};
 
 class Command {
 public:
@@ -27,5 +22,4 @@ private:
 };
 
 CommandType getCommandTypeAsEnum(const String& name);
-const char* getCommandName(CommandType commandName);
 StringVector splitString(const String& str, char delimiter);

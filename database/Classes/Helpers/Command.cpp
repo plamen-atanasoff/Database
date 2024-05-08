@@ -47,18 +47,6 @@ CommandType getCommandTypeAsEnum(const String& name) {
 	throw std::exception("no such command available");
 }
 
-const char* getCommandName(CommandType commandName) {
-	switch (commandName)
-	{
-	case CommandType::CREATE:
-		return "create";
-	case CommandType::SHOWTABLES:
-		return "showtables";
-	}
-
-	throw std::exception("no such command available");
-}
-
 // TODO: move this to MyString or Helper
 StringVector splitString(const String& str, char delimiter) 
 {
