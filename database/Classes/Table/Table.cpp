@@ -27,17 +27,14 @@ Table::~Table()
 	free();
 }
 
-void Table::addRecord(const std::initializer_list<std::string>& values)
+void Table::addRecord(const std::vector<std::string>& values)
 {
 	if (values.size() != cols.size()) {
 		return; 
 	}
 
-	size_t i = 0;
-	for (const std::string& val : values) {
-		cols[i]->addValue(val);
-
-		i++;
+	for (size_t i = 0; i < cols.size(); i++) {
+		cols[i]->addValue(values[i]);
 	}
 
 	recordsId.push_back(nextRecordId++);

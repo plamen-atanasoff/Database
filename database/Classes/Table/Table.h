@@ -22,7 +22,7 @@ public:
 	Table& operator=(const Table& other);
 	~Table();
 
-	void addRecord(const std::initializer_list<std::string>& values);
+	void addRecord(const std::vector<std::string>& values);
 	void addColumn(const Column& col);
 
 	void printTable() const;
