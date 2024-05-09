@@ -25,6 +25,26 @@ void Controller::addRecord(const std::vector<std::string>& args)
 	table.addRecord(args);
 }
 
+void Controller::saveTable() const
+{
+	std::string fileName;
+	if (tableExists()) {
+		fileName = getTableFileName();
+	}
+	else {
+		fileName = table.getName();
+		fileName.append(".dat");
+	}
+
+	std::ofstream ofile(fileName, std::ios::binary);
+	if (!ofile.is_open()) {
+		throw std::exception("file could not be opened");
+	}
+	table.saveToFile(ofile);
+
+	ofile.close();
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -43,6 +63,28 @@ void Controller::readTables()
 	}
 
 	ifile.close();
+}
+
+bool Controller::tableExists() const
+{
+	for (int i = 0; i < tablesInfo.size(); i++) {
+		if (strcmp(table.getName(), tablesInfo[i].tableName) == 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const std::string Controller::getTableFileName() const
+{
+	for (int i = 0; i < tablesInfo.size(); i++) {
+		if (strcmp(table.getName(), tablesInfo[i].tableName) == 0) {
+			return tablesInfo[i].fileName;
+		}
+	}
+
+	return "";
 }
 
 void Controller::printTableNames() const
@@ -73,6 +115,9 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::ADD_RECORD:
 		addRecord(command.getArgs());
+		break;
+	case CommandType::SAVE:
+		saveTable();
 		break;
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <fstream>
 #include "../Factories/ColumnType.h"
 
 class Column {
@@ -15,10 +16,15 @@ public:
 
 	virtual void printValues() const = 0;
 
-	virtual Column* clone() const = 0;
-private:
-	static constexpr int MAX_NAME_LENGTH = 33;
+	virtual void saveToFile(std::ofstream& ofile) const = 0;
 
-	char name[MAX_NAME_LENGTH]{};
+	virtual Column* clone() const = 0;
+
+	ColumnType getType() const { return type; }
+	const char* getName() const { return name; }
+protected:
+	static constexpr int MAX_NAME_LENGTH = 33;
+private:
 	ColumnType type;
+	char name[MAX_NAME_LENGTH]{};
 };

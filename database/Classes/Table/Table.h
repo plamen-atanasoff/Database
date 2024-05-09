@@ -1,15 +1,17 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <fstream>
 #include "../Columns/Column.h"
 
 using PrimaryKeyColumn = std::vector<unsigned>;
 using ColumnArray = std::vector<Column*>;
 
-// table name,
-// cols size
-// col: datatype, name, values: size, elements
-// records size, values: size, elements
+// name,
+// nextRecordId,
+// recordsId: size, elements,
+// cols: size,
+// col: type, name, values: size, elements
 
 // currently primary key can only be one and it must be an unsigned int
 
@@ -24,15 +26,18 @@ public:
 
 	void addRecord(const std::vector<std::string>& values);
 	void addColumn(const Column& col);
+	void saveToFile(std::ofstream& ofile) const;
 
 	void printTable() const;
+
+	const char* getName() const;
 private:
 	static constexpr int MAX_NAME_LENGTH = 33;
 
 	char name[MAX_NAME_LENGTH]{};
+	unsigned nextRecordId = 0;
 	PrimaryKeyColumn recordsId;
 	ColumnArray cols;
-	unsigned nextRecordId = 0;
 
 	void copyFrom(const Table& other);
 	void free();

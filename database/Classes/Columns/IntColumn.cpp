@@ -31,6 +31,18 @@ void IntColumn::printValues() const
 	std::cout << std::endl;
 }
 
+void IntColumn::saveToFile(std::ofstream& ofile) const
+{
+	// move to base class
+	ColumnType type = getType();
+	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
+	ofile.write(getName(), MAX_NAME_LENGTH);
+
+	size_t size = values.size();
+	ofile.write(reinterpret_cast<const char*>(&size), sizeof(size));
+	ofile.write(reinterpret_cast<const char*>(values.data()), sizeof(int) * size);
+}
+
 Column* IntColumn::clone() const
 {
 	return new IntColumn(*this);

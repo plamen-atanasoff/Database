@@ -12,6 +12,7 @@ public:
 
 	virtual void printValues() const override;
 
+	virtual void saveToFile(std::ofstream& ofile) const override;
 	virtual Column* clone() const override;
 private:
 	std::vector<int> values;

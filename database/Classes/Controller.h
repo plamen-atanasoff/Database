@@ -27,10 +27,14 @@ private:
 
 	static constexpr const char* TABLES_FILE = "tables.dat"; //.dat or .txt for the tablesInfo file?
 
+	void printTableNames() const;
 	void createTable(const std::vector<std::string>& args);
 	void addColumn(const std::vector<std::string>& args);
-	void addRecord(const std::vector<std::string>& args);;
+	void addRecord(const std::vector<std::string>& args);
+	void saveTable() const;
 
 	void readTables();
-	void printTableNames() const;
+
+	bool tableExists() const;
+	const std::string getTableFileName() const;
 };
