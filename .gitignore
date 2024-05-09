@@ -402,3 +402,4 @@ FodyWeavers.xsd
 *.vcxproj
 *.vcxproj.filters
 /database/tables.dat
+/database/MyTable.dat
