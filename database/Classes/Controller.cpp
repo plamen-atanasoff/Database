@@ -4,20 +4,25 @@
 #include <iostream>
 
 #include "Helpers/Command.h"
-#include "Helpers/ColumnFactory.h"
+#include "Factories/ColumnFactory.h"
 
 void Controller::createTable(const std::vector<std::string>& args)
 {
 	table = Table(args[0]);
 }
 
-void Controller::addColumn(const std::string& name, ColumnType type)
+void Controller::addColumn(const std::vector<std::string>& args)
 {
-	Column* col = getColumn(name, type);
+	Column* col = getColumn(args[0], getColumnTypeAsEnum(args[1]));
 	// addColumn clones the newly created column
 	table.addColumn(*col);
 
-	//delete[] col;
+	delete[] col;
+}
+
+void Controller::addRecord(const std::vector<std::string>& args)
+{
+	table.addRecord(args);
 }
 
 void Controller::readTables()
@@ -57,11 +62,17 @@ void Controller::execute(const Command& command)
 {
 	switch (command.getCommandName()) 
 	{
-	case CommandType::CREATE:
+	case CommandType::SHOW_TABLES:
+		printTableNames();
+		break;
+	case CommandType::CREATE_TABLE:
 		createTable(command.getArgs());
 		break;
-	case CommandType::SHOWTABLES:
-		printTableNames();
+	case CommandType::ADD_COLUMN:
+		addColumn(command.getArgs());
+		break;
+	case CommandType::ADD_RECORD:
+		addRecord(command.getArgs());
 		break;
 	}
 }
