@@ -58,6 +58,15 @@ void Controller::readTable(const std::vector<std::string>& args)
 	ifile.close();
 }
 
+void Controller::deleteRecords(const std::vector<std::string>& args)
+{
+	int colPos = std::stoi(args[0]) - 1;
+	std::vector<int> recordsPositions = table.getRecordsPositions(colPos, args[1]);
+	for (int i = 0; i < recordsPositions.size(); i++) {
+		table.deleteRecord(recordsPositions[i]);
+	}
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -134,6 +143,9 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::READ_TABLE:
 		readTable(command.getArgs());
+		break;
+	case CommandType::DELETE_RECORDS:
+		deleteRecords(command.getArgs());
 		break;
 	}
 }

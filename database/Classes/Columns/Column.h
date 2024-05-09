@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <vector>
 #include "../Factories/ColumnType.h"
 
 class Column {
@@ -18,6 +19,9 @@ public:
 
 	virtual void writeToFile(std::ofstream& ofile) const = 0;
 	virtual void readFromFile(std::ifstream& ifile) = 0;
+
+	virtual std::vector<int> getRecordsPositions(const std::string& val) const = 0;
+	virtual void deleteValue(int valPos) = 0;
 
 	virtual Column* clone() const = 0;
 

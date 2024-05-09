@@ -28,6 +28,8 @@ public:
 	void addColumn(const Column& col);
 	void writeToFile(std::ofstream& ofile) const;
 	void readFromFile(std::ifstream& ifile);
+	std::vector<int> getRecordsPositions(int colPos, const std::string& val) const;
+	void deleteRecord(int recordPos);
 
 	void printTable() const;
 

@@ -84,6 +84,19 @@ void Table::readFromFile(std::ifstream& ifile)
 	}
 }
 
+std::vector<int> Table::getRecordsPositions(int colPos, const std::string& val) const
+{
+	return cols[colPos]->getRecordsPositions(val);
+}
+
+void Table::deleteRecord(int recordPos)
+{
+	recordsId.erase(recordsId.begin() + recordPos);
+	for (size_t i = 0; i < cols.size(); i++) {
+		cols[i]->deleteValue(recordPos);
+	}
+}
+
 const char* Table::getName() const
 {
 	return name;

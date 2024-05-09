@@ -15,6 +15,9 @@ public:
 	virtual void writeToFile(std::ofstream& ofile) const override;
 	virtual void readFromFile(std::ifstream& ifile) override;
 
+	virtual std::vector<int> getRecordsPositions(const std::string& val) const override;
+	virtual void deleteValue(int valPos) override;
+
 	virtual Column* clone() const override;
 private:
 	std::vector<int> values;

@@ -55,6 +55,24 @@ void IntColumn::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(values.data()), sizeof(int) * size);
 }
 
+std::vector<int> IntColumn::getRecordsPositions(const std::string& val) const
+{
+	std::vector<int> res;
+	int v = std::stoi(val);
+	for (int i = 0; i < values.size(); i++) {
+		if (values[i] == v) {
+			res.push_back(i);
+		}
+	}
+
+	return res;
+}
+
+void IntColumn::deleteValue(int valPos)
+{
+	values.erase(values.begin() + valPos);
+}
+
 Column* IntColumn::clone() const
 {
 	return new IntColumn(*this);
