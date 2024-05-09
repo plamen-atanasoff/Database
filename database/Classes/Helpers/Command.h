@@ -21,5 +21,4 @@ private:
 	Command(CommandType name, StringVector args);
 };
 
-CommandType getCommandTypeAsEnum(const String& name);
 StringVector splitString(const String& str, char delimiter);

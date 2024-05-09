@@ -5,6 +5,8 @@
 #include <sstream>
 #include <exception>
 
+#include "../Factories/CommandFactory.h"
+
 using StringVector = std::vector<std::string>;
 using String = std::string;
 
@@ -35,16 +37,6 @@ CommandType Command::getCommandName() const
 const StringVector& Command::getArgs() const
 {
 	return args;
-}
-
-CommandType getCommandTypeAsEnum(const String& name) {
-	for (int i = 0; i < (int)CommandType::COMMANDS_COUNT; i++) {
-		if (name == getCommandName((CommandType)i)) {
-			return (CommandType)i;
-		}
-	}
-
-	throw std::exception("no such command available");
 }
 
 // TODO: move this to MyString or Helper
