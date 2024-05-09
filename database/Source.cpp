@@ -38,6 +38,14 @@ int main()
 			Controller c;
 			String line;
 
+			c.execute(Command(CommandType::CREATE_TABLE, { "MyTable" }));
+			c.execute(Command(CommandType::ADD_COLUMN, { "Column1", "int"}));
+			c.execute(Command(CommandType::ADD_COLUMN, { "Column2", "int" }));
+			c.execute(Command(CommandType::ADD_RECORD, { "12", "33" }));
+			c.execute(Command(CommandType::ADD_RECORD, { "13", "34" }));
+			c.execute(Command(CommandType::SAVE_TABLE, {}));
+			c.execute(Command(CommandType::CREATE_TABLE, { "Other" }));
+
 			while (true)
 			{
 				std::cout << "Enter command: ";
