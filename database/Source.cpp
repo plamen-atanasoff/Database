@@ -47,8 +47,14 @@ int main()
 				if (line == "exit")
 					break;
 
-				Command command = Command::create(line);
-				c.execute(command);
+				// add exception for wrong command format in execute()
+				try {
+					Command command = Command::create(line);
+					c.execute(command);
+				}
+				catch (const std::exception&) {
+					std::cout << "Wrong command\n" << std::endl;
+				}
 			}
 		}
 		catch (std::exception& err)
