@@ -1,10 +1,15 @@
 #pragma once
 
+#include <string>
+
 enum class CommandType {
-	SHOWTABLES,
-	CREATE,
+	SHOW_TABLES,
+	CREATE_TABLE,
+	ADD_COLUMN,
+	ADD_RECORD,
 
 	COMMANDS_COUNT
 };
 
-const char* getCommandName(CommandType commandName);
+CommandType getCommandTypeAsEnum(const std::string& type);
+const char* getCommandTypeAsString(CommandType type);
