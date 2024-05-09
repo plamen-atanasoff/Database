@@ -12,13 +12,13 @@ class Command {
 public:
 	static Command create(String line);
 
+	Command(CommandType name, StringVector args);
+
 	CommandType getCommandName() const;
 	const StringVector& getArgs() const;
 private:
 	CommandType name;
 	StringVector args;
-
-	Command(CommandType name, StringVector args);
 };
 
 StringVector splitString(const String& str, char delimiter);

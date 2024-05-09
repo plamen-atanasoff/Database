@@ -22,8 +22,10 @@ const char* getCommandTypeAsString(CommandType type) {
 		return "addcolumn";
 	case CommandType::ADD_RECORD:
 		return "insert";
-	case CommandType::SAVE:
+	case CommandType::SAVE_TABLE:
 		return "save";
+	case CommandType::READ_TABLE:
+		return "read";
 	}
 
 	throw std::invalid_argument("no such type available");

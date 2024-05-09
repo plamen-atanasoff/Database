@@ -26,7 +26,8 @@ public:
 
 	void addRecord(const std::vector<std::string>& values);
 	void addColumn(const Column& col);
-	void saveToFile(std::ofstream& ofile) const;
+	void writeToFile(std::ofstream& ofile) const;
+	void readFromFile(std::ifstream& ifile);
 
 	void printTable() const;
 

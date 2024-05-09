@@ -32,6 +32,7 @@ private:
 	void addColumn(const std::vector<std::string>& args);
 	void addRecord(const std::vector<std::string>& args);
 	void saveTable() const;
+	void readTable(const std::vector<std::string>& args);
 
 	void readTables();
 

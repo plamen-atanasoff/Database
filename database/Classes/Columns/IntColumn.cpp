@@ -31,16 +31,28 @@ void IntColumn::printValues() const
 	std::cout << std::endl;
 }
 
-void IntColumn::saveToFile(std::ofstream& ofile) const
+void IntColumn::writeToFile(std::ofstream& ofile) const
 {
+	//check if file is valid
 	// move to base class
-	ColumnType type = getType();
+	int type = static_cast<int>(getType());
 	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
 	ofile.write(getName(), MAX_NAME_LENGTH);
 
 	size_t size = values.size();
 	ofile.write(reinterpret_cast<const char*>(&size), sizeof(size));
 	ofile.write(reinterpret_cast<const char*>(values.data()), sizeof(int) * size);
+}
+
+void IntColumn::readFromFile(std::ifstream& ifile)
+{
+	//check if file is valid
+
+	size_t size;
+	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
+	values.clear();
+	values.resize(size);
+	ifile.read(reinterpret_cast<char*>(values.data()), sizeof(int) * size);
 }
 
 Column* IntColumn::clone() const

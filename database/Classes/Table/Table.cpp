@@ -1,5 +1,7 @@
 #include "Table.h"
 
+#include "../Factories/ColumnFactory.h"
+
 Table::Table(const std::string& name)
 {
 	strcpy_s(this->name,  name.c_str());
@@ -45,7 +47,7 @@ void Table::addColumn(const Column& col)
 	cols.push_back(col.clone());
 }
 
-void Table::saveToFile(std::ofstream& ofile) const
+void Table::writeToFile(std::ofstream& ofile) const
 {
 	ofile.write(name, MAX_NAME_LENGTH);
 	ofile.write(reinterpret_cast<const char*>(&nextRecordId), sizeof(nextRecordId));
@@ -55,7 +57,30 @@ void Table::saveToFile(std::ofstream& ofile) const
 	size_t sizeColumns = cols.size();
 	ofile.write(reinterpret_cast<const char*>(&sizeColumns), sizeof(sizeColumns));
 	for (int i = 0; i < sizeColumns; i++) {
-		cols[i]->saveToFile(ofile);
+		cols[i]->writeToFile(ofile);
+	}
+}
+
+void Table::readFromFile(std::ifstream& ifile)
+{
+	ifile.read(name, MAX_NAME_LENGTH);
+	ifile.read(reinterpret_cast<char*>(&nextRecordId), sizeof(nextRecordId));
+	size_t sizeRecords;
+	ifile.read(reinterpret_cast<char*>(&sizeRecords), sizeof(sizeRecords));
+	recordsId.clear();
+	recordsId.resize(sizeRecords);
+	ifile.read(reinterpret_cast<char*>(recordsId.data()), sizeof(unsigned) * sizeRecords);
+	size_t sizeColumns;
+	ifile.read(reinterpret_cast<char*>(&sizeColumns), sizeof(sizeColumns));
+	free();
+	cols.resize(sizeColumns);
+	ColumnType type;
+	char name[MAX_NAME_LENGTH]; // change to MAX_NAME_LENGTH of Column
+	for (int i = 0; i < sizeColumns; i++) {
+		ifile.read(reinterpret_cast<char*>(&type), sizeof(type));
+		ifile.read(reinterpret_cast<char*>(name), MAX_NAME_LENGTH);
+		cols[i] = getColumn(name, type);
+		cols[i]->readFromFile(ifile);
 	}
 }
 

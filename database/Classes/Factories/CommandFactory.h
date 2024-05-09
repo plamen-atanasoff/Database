@@ -7,7 +7,8 @@ enum class CommandType {
 	CREATE_TABLE,
 	ADD_COLUMN,
 	ADD_RECORD,
-	SAVE,
+	SAVE_TABLE,
+	READ_TABLE,
 
 	COMMANDS_COUNT
 };

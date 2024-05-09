@@ -40,9 +40,22 @@ void Controller::saveTable() const
 	if (!ofile.is_open()) {
 		throw std::exception("file could not be opened");
 	}
-	table.saveToFile(ofile);
+	table.writeToFile(ofile);
 
 	ofile.close();
+}
+
+void Controller::readTable(const std::vector<std::string>& args)
+{
+	// ask to save the current table
+
+	std::ifstream ifile(args[0], std::ios::binary);
+	if (!ifile.is_open()) {
+		throw std::exception("file could not be opened");
+	}
+	table.readFromFile(ifile);
+
+	ifile.close();
 }
 
 void Controller::readTables()
@@ -116,8 +129,11 @@ void Controller::execute(const Command& command)
 	case CommandType::ADD_RECORD:
 		addRecord(command.getArgs());
 		break;
-	case CommandType::SAVE:
+	case CommandType::SAVE_TABLE:
 		saveTable();
+		break;
+	case CommandType::READ_TABLE:
+		readTable(command.getArgs());
 		break;
 	}
 }

@@ -16,7 +16,8 @@ public:
 
 	virtual void printValues() const = 0;
 
-	virtual void saveToFile(std::ofstream& ofile) const = 0;
+	virtual void writeToFile(std::ofstream& ofile) const = 0;
+	virtual void readFromFile(std::ifstream& ifile) = 0;
 
 	virtual Column* clone() const = 0;
 
@@ -24,7 +25,6 @@ public:
 	const char* getName() const { return name; }
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
-private:
 	ColumnType type;
 	char name[MAX_NAME_LENGTH]{};
 };
