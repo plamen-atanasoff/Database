@@ -1,6 +1,7 @@
 #include "IntColumn.h"
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 IntColumn::IntColumn(const std::string& name, ColumnType type) : Column(name, type) 
 {}
@@ -8,7 +9,12 @@ IntColumn::IntColumn(const std::string& name, ColumnType type) : Column(name, ty
 void IntColumn::addValue(const std::string& val)
 {
 	// add validation
-	values.push_back(std::stoi(val));
+	if (val == "NULL") {
+		values.push_back(NULL_VALUE);
+	} 
+	else {
+		values.push_back(std::stoi(val));
+	}
 }
 
 void IntColumn::removeValue(int pos)
@@ -20,15 +26,37 @@ void IntColumn::removeValue(int pos)
 void IntColumn::changeValue(int pos, const std::string& newVal)
 {
 	// add validation
-	values[pos] = std::stoi(newVal);
+	if (newVal == "NULL") {
+		values[pos] = NULL_VALUE;
+	}
+	else {
+		values[pos] = std::stoi(newVal);
+	}
 }
 
 void IntColumn::printValues() const
 {
 	for (int i = 0; i < values.size(); i++) {
-		std::cout << values[i] << " ";
+		if (values[i] == NULL_VALUE) {
+			std::cout << "NULL";
+		}
+		else {
+			std::cout << values[i];
+		}
+		std::cout << " ";
 	}
 	std::cout << std::endl;
+}
+
+void IntColumn::printValueAt(size_t pos) const
+{
+	std::cout << std::setw(8) << std::left;
+	if (values[pos] == NULL_VALUE) {
+		std::cout << "NULL";
+	}
+	else {
+		std::cout << values[pos];
+	}
 }
 
 void IntColumn::writeToFile(std::ofstream& ofile) const
@@ -58,7 +86,14 @@ void IntColumn::readFromFile(std::ifstream& ifile)
 std::vector<int> IntColumn::getRecordsPositions(const std::string& val) const
 {
 	std::vector<int> res;
-	int v = std::stoi(val);
+	int v;
+	if (val == "NULL") {
+		v = NULL_VALUE;
+	}
+	else {
+		v = std::stoi(val);
+	}
+
 	for (int i = 0; i < values.size(); i++) {
 		if (values[i] == v) {
 			res.push_back(i);
@@ -73,7 +108,7 @@ void IntColumn::deleteValue(int valPos)
 	values.erase(values.begin() + valPos);
 }
 
-void IntColumn::initializeValues(int recordsCount)
+void IntColumn::initializeValues(size_t recordsCount)
 {
 	values.reserve(recordsCount);
 	for (int i = 1; i <= recordsCount; i++) {

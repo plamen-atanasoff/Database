@@ -67,6 +67,11 @@ void Controller::deleteRecords(const std::vector<std::string>& args)
 	}
 }
 
+void Controller::printTable() const
+{
+	table.printTable();
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -146,6 +151,10 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::DELETE_RECORDS:
 		deleteRecords(command.getArgs());
+		break;
+	case CommandType::PRINT_TABLE:
+		// add stream to print to?
+		printTable();
 		break;
 	}
 }

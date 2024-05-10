@@ -10,6 +10,7 @@ enum class CommandType {
 	SAVE_TABLE,
 	READ_TABLE,
 	DELETE_RECORDS,
+	PRINT_TABLE,
 
 	COMMANDS_COUNT
 };

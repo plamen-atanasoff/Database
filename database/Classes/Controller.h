@@ -34,6 +34,7 @@ private:
 	void saveTable() const;
 	void readTable(const std::vector<std::string>& args);
 	void deleteRecords(const std::vector<std::string>& args);
+	void printTable() const;
 
 	void readTables();
 

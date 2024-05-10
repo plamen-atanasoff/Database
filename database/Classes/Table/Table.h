@@ -32,6 +32,7 @@ public:
 	void deleteRecord(int recordPos);
 
 	void printTable() const;
+	void printColumnInfo() const;
 
 	const char* getName() const;
 private:

@@ -1,5 +1,8 @@
 #include "Table.h"
 
+#include <iostream>
+#include <iomanip>
+
 #include "../Factories/ColumnFactory.h"
 
 Table::Table(const std::string& name)
@@ -96,6 +99,30 @@ void Table::deleteRecord(int recordPos)
 	for (size_t i = 0; i < cols.size(); i++) {
 		cols[i]->deleteValue(recordPos);
 	}
+}
+
+void Table::printTable() const
+{
+	const char* separator = " | ";
+	printColumnInfo();
+	for (size_t i = 0; i < recordsId.size(); i++) {
+		std::cout << std::setw(8) << std::left << recordsId[i] << separator;
+		for (size_t j = 0; j < cols.size(); j++) {
+			cols[j]->printValueAt(i);
+			std::cout << separator;
+		}
+		std::cout << std::endl;
+	}
+}
+
+void Table::printColumnInfo() const
+{
+	const char* separator = " | ";
+	std::cout << std::setw(8) << std::left << "Id" << separator;
+	for (size_t i = 0; i < cols.size(); i++) {
+		std::cout << std::setw(8) << std::left << cols[i]->getName() << separator;
+	}
+	std::cout << std::endl;
 }
 
 const char* Table::getName() const

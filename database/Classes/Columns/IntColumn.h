@@ -11,6 +11,7 @@ public:
 	virtual void changeValue(int pos, const std::string& newVal) override;
 
 	virtual void printValues() const override;
+	virtual void printValueAt(size_t pos) const override;
 
 	virtual void writeToFile(std::ofstream& ofile) const override;
 	virtual void readFromFile(std::ifstream& ifile) override;
@@ -18,7 +19,7 @@ public:
 	virtual std::vector<int> getRecordsPositions(const std::string& val) const override;
 	virtual void deleteValue(int valPos) override;
 
-	virtual void initializeValues(int recordsCount) override;
+	virtual void initializeValues(size_t recordsCount) override;
 
 	virtual Column* clone() const override;
 private:

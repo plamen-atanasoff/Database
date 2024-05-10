@@ -28,6 +28,8 @@ const char* getCommandTypeAsString(CommandType type) {
 		return "read";
 	case CommandType::DELETE_RECORDS:
 		return "delete";
+	case CommandType::PRINT_TABLE:
+		return "print";
 	}
 
 	throw std::invalid_argument("no such type available");
