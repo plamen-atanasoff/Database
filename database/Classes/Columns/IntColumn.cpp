@@ -73,6 +73,14 @@ void IntColumn::deleteValue(int valPos)
 	values.erase(values.begin() + valPos);
 }
 
+void IntColumn::initializeValues(int recordsCount)
+{
+	values.reserve(recordsCount);
+	for (int i = 1; i <= recordsCount; i++) {
+		values.push_back(NULL_VALUE);
+	}
+}
+
 Column* IntColumn::clone() const
 {
 	return new IntColumn(*this);

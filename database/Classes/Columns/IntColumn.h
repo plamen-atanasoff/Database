@@ -18,6 +18,8 @@ public:
 	virtual std::vector<int> getRecordsPositions(const std::string& val) const override;
 	virtual void deleteValue(int valPos) override;
 
+	virtual void initializeValues(int recordsCount) override;
+
 	virtual Column* clone() const override;
 private:
 	std::vector<int> values;

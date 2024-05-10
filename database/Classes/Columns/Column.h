@@ -23,6 +23,8 @@ public:
 	virtual std::vector<int> getRecordsPositions(const std::string& val) const = 0;
 	virtual void deleteValue(int valPos) = 0;
 
+	virtual void initializeValues(int recordsCount) = 0;
+
 	virtual Column* clone() const = 0;
 
 	ColumnType getType() const { return type; }

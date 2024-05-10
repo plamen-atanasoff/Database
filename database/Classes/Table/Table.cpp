@@ -45,6 +45,7 @@ void Table::addRecord(const std::vector<std::string>& values)
 void Table::addColumn(const Column& col)
 {
 	cols.push_back(col.clone());
+	cols[cols.size() - 1]->initializeValues(recordsId.size());
 }
 
 void Table::writeToFile(std::ofstream& ofile) const
