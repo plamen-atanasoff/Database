@@ -6,8 +6,11 @@
 
 class Column {
 public:
-	Column(const std::string& name, ColumnType type) : type(type) {
+	Column(const std::string& name, ColumnType type, size_t width) : type(type) {
 		strcpy_s(this->name, name.c_str());
+		if (width <= 16) {
+			this->width = width;
+		}
 	}
 	virtual ~Column() = default;
 
@@ -31,8 +34,11 @@ public:
 
 	ColumnType getType() const { return type; }
 	const char* getName() const { return name; }
+
+	size_t getWidth() const { return width; }
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
 	ColumnType type;
 	char name[MAX_NAME_LENGTH]{};
+	size_t width = 8;
 };

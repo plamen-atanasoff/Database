@@ -137,7 +137,7 @@ void Table::printTable() const
 	const char* separator = " | ";
 	printColumnInfo();
 	for (size_t i = 0; i < recordsId.size(); i++) {
-		std::cout << std::setw(8) << std::left << recordsId[i] << separator;
+		std::cout << std::setw(3) << std::left << recordsId[i] << separator;
 		for (size_t j = 0; j < cols.size(); j++) {
 			cols[j]->printValueAt(i);
 			std::cout << separator;
@@ -149,9 +149,9 @@ void Table::printTable() const
 void Table::printColumnInfo() const
 {
 	const char* separator = " | ";
-	std::cout << std::setw(8) << std::left << "Id" << separator;
+	std::cout << std::setw(3) << "Id" << separator;
 	for (size_t i = 0; i < cols.size(); i++) {
-		std::cout << std::setw(8) << std::left << cols[i]->getName() << separator;
+		std::cout << std::setw(cols[i]->getWidth()) << cols[i]->getName() << separator;
 	}
 	std::cout << std::endl;
 }

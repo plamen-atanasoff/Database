@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-IntColumn::IntColumn(const std::string& name, ColumnType type) : Column(name, type) 
+IntColumn::IntColumn(const std::string& name, ColumnType type) : Column(name, type, name.size()) 
 {}
 
 void IntColumn::addValue(const std::string& val)
@@ -14,6 +14,9 @@ void IntColumn::addValue(const std::string& val)
 	} 
 	else {
 		values.push_back(std::stoi(val));
+		if (val.size() < 16 && val.size() > width) {
+			width = val.size();
+		}
 	}
 }
 
@@ -50,7 +53,7 @@ void IntColumn::printValues() const
 
 void IntColumn::printValueAt(size_t pos) const
 {
-	std::cout << std::setw(8) << std::left;
+	std::cout << std::setw(width) << std::left;
 	if (values[pos] == NULL_VALUE) {
 		std::cout << "NULL";
 	}
