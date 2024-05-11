@@ -62,9 +62,7 @@ void Controller::deleteRecords(const std::vector<std::string>& args)
 {
 	int colPos = std::stoi(args[0]) - 1;
 	std::vector<int> recordsPositions = table.getRecordsPositions(colPos, args[1]);
-	for (int i = 0; i < recordsPositions.size(); i++) {
-		table.deleteRecord(recordsPositions[i]);
-	}
+	table.deleteRecords(recordsPositions);
 }
 
 void Controller::printTable() const

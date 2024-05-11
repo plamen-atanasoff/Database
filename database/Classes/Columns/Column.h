@@ -23,6 +23,7 @@ public:
 
 	virtual std::vector<int> getRecordsPositions(const std::string& val) const = 0;
 	virtual void deleteValue(int valPos) = 0;
+	virtual void deleteRecords(const std::vector<int>& recordsPositions) = 0;
 
 	virtual void initializeValues(size_t recordsCount) = 0;
 

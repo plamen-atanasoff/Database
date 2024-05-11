@@ -93,13 +93,44 @@ std::vector<int> Table::getRecordsPositions(int colPos, const std::string& val) 
 	return cols[colPos]->getRecordsPositions(val);
 }
 
-void Table::deleteRecord(int recordPos)
+void Table::deleteRecords(std::vector<int> recordsPositions)
 {
-	recordsId.erase(recordsId.begin() + recordPos);
+	deleteRecordsFromRecordsId(recordsPositions);
 	for (size_t i = 0; i < cols.size(); i++) {
-		cols[i]->deleteValue(recordPos);
+		cols[i]->deleteRecords(recordsPositions);
 	}
 }
+
+void Table::deleteRecordsFromRecordsId(std::vector<int> recordsPositions)
+{
+	// validate recordsPositions(should contain only positions from 0 to records count - 1)
+	// ptr is pointer to the curr record to be removed, i is pointer to the new valid pos, j is pointer to the curr value in values
+	size_t i = 0, j = 0;
+	for (size_t ptr = 0; ptr < recordsPositions.size(); j++) {
+		if (recordsPositions[ptr] == j /* && j + 1 < recordsPositions.size()*/) {
+			//recordsId[i] = recordsId[j + 1];
+			ptr++;
+		}
+		else {
+			recordsId[i] = recordsId[j];
+			i++;
+		}
+	}
+	//i++, j++;
+	for (; j < recordsId.size(); j++, i++) {
+		recordsId[i] = recordsId[j];
+	}
+
+	recordsId.resize(i);
+}
+
+//void Table::deleteRecord(int recordPos)
+//{
+//	recordsId.erase(recordsId.begin() + recordPos);
+//	for (size_t i = 0; i < cols.size(); i++) {
+//		cols[i]->deleteValue(recordPos);
+//	}
+//}
 
 void Table::printTable() const
 {

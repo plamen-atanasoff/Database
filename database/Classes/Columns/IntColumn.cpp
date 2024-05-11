@@ -108,6 +108,26 @@ void IntColumn::deleteValue(int valPos)
 	values.erase(values.begin() + valPos);
 }
 
+void IntColumn::deleteRecords(const std::vector<int>& recordsPositions)
+{
+	// ptr is pointer to the curr record to be removed, i is pointer to the new valid pos, j is pointer to the curr value in values
+	size_t i = 0, j = 0;
+	for (size_t ptr = 0; ptr < recordsPositions.size(); j++) {
+		if (recordsPositions[ptr] == j) {
+			ptr++;
+		}
+		else {
+			values[i] = values[j];
+			i++;
+		}
+	}
+	for (; j < values.size(); j++, i++) {
+		values[i] = values[j];
+	}
+
+	values.resize(i);
+}
+
 void IntColumn::initializeValues(size_t recordsCount)
 {
 	values.reserve(recordsCount);
