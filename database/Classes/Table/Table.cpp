@@ -63,6 +63,7 @@ void Table::writeToFile(std::ofstream& ofile) const
 	for (int i = 0; i < sizeColumns; i++) {
 		cols[i]->writeToFile(ofile);
 	}
+	ofile.write(reinterpret_cast<const char*>(&recordsPerPage), sizeof(recordsPerPage));
 }
 
 void Table::readFromFile(std::ifstream& ifile)
@@ -86,6 +87,7 @@ void Table::readFromFile(std::ifstream& ifile)
 		cols[i] = getColumn(name, type);
 		cols[i]->readFromFile(ifile);
 	}
+	ifile.read(reinterpret_cast<char*>(&recordsPerPage), sizeof(recordsPerPage));
 }
 
 std::vector<int> Table::getRecordsPositions(int colPos, const std::string& val) const
@@ -135,21 +137,64 @@ void Table::deleteRecordsFromRecordsId(std::vector<int> recordsPositions)
 void Table::printTable() const
 {
 	const char* separator = " | ";
-	printColumnInfo();
-	for (size_t i = 0; i < recordsId.size(); i++) {
-		std::cout << std::setw(3) << std::left << recordsId[i] << separator;
-		for (size_t j = 0; j < cols.size(); j++) {
-			cols[j]->printValueAt(i);
-			std::cout << separator;
+
+	char command[8]{};
+	size_t i = 0;
+	unsigned r = recordsPerPage;
+	do {
+		printColumnInfo();
+
+		for (; i < recordsId.size(); i++) {
+			if (i == r) {
+				break;
+			}
+			std::cout << std::setw(3) << std::left << recordsId[i] << separator;
+			for (size_t j = 0; j < cols.size(); j++) {
+				cols[j]->printValueAt(i);
+				std::cout << separator;
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-	}
+
+		std::cout << "Enter command(prev, next, exit): ";
+		std::cin >> command;
+		if (strcmp(command, "prev") == 0) {
+			if (i == recordsPerPage) {
+				i = 0;
+				system("cls");
+				continue;
+			}
+			if (i % recordsPerPage == 0) {
+				i = i - (size_t)2 * recordsPerPage;
+			}
+			else {
+				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
+			}
+			r = i + recordsPerPage;
+		}
+		else if (strcmp(command, "next") == 0) {
+			if (i >= recordsId.size()) {
+				if (i % recordsPerPage == 0) {
+					i -= recordsPerPage;
+				}
+				else {
+					i = (i + (recordsPerPage - (i % recordsPerPage))) - recordsPerPage;
+				}
+				system("cls");
+				continue;
+			}
+			r += recordsPerPage;
+		}
+
+		system("cls");
+	} while (strcmp(command, "exit") != 0);
+	std::cin.ignore();
 }
 
 void Table::printColumnInfo() const
 {
 	const char* separator = " | ";
-	std::cout << std::setw(3) << "Id" << separator;
+	std::cout << std::setw(3) << std::right << "Id" << separator;
 	for (size_t i = 0; i < cols.size(); i++) {
 		std::cout << std::setw(cols[i]->getWidth()) << cols[i]->getName() << separator;
 	}

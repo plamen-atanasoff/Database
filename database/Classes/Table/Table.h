@@ -26,8 +26,10 @@ public:
 
 	void addRecord(const std::vector<std::string>& values);
 	void addColumn(const Column& col);
+
 	void writeToFile(std::ofstream& ofile) const;
 	void readFromFile(std::ifstream& ifile);
+
 	std::vector<int> getRecordsPositions(int colPos, const std::string& val) const;
 	//void deleteRecord(int recordPos);
 	void deleteRecords(std::vector<int> recordsPositions);
@@ -44,6 +46,8 @@ private:
 	unsigned nextRecordId = 0;
 	PrimaryKeyColumn recordsId;
 	ColumnArray cols;
+
+	unsigned recordsPerPage = 2;
 
 	void copyFrom(const Table& other);
 	void free();

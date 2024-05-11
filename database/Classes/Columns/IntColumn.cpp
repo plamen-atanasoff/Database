@@ -69,6 +69,7 @@ void IntColumn::writeToFile(std::ofstream& ofile) const
 	int type = static_cast<int>(getType());
 	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
 	ofile.write(getName(), MAX_NAME_LENGTH);
+	ofile.write(reinterpret_cast<const char*>(&width), sizeof(width));
 
 	size_t size = values.size();
 	ofile.write(reinterpret_cast<const char*>(&size), sizeof(size));
@@ -78,6 +79,8 @@ void IntColumn::writeToFile(std::ofstream& ofile) const
 void IntColumn::readFromFile(std::ifstream& ifile)
 {
 	//check if file is valid
+	// move to base class
+	ifile.read(reinterpret_cast<char*>(&width), sizeof(width));
 
 	size_t size;
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
