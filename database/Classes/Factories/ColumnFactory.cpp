@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-Column* getColumn(const std::string& name, ColumnType type) {
+Column* getColumn(const String& name, ColumnType type) {
 	switch (type) {
 	case ColumnType::INT:
 		return new IntColumn(name, type);

@@ -6,24 +6,25 @@
 #include <exception>
 
 #include "../Factories/CommandFactory.h"
+#include "HelperFunctions.h"
 
 using StringVector = std::vector<std::string>;
 using String = std::string;
 
-Command::Command(CommandType name, StringVector args) 
-	: name(name), args(args) 
+Command::Command(CommandType type, const StringVector& args) 
+	: type(type), args(args) 
 {}
 
 // command is in the form: commandType arg1 arg2 ... argN
-Command Command::create(String line)
+Command Command::create(const String& line)
 {
 	size_t delimiterPos = line.find_first_of(' ');
-	String name = line.substr(0, delimiterPos);
-	CommandType commandType = getCommandTypeAsEnum(name);
+	String type = line.substr(0, delimiterPos);
+	CommandType commandType = getCommandTypeAsEnum(type);
 	StringVector args;
 	if (delimiterPos != String::npos) {
-		line = line.substr(delimiterPos + 1);
-		args = splitString(line, ' ');
+		String argsString = line.substr(delimiterPos + 1);
+		args = splitString(argsString, ' ');
 	}
 
 	return Command(commandType, args);
@@ -31,25 +32,10 @@ Command Command::create(String line)
 
 CommandType Command::getCommandName() const
 {
-	return name;
+	return type;
 }
 
 const StringVector& Command::getArgs() const
 {
 	return args;
-}
-
-// TODO: move this to MyString or Helper
-StringVector splitString(const String& str, char delimiter) 
-{
-	StringVector tokens;
-	std::istringstream iss(str);
-	String token;
-
-	while (std::getline(iss, token, delimiter))
-	{
-		tokens.push_back(token);
-	}
-
-	return tokens;
 }

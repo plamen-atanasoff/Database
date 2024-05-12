@@ -10,15 +10,13 @@ using String = std::string;
 
 class Command {
 public:
-	static Command create(String line);
+	static Command create(const String& line);
 
-	Command(CommandType name, StringVector args);
+	Command(CommandType type, const StringVector& args);
 
 	CommandType getCommandName() const;
 	const StringVector& getArgs() const;
 private:
-	CommandType name;
+	CommandType type;
 	StringVector args;
 };
-
-StringVector splitString(const String& str, char delimiter);

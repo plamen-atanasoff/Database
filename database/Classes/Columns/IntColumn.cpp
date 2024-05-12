@@ -1,14 +1,15 @@
 #include "IntColumn.h"
+
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
-IntColumn::IntColumn(const std::string& name, ColumnType type) : Column(name, type, name.size()) 
+IntColumn::IntColumn(const String& name, ColumnType type) : Column(name, type, name.size()) 
 {}
 
-void IntColumn::addValue(const std::string& val)
+void IntColumn::addValue(const String& val)
 {
-	// add validation
 	if (val == "NULL") {
 		values.push_back(NULL_VALUE);
 	} 
@@ -20,15 +21,15 @@ void IntColumn::addValue(const std::string& val)
 	}
 }
 
-void IntColumn::removeValue(int pos)
+void IntColumn::deleteValue(size_t pos)
 {
-	// add validation
+	assert(pos < values.size());
+
 	values.erase(values.begin() + pos);
 }
 
-void IntColumn::changeValue(int pos, const std::string& newVal)
+void IntColumn::changeValue(size_t pos, const String& newVal)
 {
-	// add validation
 	if (newVal == "NULL") {
 		values[pos] = NULL_VALUE;
 	}
@@ -37,23 +38,24 @@ void IntColumn::changeValue(int pos, const std::string& newVal)
 	}
 }
 
-void IntColumn::printValues() const
-{
-	for (int i = 0; i < values.size(); i++) {
-		if (values[i] == NULL_VALUE) {
-			std::cout << "NULL";
-		}
-		else {
-			std::cout << values[i];
-		}
-		std::cout << " ";
-	}
-	std::cout << std::endl;
-}
+//void IntColumn::printValues() const
+//{
+//	for (int i = 0; i < values.size(); i++) {
+//		if (values[i] == NULL_VALUE) {
+//			std::cout << "NULL";
+//		}
+//		else {
+//			std::cout << values[i];
+//		}
+//		std::cout << " ";
+//	}
+//	std::cout << std::endl;
+//}
 
 void IntColumn::printValueAt(size_t pos) const
 {
 	std::cout << std::setw(width) << std::left;
+
 	if (values[pos] == NULL_VALUE) {
 		std::cout << "NULL";
 	}
@@ -64,7 +66,7 @@ void IntColumn::printValueAt(size_t pos) const
 
 void IntColumn::writeToFile(std::ofstream& ofile) const
 {
-	//check if file is valid
+	assert(ofile.good());
 	// move to base class
 	int type = static_cast<int>(getType());
 	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
@@ -78,7 +80,7 @@ void IntColumn::writeToFile(std::ofstream& ofile) const
 
 void IntColumn::readFromFile(std::ifstream& ifile)
 {
-	//check if file is valid
+	assert(ifile.good());
 	// move to base class
 	ifile.read(reinterpret_cast<char*>(&width), sizeof(width));
 
@@ -89,7 +91,7 @@ void IntColumn::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(values.data()), sizeof(int) * size);
 }
 
-std::vector<int> IntColumn::getRecordsPositions(const std::string& val) const
+std::vector<int> IntColumn::getRecordsPositions(const String& val) const
 {
 	std::vector<int> res;
 	int v;
@@ -109,16 +111,16 @@ std::vector<int> IntColumn::getRecordsPositions(const std::string& val) const
 	return res;
 }
 
-void IntColumn::deleteValue(int valPos)
-{
-	values.erase(values.begin() + valPos);
-}
-
 void IntColumn::deleteRecords(const std::vector<int>& recordsPositions)
 {
-	// ptr is pointer to the curr record to be removed, i is pointer to the new valid pos, j is pointer to the curr value in values
+	assert(recordsPositions.size() <= values.size());
+	// ptr is pointer to the current record to be removed,
+	// i is pointer to the current valid pos,
+	// j is pointer to the current value in values
 	size_t i = 0, j = 0;
 	for (size_t ptr = 0; ptr < recordsPositions.size(); j++) {
+		assert(recordsPositions[ptr] < values.size());
+
 		if (recordsPositions[ptr] == j) {
 			ptr++;
 		}

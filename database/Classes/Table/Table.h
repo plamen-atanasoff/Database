@@ -1,9 +1,12 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include <fstream>
+
 #include "../Columns/Column.h"
 
+using String = std::string;
 using PrimaryKeyColumn = std::vector<unsigned>;
 using ColumnArray = std::vector<Column*>;
 
@@ -19,21 +22,22 @@ class Table
 {
 public:
 	Table() : Table("") {}
-	Table(const std::string& name);
+	Table(const String& name);
 	Table(const Table& other);
 	Table& operator=(const Table& other);
 	~Table();
 
-	void addRecord(const std::vector<std::string>& values);
+	void addRecord(const std::vector<String>& values);
 	void addColumn(const Column& col);
 
 	void writeToFile(std::ofstream& ofile) const;
 	void readFromFile(std::ifstream& ifile);
 
-	std::vector<int> getRecordsPositions(int colPos, const std::string& val) const;
+	std::vector<int> getRecordsPositions(size_t colPos, const String& val) const;
+
 	//void deleteRecord(int recordPos);
-	void deleteRecords(std::vector<int> recordsPositions);
-	void deleteRecordsFromRecordsId(std::vector<int> recordsPositions);
+	void deleteRecords(const std::vector<int>& recordsPositions);
+	void deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions);
 
 	void printTable() const;
 	void printColumnInfo() const;

@@ -1,7 +1,8 @@
 #include "CommandFactory.h"
+
 #include <stdexcept>
 
-CommandType getCommandTypeAsEnum(const std::string& type) {
+CommandType getCommandTypeAsEnum(const String& type) {
 	for (int i = 0; i < (int)CommandType::COMMANDS_COUNT; i++) {
 		if (type == getCommandTypeAsString((CommandType)i)) {
 			return (CommandType)i;
@@ -11,7 +12,7 @@ CommandType getCommandTypeAsEnum(const std::string& type) {
 	throw std::exception("no such type available");
 }
 
-const char* getCommandTypeAsString(CommandType type) {
+String getCommandTypeAsString(CommandType type) {
 	switch (type)
 	{
 	case CommandType::SHOW_TABLES:
@@ -32,5 +33,5 @@ const char* getCommandTypeAsString(CommandType type) {
 		return "print";
 	}
 
-	throw std::invalid_argument("no such type available");
+	throw std::invalid_argument("type is invalid");
 }

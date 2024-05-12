@@ -6,12 +6,17 @@
 #include "Helpers/Command.h"
 #include "Factories/ColumnFactory.h"
 
-void Controller::createTable(const std::vector<std::string>& args)
+Controller::Controller()
+{
+	readTables();
+}
+
+void Controller::createTable(const std::vector<String>& args)
 {
 	table = Table(args[0]);
 }
 
-void Controller::addColumn(const std::vector<std::string>& args)
+void Controller::addColumn(const std::vector<String>& args)
 {
 	Column* col = getColumn(args[0], getColumnTypeAsEnum(args[1]));
 	// addColumn clones the newly created column
@@ -20,14 +25,14 @@ void Controller::addColumn(const std::vector<std::string>& args)
 	delete[] col;
 }
 
-void Controller::addRecord(const std::vector<std::string>& args)
+void Controller::addRecord(const std::vector<String>& args)
 {
 	table.addRecord(args);
 }
 
 void Controller::saveTable() const
 {
-	std::string fileName;
+	String fileName;
 	if (tableExists()) {
 		fileName = getTableFileName();
 	}
@@ -45,7 +50,7 @@ void Controller::saveTable() const
 	ofile.close();
 }
 
-void Controller::readTable(const std::vector<std::string>& args)
+void Controller::readTable(const std::vector<String>& args)
 {
 	// ask to save the current table
 
@@ -58,7 +63,7 @@ void Controller::readTable(const std::vector<std::string>& args)
 	ifile.close();
 }
 
-void Controller::deleteRecords(const std::vector<std::string>& args)
+void Controller::deleteRecords(const std::vector<String>& args)
 {
 	int colPos = std::stoi(args[0]) - 1;
 	std::vector<int> recordsPositions = table.getRecordsPositions(colPos, args[1]);
@@ -77,11 +82,11 @@ void Controller::readTables()
 		return;
 	}
 
-	StringPair temp;
 	size_t size;
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
-	tablesInfo.reserve(size);
 
+	StringPair temp;
+	tablesInfo.reserve(size);
 	for (size_t i = 0; i < size; i++) {
 		ifile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 		tablesInfo.push_back(temp);
@@ -101,7 +106,7 @@ bool Controller::tableExists() const
 	return false;
 }
 
-const std::string Controller::getTableFileName() const
+const String Controller::getTableFileName() const
 {
 	for (int i = 0; i < tablesInfo.size(); i++) {
 		if (strcmp(table.getName(), tablesInfo[i].tableName) == 0) {
@@ -118,11 +123,6 @@ void Controller::printTableNames() const
 		std::cout << pair.tableName << '\n';
 	}
 	std::cout << std::endl;
-}
-
-Controller::Controller()
-{
-	readTables();
 }
 
 void Controller::execute(const Command& command)

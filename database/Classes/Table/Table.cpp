@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 #include "../Factories/ColumnFactory.h"
 
-Table::Table(const std::string& name)
+Table::Table(const String& name)
 {
 	strcpy_s(this->name,  name.c_str());
 }
@@ -32,7 +33,7 @@ Table::~Table()
 	free();
 }
 
-void Table::addRecord(const std::vector<std::string>& values)
+void Table::addRecord(const std::vector<String>& values)
 {
 	if (values.size() != cols.size()) {
 		return; 
@@ -48,7 +49,7 @@ void Table::addRecord(const std::vector<std::string>& values)
 void Table::addColumn(const Column& col)
 {
 	cols.push_back(col.clone());
-	cols[cols.size() - 1]->initializeValues(recordsId.size());
+	cols.back()->initializeValues(recordsId.size());
 }
 
 void Table::writeToFile(std::ofstream& ofile) const
@@ -90,27 +91,31 @@ void Table::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(&recordsPerPage), sizeof(recordsPerPage));
 }
 
-std::vector<int> Table::getRecordsPositions(int colPos, const std::string& val) const
+std::vector<int> Table::getRecordsPositions(size_t colPos, const String& val) const
 {
 	return cols[colPos]->getRecordsPositions(val);
 }
 
-void Table::deleteRecords(std::vector<int> recordsPositions)
+void Table::deleteRecords(const std::vector<int>& recordsPositions)
 {
 	deleteRecordsFromRecordsId(recordsPositions);
+
 	for (size_t i = 0; i < cols.size(); i++) {
 		cols[i]->deleteRecords(recordsPositions);
 	}
 }
 
-void Table::deleteRecordsFromRecordsId(std::vector<int> recordsPositions)
+void Table::deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions)
 {
-	// validate recordsPositions(should contain only positions from 0 to records count - 1)
-	// ptr is pointer to the curr record to be removed, i is pointer to the new valid pos, j is pointer to the curr value in values
+	assert(recordsPositions.size() <= recordsId.size());
+	// ptr is pointer to the current record to be removed,
+	// i is pointer to the current valid pos,
+	// j is pointer to the current value in values
 	size_t i = 0, j = 0;
 	for (size_t ptr = 0; ptr < recordsPositions.size(); j++) {
-		if (recordsPositions[ptr] == j /* && j + 1 < recordsPositions.size()*/) {
-			//recordsId[i] = recordsId[j + 1];
+		assert(recordsPositions[ptr] < recordsId.size());
+
+		if (recordsPositions[ptr] == j) {
 			ptr++;
 		}
 		else {
@@ -118,7 +123,6 @@ void Table::deleteRecordsFromRecordsId(std::vector<int> recordsPositions)
 			i++;
 		}
 	}
-	//i++, j++;
 	for (; j < recordsId.size(); j++, i++) {
 		recordsId[i] = recordsId[j];
 	}
@@ -136,7 +140,7 @@ void Table::deleteRecordsFromRecordsId(std::vector<int> recordsPositions)
 
 void Table::printTable() const
 {
-	const char* separator = " | ";
+	constexpr const char* separator = " | ";
 
 	char command[8]{};
 	size_t i = 0;
@@ -170,7 +174,7 @@ void Table::printTable() const
 			else {
 				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
 			}
-			r = i + recordsPerPage;
+			r = (unsigned)i + recordsPerPage;
 		}
 		else if (strcmp(command, "next") == 0) {
 			if (i >= recordsId.size()) {
@@ -209,13 +213,22 @@ const char* Table::getName() const
 void Table::copyFrom(const Table& other)
 {
 	cols.reserve(other.cols.size());
-	for (int i = 0; i < other.cols.size(); i++) {
-		cols.push_back(other.cols[i]->clone());
+	int i = 0;
+	try {
+		for (; i < other.cols.size(); i++) {
+			cols.push_back(other.cols[i]->clone());
+		}
+	}
+	catch (const std::bad_alloc&) {
+		for (int j = 0; j < i; j++) {
+			delete cols[i];
+		}
 	}
 
 	strcpy_s(name, other.name);
 	recordsId = other.recordsId;
 	nextRecordId = other.nextRecordId;
+	recordsPerPage = other.recordsPerPage;
 }
 
 void Table::free()

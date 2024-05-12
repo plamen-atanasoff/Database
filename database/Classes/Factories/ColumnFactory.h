@@ -1,6 +1,10 @@
 #pragma once
+
 #include <string>
+
 #include "ColumnType.h"
 #include "../Columns/IntColumn.h"
 
-Column* getColumn(const std::string& name, ColumnType type);
+using String = std::string;
+
+Column* getColumn(const String& name, ColumnType type);
