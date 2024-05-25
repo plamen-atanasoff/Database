@@ -235,6 +235,7 @@ void Controller::execute(const Command& command)
 		addRecord(command.getArgs());
 		break;
 	case CommandType::SAVE_TABLE:
+	case CommandType::SAVE_TABLE_TO_FILE:
 		saveTable(command.getArgs());
 		break;
 	case CommandType::READ_TABLE:

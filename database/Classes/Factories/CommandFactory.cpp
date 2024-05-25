@@ -43,6 +43,8 @@ String getCommandTypeAsString(CommandType type) {
 		return "update";
 	case CommandType::SELECT_RECORDS:
 		return "select";
+	case CommandType::SAVE_TABLE_TO_FILE:
+		return "saveas";
 	}
 
 	throw std::invalid_argument("type is invalid");
