@@ -38,7 +38,8 @@ public:
 
 	//void deleteRecord(int recordPos);
 	void deleteRecords(const std::vector<int>& recordsPositions);
-	void deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions);
+
+	void updateValues(int colPos, const std::vector<int>& recordsPositions, const String& newVal);
 
 	void printTable() const;
 	void printTableToFile(std::ostream& ofile) const;
@@ -58,4 +59,6 @@ private:
 
 	void copyFrom(const Table& other);
 	void free();
+
+	void deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions);
 };

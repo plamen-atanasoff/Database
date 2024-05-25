@@ -21,6 +21,7 @@ public:
 
 	virtual std::vector<int> getRecordsPositions(const String& val) const override;
 	virtual void deleteRecords(const std::vector<int>& recordsPositions) override;
+	virtual void updateValues(const std::vector<int>& recordsPositions, const String& newVal) override;
 
 	virtual void initializeValues(size_t recordsCount) override;
 

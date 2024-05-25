@@ -130,6 +130,14 @@ void Controller::exportTable(const std::vector<String>& args) const
 	ofile.close();
 }
 
+void Controller::updateRecords(const std::vector<String>& args)
+{
+	int colPosFrom = std::stoi(args[0]) - 1;
+	std::vector<int> recordsPositions = table.getRecordsPositions(colPosFrom, args[1]);
+	int colPosTo = std::stoi(args[2]) - 1;
+	table.updateValues(colPosTo, recordsPositions, args[3]);
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -239,5 +247,7 @@ void Controller::execute(const Command& command)
 	case CommandType::EXPORT_TABLE:
 		exportTable(command.getArgs());
 		break;
+	case CommandType::UPDATE_RECORDS:
+		updateRecords(command.getArgs());
 	}
 }

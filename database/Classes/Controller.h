@@ -47,6 +47,7 @@ private:
 	void openTable(const std::vector<String>& args);
 	void describeColumns() const;
 	void exportTable(const std::vector<String>& args) const;
+	void updateRecords(const std::vector<String>& args);
 
 	void readTables();
 	void writeTable(const StringPair& sp) const;

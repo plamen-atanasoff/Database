@@ -105,6 +105,11 @@ void Table::deleteRecords(const std::vector<int>& recordsPositions)
 	}
 }
 
+void Table::updateValues(int colPos, const std::vector<int>& recordsPositions, const String& newVal)
+{
+	cols[colPos]->updateValues(recordsPositions, newVal);
+}
+
 void Table::deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions)
 {
 	assert(recordsPositions.size() <= recordsId.size());

@@ -31,6 +31,7 @@ public:
 
 	virtual std::vector<int> getRecordsPositions(const String& val) const = 0;
 	virtual void deleteRecords(const std::vector<int>& recordsPositions) = 0;
+	virtual void updateValues(const std::vector<int>& recordsPositions, const String& newVal) = 0;
 
 	virtual void initializeValues(size_t recordsCount) = 0;
 

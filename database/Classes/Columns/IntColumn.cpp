@@ -148,6 +148,14 @@ void IntColumn::deleteRecords(const std::vector<int>& recordsPositions)
 	values.resize(i);
 }
 
+void IntColumn::updateValues(const std::vector<int>& recordsPositions, const String& newVal)
+{
+	// make validations
+	for (int pos : recordsPositions) {
+		changeValue(pos, newVal);
+	}
+}
+
 void IntColumn::initializeValues(size_t recordsCount)
 {
 	values.reserve(recordsCount);
