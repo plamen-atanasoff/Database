@@ -45,6 +45,7 @@ public:
 	void printTableToFile(std::ostream& ofile) const;
 	void printColumnInfo() const;
 	void describeColumns() const;
+	void printTableSelect(const std::vector<int>& recordsPositions) const;
 
 	const char* getName() const;
 private:

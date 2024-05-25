@@ -138,6 +138,13 @@ void Controller::updateRecords(const std::vector<String>& args)
 	table.updateValues(colPosTo, recordsPositions, args[3]);
 }
 
+void Controller::selectRecords(const std::vector<String>& args) const
+{
+	int colPosFrom = std::stoi(args[0]) - 1;
+	std::vector<int> recordsPositions = table.getRecordsPositions(colPosFrom, args[1]);
+	table.printTableSelect(recordsPositions);
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -249,5 +256,9 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::UPDATE_RECORDS:
 		updateRecords(command.getArgs());
+		break;
+	case CommandType::SELECT_RECORDS:
+		selectRecords(command.getArgs());
+		break;
 	}
 }

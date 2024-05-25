@@ -241,6 +241,63 @@ void Table::describeColumns() const
 	std::cout << std::endl;
 }
 
+void Table::printTableSelect(const std::vector<int>& recordsPositions) const
+{
+	constexpr const char* separator = " | ";
+
+	char command[8]{};
+	size_t i = 0;
+	unsigned r = recordsPerPage;
+	do {
+		printColumnInfo();
+
+		for (; i < recordsPositions.size(); i++) {
+			if (i == r) {
+				break;
+			}
+			std::cout << std::setw(3) << std::left << recordsId[recordsPositions[i]] << separator;
+			for (size_t j = 0; j < cols.size(); j++) {
+				cols[j]->printValueAt(recordsPositions[i]);
+				std::cout << separator;
+			}
+			std::cout << std::endl;
+		}
+
+		std::cout << "Enter command(prev, next, exit): ";
+		std::cin >> command;
+		if (strcmp(command, "prev") == 0) {
+			if (i == recordsPerPage) {
+				i = 0;
+				system("cls");
+				continue;
+			}
+			if (i % recordsPerPage == 0) {
+				i = i - (size_t)2 * recordsPerPage;
+			}
+			else {
+				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
+			}
+			r = (unsigned)i + recordsPerPage;
+		}
+		else if (strcmp(command, "next") == 0) {
+			if (i >= recordsId.size()) {
+				if (i % recordsPerPage == 0) {
+					i -= recordsPerPage;
+				}
+				else {
+					i = (i + (recordsPerPage - (i % recordsPerPage))) - recordsPerPage;
+				}
+				system("cls");
+				continue;
+			}
+			r += recordsPerPage;
+		}
+
+		system("cls");
+	} while (strcmp(command, "exit") != 0);
+	std::cin.ignore();
+}
+
 const char* Table::getName() const
 {
 	return name;
