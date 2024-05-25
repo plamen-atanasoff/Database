@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h> // TODO: ask is it's okay to use <stdlib.h>(to clear console), <iomanip>(to print table columns better),
-// <limits>(to mark null for int and double) and <sstram>(for splitting strings by ' ' easily)
+// <limits>(to mark null for int and double), <sstream>(for splitting strings by ' ' easily) and <cassert>(for asserting certain invariants)
 
 #include "Classes/Controller.h"
 
@@ -38,13 +38,17 @@ int main()
 			Controller c;
 			String line;
 
-			c.execute(Command(CommandType::CREATE_TABLE, { "MyTable" }));
-			c.execute(Command(CommandType::ADD_COLUMN, { "Column1", "int"}));
-			c.execute(Command(CommandType::ADD_COLUMN, { "Column2", "int" }));
-			c.execute(Command(CommandType::ADD_RECORD, { "12", "33" }));
-			c.execute(Command(CommandType::ADD_RECORD, { "13", "34" }));
-			c.execute(Command(CommandType::SAVE_TABLE, {}));
-			c.execute(Command(CommandType::CREATE_TABLE, { "Other" }));
+			//c.execute(Command(CommandType::CREATE_TABLE, { "MyTable" }));
+			//c.execute(Command(CommandType::ADD_COLUMN, { "Column1", "int"}));
+			//c.execute(Command(CommandType::ADD_COLUMN, { "Column2", "int" }));
+			//c.execute(Command(CommandType::ADD_RECORD, { "12", "33" }));
+			//c.execute(Command(CommandType::ADD_RECORD, { "13", "34" }));
+			//c.execute(Command(CommandType::SAVE_TABLE, {}));
+
+			c.execute(Command(CommandType::READ_TABLE, { "MyTable.dat" }));
+			c.execute(Command(CommandType::ADD_RECORD, { "11", "11" }));
+			c.execute(Command(CommandType::ADD_COLUMN, { "Column3", "int" }));
+			c.execute(Command(CommandType::ADD_RECORD, { "1", "2", "3"}));
 
 			while (true)
 			{
