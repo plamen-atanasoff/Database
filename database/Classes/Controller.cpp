@@ -30,18 +30,23 @@ void Controller::addRecord(const std::vector<String>& args)
 	table.addRecord(args);
 }
 
-void Controller::saveTable() const
+void Controller::saveTable(const std::vector<String>& args) const
 {
-	String fileName;
-	if (tableExists(table.getName())) {
-		fileName = getTableFileName(table.getName());
+	String fileN;
+	if (args.size() == 0) {
+		if (tableExists(table.getName())) {
+			fileN = getTableFileName(table.getName());
+		}
+		else {
+			fileN = table.getName();
+			fileN.append(".dat");
+		}
 	}
 	else {
-		fileName = table.getName();
-		fileName.append(".dat");
+		fileN = args[0];
 	}
 
-	std::ofstream ofile(fileName, std::ios::binary);
+	std::ofstream ofile(fileN, std::ios::binary);
 	if (!ofile.is_open()) {
 		throw std::exception("file could not be opened");
 	}
@@ -230,7 +235,7 @@ void Controller::execute(const Command& command)
 		addRecord(command.getArgs());
 		break;
 	case CommandType::SAVE_TABLE:
-		saveTable();
+		saveTable(command.getArgs());
 		break;
 	case CommandType::READ_TABLE:
 		readTable(command.getArgs());

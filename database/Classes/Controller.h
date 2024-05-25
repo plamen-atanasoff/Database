@@ -39,7 +39,7 @@ private:
 	void createTable(const std::vector<String>& args);
 	void addColumn(const std::vector<String>& args);
 	void addRecord(const std::vector<String>& args);
-	void saveTable() const;
+	void saveTable(const std::vector<String>& args) const;
 	void readTable(const std::vector<String>& args);
 	void deleteRecords(const std::vector<String>& args);
 	void printTable() const;
