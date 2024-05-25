@@ -24,6 +24,7 @@ public:
 
 	//virtual void printValues() const = 0;
 	virtual void printValueAt(size_t pos) const = 0;
+	virtual void printValueAtToFile(size_t pos, std::ostream& ofile) const = 0;
 
 	virtual void writeToFile(std::ofstream& ofile) const = 0;
 	virtual void readFromFile(std::ifstream& ifile) = 0;

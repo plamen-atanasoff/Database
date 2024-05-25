@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <iostream>
 
 #include "../Columns/Column.h"
 
@@ -40,7 +41,9 @@ public:
 	void deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions);
 
 	void printTable() const;
+	void printTableToFile(std::ostream& ofile) const;
 	void printColumnInfo() const;
+	void describeColumns() const;
 
 	const char* getName() const;
 private:

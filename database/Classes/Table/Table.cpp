@@ -138,6 +138,7 @@ void Table::deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions)
 //	}
 //}
 
+//make this and the next print function into one
 void Table::printTable() const
 {
 	constexpr const char* separator = " | ";
@@ -195,7 +196,37 @@ void Table::printTable() const
 	std::cin.ignore();
 }
 
+void Table::printTableToFile(std::ostream& ofile) const
+{
+	constexpr const char* separator = " | ";
+
+	ofile << std::setw(3) << std::right << "Id" << separator;
+	for (size_t i = 0; i < cols.size(); i++) {
+		ofile << std::setw(cols[i]->getWidth()) << cols[i]->getName() << separator;
+	}
+	ofile << std::endl;
+
+	for (size_t i = 0; i < recordsId.size(); i++) {
+		ofile << std::setw(3) << std::left << recordsId[i] << separator;
+		for (size_t j = 0; j < cols.size(); j++) {
+			cols[j]->printValueAtToFile(i, ofile);
+			ofile << separator;
+		}
+		ofile << std::endl;
+	}
+}
+
 void Table::printColumnInfo() const
+{
+	const char* separator = " | ";
+	std::cout << std::setw(3) << std::right << "Id" << separator;
+	for (size_t i = 0; i < cols.size(); i++) {
+		std::cout << std::setw(cols[i]->getWidth()) << cols[i]->getName() << separator;
+	}
+	std::cout << std::endl;
+}
+
+void Table::describeColumns() const
 {
 	const char* separator = " | ";
 	std::cout << std::setw(3) << std::right << "Id" << separator;

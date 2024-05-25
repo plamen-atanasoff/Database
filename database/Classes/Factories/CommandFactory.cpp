@@ -37,6 +37,8 @@ String getCommandTypeAsString(CommandType type) {
 		return "open";
 	case CommandType::DESCRIBE_COLUMNS:
 		return "describe";
+	case CommandType::EXPORT_TABLE:
+		return "export";
 	}
 
 	throw std::invalid_argument("type is invalid");

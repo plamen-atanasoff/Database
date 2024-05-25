@@ -64,6 +64,18 @@ void IntColumn::printValueAt(size_t pos) const
 	}
 }
 
+void IntColumn::printValueAtToFile(size_t pos, std::ostream& ofile) const
+{
+	ofile << std::setw(width) << std::left;
+
+	if (values[pos] == NULL_VALUE) {
+		ofile << "NULL";
+	}
+	else {
+		ofile << values[pos];
+	}
+}
+
 void IntColumn::writeToFile(std::ofstream& ofile) const
 {
 	assert(ofile.good());

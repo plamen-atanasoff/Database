@@ -14,6 +14,7 @@ public:
 
 	//virtual void printValues() const override;
 	virtual void printValueAt(size_t pos) const override;
+	virtual void printValueAtToFile(size_t pos, std::ostream& ofile) const override;
 
 	virtual void writeToFile(std::ofstream& ofile) const override;
 	virtual void readFromFile(std::ifstream& ifile) override;

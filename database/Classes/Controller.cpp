@@ -115,7 +115,19 @@ void Controller::openTable(const std::vector<String>& args)
 
 void Controller::describeColumns() const
 {
-	table.printColumnInfo();
+	table.describeColumns();
+}
+
+void Controller::exportTable(const std::vector<String>& args) const
+{
+	std::ofstream ofile(args[0], std::ios::out | std::ios::trunc);
+	if (!ofile.is_open()) {
+		return;
+	}
+
+	table.printTableToFile(ofile);
+
+	ofile.close();
 }
 
 void Controller::readTables()
@@ -223,6 +235,9 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::DESCRIBE_COLUMNS:
 		describeColumns();
+		break;
+	case CommandType::EXPORT_TABLE:
+		exportTable(command.getArgs());
 		break;
 	}
 }

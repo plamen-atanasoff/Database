@@ -16,7 +16,7 @@ enum class CommandType {
 	IMPORT_TABLE,
 	OPEN_TABLE,
 	DESCRIBE_COLUMNS,
-
+	EXPORT_TABLE,
 
 	COMMANDS_COUNT
 };
