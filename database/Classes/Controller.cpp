@@ -33,8 +33,8 @@ void Controller::addRecord(const std::vector<String>& args)
 void Controller::saveTable() const
 {
 	String fileName;
-	if (tableExists()) {
-		fileName = getTableFileName();
+	if (tableExists(table.getName())) {
+		fileName = getTableFileName(table.getName());
 	}
 	else {
 		fileName = table.getName();
@@ -75,6 +75,44 @@ void Controller::printTable() const
 	table.printTable();
 }
 
+void Controller::importTable(const std::vector<String>& args)
+{
+	std::ifstream ifile(args[0], std::ios::binary);
+	if (!ifile.is_open()) {
+		return;
+	}
+
+	Table t;
+	t.readFromFile(ifile);
+
+	ifile.close();
+
+	if (tableExists(t.getName())) {
+		return;
+	}
+
+	StringPair sp(t.getName(), args[0].c_str());
+	writeTable(sp);
+	tablesInfo.push_back(sp);
+}
+
+void Controller::openTable(const std::vector<String>& args)
+{
+	// ask to save the current table
+
+	if (!tableExists(args[0].c_str())) {
+		return;
+	}
+	String fileName = getTableFileName(args[0].c_str());
+	std::ifstream ifile(fileName, std::ios::binary);
+	if (!ifile.is_open()) {
+		return;
+	}
+	table.readFromFile(ifile);
+
+	ifile.close();
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -95,10 +133,28 @@ void Controller::readTables()
 	ifile.close();
 }
 
-bool Controller::tableExists() const
+void Controller::writeTable(const StringPair& sp) const
+{
+	std::fstream file(TABLES_FILE, std::ios::in | std::ios::out | std::ios::binary);
+	if (!file.is_open()) {
+		return;
+	}
+
+	size_t count;
+	file.read(reinterpret_cast<char*>(&count), sizeof(count));
+	count++;
+	file.seekp(0, std::ios::beg);
+	file.write(reinterpret_cast<const char*>(&count), sizeof(count));
+	file.seekp(0, std::ios::end);
+	file.write(reinterpret_cast<const char*>(&sp), sizeof(sp));
+
+	file.close();
+}
+
+bool Controller::tableExists(const char* tableName) const
 {
 	for (int i = 0; i < tablesInfo.size(); i++) {
-		if (strcmp(table.getName(), tablesInfo[i].tableName) == 0) {
+		if (strcmp(tableName, tablesInfo[i].tableName) == 0) {
 			return true;
 		}
 	}
@@ -106,10 +162,10 @@ bool Controller::tableExists() const
 	return false;
 }
 
-const String Controller::getTableFileName() const
+const String Controller::getTableFileName(const char* tableName) const
 {
 	for (int i = 0; i < tablesInfo.size(); i++) {
-		if (strcmp(table.getName(), tablesInfo[i].tableName) == 0) {
+		if (strcmp(tableName, tablesInfo[i].tableName) == 0) {
 			return tablesInfo[i].fileName;
 		}
 	}
@@ -153,6 +209,12 @@ void Controller::execute(const Command& command)
 	case CommandType::PRINT_TABLE:
 		// add stream to print to?
 		printTable();
+		break;
+	case CommandType::IMPORT_TABLE:
+		importTable(command.getArgs());
+		break;
+	case CommandType::OPEN_TABLE:
+		openTable(command.getArgs());
 		break;
 	}
 }

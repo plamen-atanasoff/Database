@@ -31,6 +31,10 @@ String getCommandTypeAsString(CommandType type) {
 		return "delete";
 	case CommandType::PRINT_TABLE:
 		return "print";
+	case CommandType::IMPORT_TABLE:
+		return "import";
+	case CommandType::OPEN_TABLE:
+		return "open";
 	}
 
 	throw std::invalid_argument("type is invalid");

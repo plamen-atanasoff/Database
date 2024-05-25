@@ -14,6 +14,13 @@ struct StringPair {
 	static constexpr int MAX_SIZE_STRING = 33;
 	char tableName[MAX_SIZE_STRING]{};
 	char fileName[MAX_SIZE_STRING]{};
+
+	StringPair() = default;
+
+	StringPair(const char* tableName, const char* fileName) {
+		strcpy_s(this->tableName, MAX_SIZE_STRING, tableName);
+		strcpy_s(this->fileName, MAX_SIZE_STRING, fileName);
+	}
 };
 
 class Controller
@@ -36,9 +43,12 @@ private:
 	void readTable(const std::vector<String>& args);
 	void deleteRecords(const std::vector<String>& args);
 	void printTable() const;
+	void importTable(const std::vector<String>& args);
+	void openTable(const std::vector<String>& args);
 
 	void readTables();
+	void writeTable(const StringPair& sp) const;
 
-	bool tableExists() const;
-	const String getTableFileName() const;
+	bool tableExists(const char* tableName) const;
+	const String getTableFileName(const char* tableName) const;
 };
