@@ -200,7 +200,7 @@ void Table::printColumnInfo() const
 	const char* separator = " | ";
 	std::cout << std::setw(3) << std::right << "Id" << separator;
 	for (size_t i = 0; i < cols.size(); i++) {
-		std::cout << std::setw(cols[i]->getWidth()) << cols[i]->getName() << separator;
+		std::cout << std::setw(cols[i]->getWidth()) << cols[i]->getName() << ": " << getColumnTypeAsString(cols[i]->getType()) << separator;
 	}
 	std::cout << std::endl;
 }

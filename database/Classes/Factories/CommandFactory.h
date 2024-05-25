@@ -15,6 +15,8 @@ enum class CommandType {
 	PRINT_TABLE,
 	IMPORT_TABLE,
 	OPEN_TABLE,
+	DESCRIBE_COLUMNS,
+
 
 	COMMANDS_COUNT
 };

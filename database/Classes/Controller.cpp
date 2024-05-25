@@ -113,6 +113,11 @@ void Controller::openTable(const std::vector<String>& args)
 	ifile.close();
 }
 
+void Controller::describeColumns() const
+{
+	table.printColumnInfo();
+}
+
 void Controller::readTables()
 {
 	std::ifstream ifile(TABLES_FILE, std::ios::binary);
@@ -215,6 +220,9 @@ void Controller::execute(const Command& command)
 		break;
 	case CommandType::OPEN_TABLE:
 		openTable(command.getArgs());
+		break;
+	case CommandType::DESCRIBE_COLUMNS:
+		describeColumns();
 		break;
 	}
 }
