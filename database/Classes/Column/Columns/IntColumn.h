@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../Column.h"
+#include "../../Optional/Optional.hpp"
 
 class IntColumn : public Column {
 public:
@@ -14,7 +15,7 @@ public:
 
 	//virtual void printValues() const override;
 	virtual void printValueAt(size_t pos) const override;
-	virtual void printValueAtToFile(size_t pos, std::ostream& ofile) const override;
+	virtual void printValueAtToStream(size_t pos, std::ostream& ofile) const override;
 
 	virtual void writeToFile(std::ofstream& ofile) const override;
 	virtual void readFromFile(std::ifstream& ifile) override;
@@ -27,7 +28,7 @@ public:
 
 	virtual Column* clone() const override;
 private:
-	std::vector<int> values;
+	std::vector<Optional<int> > values;
 
 	static constexpr int NULL_VALUE = INT_MIN;
 };

@@ -10,10 +10,10 @@ IntColumn::IntColumn(const String& name, ColumnType type) : Column(name, type, n
 void IntColumn::addValue(const String& val)
 {
 	if (val == "NULL") {
-		values.push_back(NULL_VALUE);
+		values.push_back(Optional<int>());
 	} 
 	else {
-		values.push_back(std::stoi(val));
+		values.push_back(Optional<int>(std::stoi(val)));
 		if (val.size() < 16 && val.size() > width) {
 			width = val.size();
 		}
@@ -30,48 +30,27 @@ void IntColumn::deleteValue(size_t pos)
 void IntColumn::changeValue(size_t pos, const String& newVal)
 {
 	if (newVal == "NULL") {
-		values[pos] = NULL_VALUE;
+		values[pos] = Optional<int>();
 	}
 	else {
-		values[pos] = std::stoi(newVal);
+		values[pos] = Optional<int>(std::stoi(newVal));
 	}
 }
-
-//void IntColumn::printValues() const
-//{
-//	for (int i = 0; i < values.size(); i++) {
-//		if (values[i] == NULL_VALUE) {
-//			std::cout << "NULL";
-//		}
-//		else {
-//			std::cout << values[i];
-//		}
-//		std::cout << " ";
-//	}
-//	std::cout << std::endl;
-//}
 
 void IntColumn::printValueAt(size_t pos) const
 {
-	std::cout << std::setw(width) << std::left;
-
-	if (values[pos] == NULL_VALUE) {
-		std::cout << "NULL";
-	}
-	else {
-		std::cout << values[pos];
-	}
+	printValueAtToStream(pos, std::cout);
 }
 
-void IntColumn::printValueAtToFile(size_t pos, std::ostream& ofile) const
+void IntColumn::printValueAtToStream(size_t pos, std::ostream& os) const
 {
-	ofile << std::setw(width) << std::left;
+	os << std::setw(width) << std::left;
 
-	if (values[pos] == NULL_VALUE) {
-		ofile << "NULL";
+	if (values[pos].hasValue()) {
+		os << values[pos].getValue();
 	}
 	else {
-		ofile << values[pos];
+		os << "NULL";
 	}
 }
 
@@ -86,7 +65,12 @@ void IntColumn::writeToFile(std::ofstream& ofile) const
 
 	size_t size = values.size();
 	ofile.write(reinterpret_cast<const char*>(&size), sizeof(size));
-	ofile.write(reinterpret_cast<const char*>(values.data()), sizeof(int) * size);
+	//ofile.write(reinterpret_cast<const char*>(values.data()), sizeof(Optional<int>) * size);
+	for (size_t i = 0; i < size; i++) {
+		ofile.write(reinterpret_cast<const char*>(&values[i].getValue()), sizeof(int));
+		bool res = values[i].hasValue();
+		ofile.write(reinterpret_cast<const char*>(&res), sizeof(bool));
+	}
 }
 
 void IntColumn::readFromFile(std::ifstream& ifile)
@@ -98,23 +82,32 @@ void IntColumn::readFromFile(std::ifstream& ifile)
 	size_t size;
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
 	values.clear();
-	values.resize(size);
-	ifile.read(reinterpret_cast<char*>(values.data()), sizeof(int) * size);
+	values.reserve(size);
+	//ifile.read(reinterpret_cast<char*>(values.data()), sizeof(Optional<int>) * size);
+	int temp;
+	bool hasValue;
+	for (size_t i = 0; i < size; i++) {
+		ifile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+		ifile.read(reinterpret_cast<char*>(&hasValue), sizeof(hasValue));
+		if (hasValue) {
+			values.push_back({ temp });
+		}
+		else {
+			values.push_back({});
+		}
+	}
 }
 
 std::vector<int> IntColumn::getRecordsPositions(const String& val) const
 {
 	std::vector<int> res;
-	int v;
-	if (val == "NULL") {
-		v = NULL_VALUE;
-	}
-	else {
-		v = std::stoi(val);
+	Optional<int> v;
+	if (val != "NULL") {
+		v.setValue(std::stoi(val));
 	}
 
 	for (int i = 0; i < values.size(); i++) {
-		if (values[i] == v) {
+		if (values[i].hasValue() && values[i].getValue() == v.getValue()) {
 			res.push_back(i);
 		}
 	}
@@ -159,7 +152,7 @@ void IntColumn::initializeValues(size_t recordsCount)
 {
 	values.reserve(recordsCount);
 	for (int i = 1; i <= recordsCount; i++) {
-		values.push_back(NULL_VALUE);
+		values.push_back(Optional<int>());
 	}
 }
 
