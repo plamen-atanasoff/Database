@@ -36,7 +36,7 @@ Table::~Table()
 void Table::addRecord(const std::vector<String>& values)
 {
 	if (values.size() != cols.size()) {
-		return; 
+		throw std::exception("invalid arguments count");
 	}
 
 	for (size_t i = 0; i < cols.size(); i++) {
@@ -131,14 +131,6 @@ void Table::deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions)
 	recordsId.resize(i);
 }
 
-//void Table::deleteRecord(int recordPos)
-//{
-//	recordsId.erase(recordsId.begin() + recordPos);
-//	for (size_t i = 0; i < cols.size(); i++) {
-//		cols[i]->deleteValue(recordPos);
-//	}
-//}
-
 //make this and the next print function into one
 void Table::printTable() const
 {
@@ -210,7 +202,7 @@ void Table::printTableToFile(std::ostream& ofile) const
 	for (size_t i = 0; i < recordsId.size(); i++) {
 		ofile << std::setw(3) << std::left << recordsId[i] << separator;
 		for (size_t j = 0; j < cols.size(); j++) {
-			cols[j]->printValueAtToFile(i, ofile);
+			cols[j]->printValueAtToStream(i, ofile);
 			ofile << separator;
 		}
 		ofile << std::endl;

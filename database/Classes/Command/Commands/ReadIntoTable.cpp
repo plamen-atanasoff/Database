@@ -6,8 +6,6 @@ ReadIntoTable::ReadIntoTable(const String& fileName, Table* table) : fileName(fi
 
 void ReadIntoTable::execute() const
 {
-	// ask to save the current table
-
 	std::ifstream ifile(fileName, std::ios::binary);
 	if (!ifile.is_open()) {
 		throw std::exception("file could not be opened");
@@ -21,6 +19,10 @@ ReadIntoTableCreator::ReadIntoTableCreator() : CommandCreator(CommandType::READ_
 
 Command* ReadIntoTableCreator::create(const std::vector<String>& args, Database& database) const
 {
+	if (args.size() != 1) {
+		throw std::exception("invalid arguments count");
+	}
+
 	return new ReadIntoTable(args[0], &database.getTable());
 }
 

@@ -17,8 +17,6 @@ using ColumnArray = std::vector<Column*>;
 // cols: size,
 // col: type, name, values: size, elements
 
-// currently primary key can only be one and it must be an unsigned int
-
 class Table
 {
 public:
@@ -36,9 +34,7 @@ public:
 
 	std::vector<int> getRecordsPositions(size_t colPos, const String& val) const;
 
-	//void deleteRecord(int recordPos);
 	void deleteRecords(const std::vector<int>& recordsPositions);
-
 	void updateValues(int colPos, const std::vector<int>& recordsPositions, const String& newVal);
 
 	void printTable() const;

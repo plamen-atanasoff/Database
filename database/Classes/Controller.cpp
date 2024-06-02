@@ -5,17 +5,31 @@
 
 Controller::Controller()
 {
-	Command* command = new ReadTablesInfo(TABLES_FILE, &database.getTablesInfo());
-	command->execute();
+	Command* command = nullptr;
+	try {
+		command = new ReadTablesInfo(TABLES_FILE, &database.getTablesInfo());
+		command->execute();
+	}
+	catch (const std::exception&) {
+		delete command;
+		throw;
+	}
 	delete command;
 }
 
 void Controller::executeCommand(const String& input)
 {
-	Command* command = CommandFactory::getFactory().createCommand(input, database);
-	if (command) {
-		command->execute();
-		delete command;
+	Command* command = nullptr;
+	try {
+		command = CommandFactory::getFactory().createCommand(input, database);
+
+		if (command) {
+			command->execute();
+		}
 	}
-	// create else case
+	catch (const std::exception&) {
+		delete command;
+		throw;
+	}
+	delete command;
 }

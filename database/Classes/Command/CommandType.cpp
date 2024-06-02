@@ -16,15 +16,15 @@ String getCommandTypeAsString(CommandType type) {
 	switch (type)
 	{
 	/*case CommandType::SHOW_TABLES:
-		return "showtables";
+		return "showtables";*/
 	case CommandType::CREATE_TABLE:
-		return "create";*/
+		return "create";
 	case CommandType::ADD_COLUMN:
 		return "addcolumn";
-	/*case CommandType::ADD_RECORD:
+	case CommandType::ADD_RECORD:
 		return "insert";
 	case CommandType::SAVE_TABLE:
-		return "save";*/
+		return "save";
 	case CommandType::READ_TABLE:
 		return "read";
 	/*case CommandType::DELETE_RECORDS:
