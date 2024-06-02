@@ -1,4 +1,4 @@
-#include "CommandFactory.h"
+#include "CommandTypes.h"
 
 #include <stdexcept>
 
@@ -15,7 +15,7 @@ CommandType getCommandTypeAsEnum(const String& type) {
 String getCommandTypeAsString(CommandType type) {
 	switch (type)
 	{
-	case CommandType::SHOW_TABLES:
+	/*case CommandType::SHOW_TABLES:
 		return "showtables";
 	case CommandType::CREATE_TABLE:
 		return "create";
@@ -24,14 +24,14 @@ String getCommandTypeAsString(CommandType type) {
 	case CommandType::ADD_RECORD:
 		return "insert";
 	case CommandType::SAVE_TABLE:
-		return "save";
+		return "save";*/
 	case CommandType::READ_TABLE:
 		return "read";
-	case CommandType::DELETE_RECORDS:
-		return "delete";
+	/*case CommandType::DELETE_RECORDS:
+		return "delete";*/
 	case CommandType::PRINT_TABLE:
 		return "print";
-	case CommandType::IMPORT_TABLE:
+	/*case CommandType::IMPORT_TABLE:
 		return "import";
 	case CommandType::OPEN_TABLE:
 		return "open";
@@ -44,7 +44,7 @@ String getCommandTypeAsString(CommandType type) {
 	case CommandType::SELECT_RECORDS:
 		return "select";
 	case CommandType::SAVE_TABLE_TO_FILE:
-		return "saveas";
+		return "saveas";*/
 	}
 
 	throw std::invalid_argument("type is invalid");
