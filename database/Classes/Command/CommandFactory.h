@@ -16,7 +16,7 @@ public:
 
 	Command* createCommand(const String& input, Database& database) const;
 private:
-	static constexpr size_t MAX_SIZE = static_cast<size_t>(CommandType::COMMANDS_COUNT);
+	static constexpr size_t MAX_SIZE = static_cast<size_t>(CommandType::COMMAND_TYPES_COUNT);
 	static constexpr char DELIMITER = ' ';
 	const CommandCreator* creators[MAX_SIZE] {};
 	size_t size = 0;

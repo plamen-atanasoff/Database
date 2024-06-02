@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Column.h"
+#include "../Column.h"
 
 class IntColumn : public Column {
 public:
@@ -30,4 +30,11 @@ private:
 	std::vector<int> values;
 
 	static constexpr int NULL_VALUE = INT_MIN;
+};
+
+class IntColumnCreator : public ColumnCreator {
+public:
+	IntColumnCreator();
+	virtual Column* create(const std::vector<String>& args) const override;
+	virtual Column* create(const String& name, ColumnType type) const override;
 };

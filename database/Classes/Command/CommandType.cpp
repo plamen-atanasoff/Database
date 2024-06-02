@@ -1,9 +1,9 @@
-#include "CommandTypes.h"
+#include "CommandType.h"
 
 #include <stdexcept>
 
 CommandType getCommandTypeAsEnum(const String& type) {
-	for (int i = 0; i < (int)CommandType::COMMANDS_COUNT; i++) {
+	for (int i = 0; i < (int)CommandType::COMMAND_TYPES_COUNT; i++) {
 		if (type == getCommandTypeAsString((CommandType)i)) {
 			return (CommandType)i;
 		}
@@ -18,10 +18,10 @@ String getCommandTypeAsString(CommandType type) {
 	/*case CommandType::SHOW_TABLES:
 		return "showtables";
 	case CommandType::CREATE_TABLE:
-		return "create";
+		return "create";*/
 	case CommandType::ADD_COLUMN:
 		return "addcolumn";
-	case CommandType::ADD_RECORD:
+	/*case CommandType::ADD_RECORD:
 		return "insert";
 	case CommandType::SAVE_TABLE:
 		return "save";*/

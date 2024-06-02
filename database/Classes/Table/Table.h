@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../Columns/Column.h"
+#include "../Column/Column.h"
 
 using String = std::string;
 using PrimaryKeyColumn = std::vector<unsigned>;

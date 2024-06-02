@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cassert>
 
-#include "../Factories/ColumnFactory.h"
+#include "../Column/ColumnFactory.h"
 
 Table::Table(const String& name)
 {
@@ -80,12 +80,8 @@ void Table::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(&sizeColumns), sizeof(sizeColumns));
 	free();
 	cols.resize(sizeColumns);
-	ColumnType type;
-	char name[MAX_NAME_LENGTH]; // change to MAX_NAME_LENGTH of Column
 	for (int i = 0; i < sizeColumns; i++) {
-		ifile.read(reinterpret_cast<char*>(&type), sizeof(type));
-		ifile.read(reinterpret_cast<char*>(name), MAX_NAME_LENGTH);
-		cols[i] = getColumn(name, type);
+		cols[i] = ColumnFactory::getFactory().readColumnFromStream(ifile);
 		cols[i]->readFromFile(ifile);
 	}
 	ifile.read(reinterpret_cast<char*>(&recordsPerPage), sizeof(recordsPerPage));

@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-#include "../Factories/ColumnType.h"
+#include "ColumnType.h"
 
 using String = std::string;
 
@@ -45,4 +45,17 @@ protected:
 	ColumnType type;
 	char name[MAX_NAME_LENGTH]{};
 	size_t width = 8;
+};
+
+class ColumnCreator {
+public:
+	ColumnCreator(ColumnType type);
+	virtual ~ColumnCreator() = default;
+
+	virtual Column* create(const std::vector<String>&args) const = 0;
+	virtual Column* create(const String& name, ColumnType type) const = 0;
+
+	ColumnType getColumnType() const;
+private:
+	ColumnType type;
 };

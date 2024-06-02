@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "CommandTypes.h"
+#include "CommandType.h"
 #include "../Controller.h"
 
 class Command {

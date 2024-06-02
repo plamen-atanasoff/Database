@@ -5,8 +5,7 @@
 #include <iomanip>
 #include <cassert>
 
-IntColumn::IntColumn(const String& name, ColumnType type) : Column(name, type, name.size()) 
-{}
+IntColumn::IntColumn(const String& name, ColumnType type) : Column(name, type, name.size()) {}
 
 void IntColumn::addValue(const String& val)
 {
@@ -168,3 +167,17 @@ Column* IntColumn::clone() const
 {
 	return new IntColumn(*this);
 }
+
+IntColumnCreator::IntColumnCreator(): ColumnCreator(ColumnType::INT) {}
+
+Column* IntColumnCreator::create(const std::vector<String>& args) const
+{
+	return new IntColumn(args[0], getColumnTypeAsEnum(args[1]));
+}
+
+Column* IntColumnCreator::create(const String& name, ColumnType type) const
+{
+	return new IntColumn(name, type);
+}
+
+static IntColumnCreator __;
