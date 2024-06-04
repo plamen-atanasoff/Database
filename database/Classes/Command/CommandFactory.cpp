@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <string>
 
 CommandFactory& CommandFactory::getFactory()
 {
@@ -17,9 +18,24 @@ void CommandFactory::addCreator(const CommandCreator& creator)
 
 Command* CommandFactory::createCommand(const String& input, Database& database) const
 {
-	std::vector<String> tokens = splitString(input, DELIMITER);
-	const CommandCreator* creator = getCreator(getCommandTypeAsEnum(tokens[0]));
-	tokens.erase(tokens.begin());
+	size_t typeEnd = input.find_first_of(DELIMITER);
+	String mInput = input.substr(typeEnd + 1);
+
+	const CommandCreator* creator = getCreator(getCommandTypeAsEnum(input.substr(0, typeEnd)));
+
+	std::vector<String> tokens;
+	if (creator->getCommandType() == CommandType::SELECT_ONTO) {
+		size_t startArrInd = mInput.find_first_of('[');
+		size_t endArrInd = mInput.find_first_of(']');
+
+		tokens = splitString(mInput.substr(0, startArrInd - 1), DELIMITER);
+		tokens.insert(tokens.end(), mInput.substr(startArrInd + 1, endArrInd - startArrInd - 1));
+		std::vector<String> temp = splitString(mInput.substr(endArrInd + 2), DELIMITER);
+		tokens.insert(tokens.end(), temp.begin(), temp.end());
+	}
+	else {
+		tokens = splitString(mInput, DELIMITER);
+	}
 
 	if (creator) {
 		return creator->create(tokens, database);

@@ -161,6 +161,20 @@ Column* IntColumn::clone() const
 	return new IntColumn(*this);
 }
 
+String IntColumn::getValue(size_t pos) const
+{
+	if (pos >= values.size()) {
+		throw std::exception("invalid argument");
+	}
+
+	return values[pos].hasValue() ? std::to_string(values[pos].getValue()) : "NULL";
+}
+
+void IntColumn::deleteRecords()
+{
+	values.clear();
+}
+
 IntColumnCreator::IntColumnCreator(): ColumnCreator(ColumnType::INT) {}
 
 Column* IntColumnCreator::create(const std::vector<String>& args) const

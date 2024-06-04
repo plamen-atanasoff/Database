@@ -44,6 +44,9 @@ public:
 	void printTableSelect(const std::vector<int>& recordsPositions) const;
 
 	const char* getName() const;
+	const Column* getColumn(size_t pos) const;
+
+	std::vector<String> getRecordValues(size_t recPos, const std::vector<int>& colsPos) const;
 private:
 	static constexpr int MAX_NAME_LENGTH = 33;
 

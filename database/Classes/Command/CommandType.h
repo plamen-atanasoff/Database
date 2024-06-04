@@ -11,6 +11,7 @@ enum class CommandType {
 	CREATE_TABLE,
 	SAVE_TABLE,
 	ADD_RECORD,
+	SELECT_ONTO,
 
 	COMMAND_TYPES_COUNT
 };

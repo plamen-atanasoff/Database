@@ -40,6 +40,10 @@ public:
 	ColumnType getType() const { return type; }
 	const char* getName() const { return name; }
 	size_t getWidth() const { return width; }
+
+	virtual String getValue(size_t pos) const = 0;
+
+	virtual void deleteRecords() = 0;
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
 	ColumnType type;

@@ -89,7 +89,7 @@ void Table::readFromFile(std::ifstream& ifile)
 
 std::vector<int> Table::getRecordsPositions(size_t colPos, const String& val) const
 {
-	return cols[colPos]->getRecordsPositions(val);
+	return cols[colPos - 1]->getRecordsPositions(val);
 }
 
 void Table::deleteRecords(const std::vector<int>& recordsPositions)
@@ -289,6 +289,25 @@ void Table::printTableSelect(const std::vector<int>& recordsPositions) const
 const char* Table::getName() const
 {
 	return name;
+}
+
+const Column* Table::getColumn(size_t pos) const
+{
+	if (pos - 1 >= cols.size()) { // cols start from 1
+		throw std::exception("invalid index");
+	}
+
+	return cols[pos - 1];
+}
+
+std::vector<String> Table::getRecordValues(size_t recPos, const std::vector<int>& colsPos) const
+{
+	std::vector<String> res;
+	for (size_t i = 0; i < colsPos.size(); i++) {
+		res.push_back(cols.at(colsPos[i] - static_cast<size_t>(1))->getValue(recPos));
+	}
+
+	return res;
 }
 
 void Table::copyFrom(const Table& other)
