@@ -1,5 +1,6 @@
 #pragma once
 
+// replace with boolean "array" in column
 template <typename T>
 class Optional {
 public:
