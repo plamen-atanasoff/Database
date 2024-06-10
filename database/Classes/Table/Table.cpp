@@ -30,6 +30,7 @@ Table& Table::operator=(const Table& other)
 
 Table::~Table()
 {
+	// save table
 	free();
 }
 

@@ -8,6 +8,7 @@
 
 using String = std::string;
 
+// make singleton
 class Controller
 {
 public:

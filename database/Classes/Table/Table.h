@@ -20,7 +20,7 @@ using ColumnArray = std::vector<Column*>;
 class Table
 {
 public:
-	Table() : Table("") {}
+	Table() : Table(DEFAULT_NAME) {}
 	Table(const String& name);
 	Table(const Table& other);
 	Table& operator=(const Table& other);
@@ -29,6 +29,7 @@ public:
 	void addRecord(const std::vector<String>& values);
 	void addColumn(const Column& col);
 
+	// create I\O manager and move these there?
 	void writeToFile(std::ofstream& ofile) const;
 	void readFromFile(std::ifstream& ifile);
 
@@ -49,6 +50,7 @@ public:
 	std::vector<String> getRecordValues(size_t recPos, const std::vector<int>& colsPos) const;
 private:
 	static constexpr int MAX_NAME_LENGTH = 33;
+	static constexpr const char* DEFAULT_NAME = "NoName";
 
 	char name[MAX_NAME_LENGTH]{};
 	unsigned nextRecordId = 0;

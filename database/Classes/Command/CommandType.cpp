@@ -17,20 +17,20 @@ String getCommandTypeAsString(CommandType type) {
 	{
 	/*case CommandType::SHOW_TABLES:
 		return "showtables";*/
-	case CommandType::CREATE_TABLE:
-		return "create";
+	case CommandType::CREATE_TABLE: // creates a new empty table with the given name
+		return "create"; // create <tableName>
 	case CommandType::ADD_COLUMN:
-		return "addcolumn";
+		return "addcolumn"; // addcolumn {tableName} <columnName> <columnType>
 	case CommandType::ADD_RECORD:
-		return "insert";
+		return "insert"; // insert {tableName} <column1> ... <columnN>
 	case CommandType::SAVE_TABLE:
-		return "save";
-	case CommandType::READ_TABLE:
-		return "read";
+		return "save"; // save {tableName}
+	case CommandType::READ_TABLE: // reads the table from the given file
+		return "read"; // read <fileName>
 	/*case CommandType::DELETE_RECORDS:
 		return "delete";*/
 	case CommandType::PRINT_TABLE:
-		return "print";
+		return "print"; // print {tableName}
 	/*case CommandType::IMPORT_TABLE:
 		return "import";
 	case CommandType::OPEN_TABLE:
