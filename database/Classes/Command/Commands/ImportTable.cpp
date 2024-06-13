@@ -21,8 +21,10 @@ void ImportTable::execute() const
 	tableTemp->readFromFile(ifile);
 
 	StringPair temp(tableTemp->getName(), fileName.c_str());
+	WriteTableInfo command(temp, tablesFileName, tables.size());
+	command.execute();
+
 	tables.push_back(temp);
-	WriteTableInfo command(temp, tablesFileName);
 
 	delete tableTemp;
 	ifile.close();

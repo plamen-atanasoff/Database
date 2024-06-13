@@ -19,22 +19,28 @@ void CommandFactory::addCreator(const CommandCreator& creator)
 Command* CommandFactory::createCommand(const String& input, Database& database) const
 {
 	size_t typeEnd = input.find_first_of(DELIMITER);
-	String mInput = input.substr(typeEnd + 1);
-
-	const CommandCreator* creator = getCreator(getCommandTypeAsEnum(input.substr(0, typeEnd)));
-
+	const CommandCreator* creator = nullptr;
 	std::vector<String> tokens;
-	if (creator->getCommandType() == CommandType::SELECT_ONTO) {
-		size_t startArrInd = mInput.find_first_of('[');
-		size_t endArrInd = mInput.find_first_of(']');
-
-		tokens = splitString(mInput.substr(0, startArrInd - 1), DELIMITER);
-		tokens.insert(tokens.end(), mInput.substr(startArrInd + 1, endArrInd - startArrInd - 1));
-		std::vector<String> temp = splitString(mInput.substr(endArrInd + 2), DELIMITER);
-		tokens.insert(tokens.end(), temp.begin(), temp.end());
+	if (typeEnd == String::npos) {
+		creator = getCreator(getCommandTypeAsEnum(input));
 	}
 	else {
-		tokens = splitString(mInput, DELIMITER);
+		String mInput = input.substr(typeEnd + 1);
+
+		creator = getCreator(getCommandTypeAsEnum(input.substr(0, typeEnd)));
+
+		if (creator->getCommandType() == CommandType::SELECT_ONTO) {
+			size_t startArrInd = mInput.find_first_of('[');
+			size_t endArrInd = mInput.find_first_of(']');
+
+			tokens = splitString(mInput.substr(0, startArrInd - 1), DELIMITER);
+			tokens.insert(tokens.end(), mInput.substr(startArrInd + 1, endArrInd - startArrInd - 1));
+			std::vector<String> temp = splitString(mInput.substr(endArrInd + 2), DELIMITER);
+			tokens.insert(tokens.end(), temp.begin(), temp.end());
+		}
+		else {
+			tokens = splitString(mInput, DELIMITER);
+		}
 	}
 
 	if (creator) {

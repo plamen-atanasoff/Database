@@ -4,12 +4,12 @@ ReadTablesInfo::ReadTablesInfo(const String& fileName, std::vector<StringPair>* 
 
 void ReadTablesInfo::execute() const
 {
-	std::ifstream ifile(fileName, std::ios::binary);
+	std::ifstream ifile(fileName, std::ios::in | std::ios::binary);
 	if (!ifile.is_open()) {
 		return;
 	}
 
-	size_t size;
+	size_t size = 0;
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
 
 	StringPair temp;
