@@ -15,8 +15,8 @@ CommandType getCommandTypeAsEnum(const String& type) {
 String getCommandTypeAsString(CommandType type) {
 	switch (type)
 	{
-	/*case CommandType::SHOW_TABLES:
-		return "showtables";*/
+	case CommandType::SHOW_TABLES:
+		return "showtables";
 	case CommandType::CREATE_TABLE: // creates a new empty table with the given name
 		return "create"; // create <tableName>
 	case CommandType::ADD_COLUMN:
@@ -31,20 +31,20 @@ String getCommandTypeAsString(CommandType type) {
 		return "delete";*/
 	case CommandType::PRINT_TABLE:
 		return "print"; // print {tableName}
-	/*case CommandType::IMPORT_TABLE:
+	case CommandType::IMPORT_TABLE:
 		return "import";
 	case CommandType::OPEN_TABLE:
 		return "open";
-	case CommandType::DESCRIBE_COLUMNS:
-		return "describe";
-	case CommandType::EXPORT_TABLE:
-		return "export";
-	case CommandType::UPDATE_RECORDS:
-		return "update";
-	case CommandType::SELECT_RECORDS:
-		return "select";
-	case CommandType::SAVE_TABLE_TO_FILE:
-		return "saveas";*/
+	//case CommandType::DESCRIBE_COLUMNS:
+	//	return "describe";
+	//case CommandType::EXPORT_TABLE:
+	//	return "export";
+	//case CommandType::UPDATE_RECORDS:
+	//	return "update";
+	//case CommandType::SELECT_RECORDS:
+	//	return "select";
+	//case CommandType::SAVE_TABLE_TO_FILE:
+	//	return "saveas";*/
 	case CommandType::SELECT_ONTO:
 		return "select_onto";
 	}
