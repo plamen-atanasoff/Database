@@ -17,6 +17,4 @@ public:
 	void executeCommand(const String& input);
 private:
 	Database database;
-
-	static constexpr const char* TABLES_FILE = "tables.dat";
 };

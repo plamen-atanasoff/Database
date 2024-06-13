@@ -7,7 +7,7 @@ Controller::Controller()
 {
 	Command* command = nullptr;
 	try {
-		command = new ReadTablesInfo(TABLES_FILE, &database.getTablesInfo());
+		command = new ReadTablesInfo(database.getTablesInfoFileName(), &database.getTablesInfo());
 		command->execute();
 	}
 	catch (const std::exception&) {

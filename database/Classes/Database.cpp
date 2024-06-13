@@ -9,3 +9,8 @@ Table& Database::getTable()
 {
     return table;
 }
+
+const char* Database::getTablesInfoFileName() const
+{
+    return TABLES_FILE;
+}

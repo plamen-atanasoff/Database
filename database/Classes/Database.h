@@ -39,8 +39,11 @@ class Database
 public:
 	std::vector<StringPair>& getTablesInfo();
 	Table& getTable();
+	const char* getTablesInfoFileName() const;
 private:
 	std::vector<StringPair> tablesInfo;
 	Table table;
+
+	static constexpr const char* TABLES_FILE = "tables.dat";
 };
 
