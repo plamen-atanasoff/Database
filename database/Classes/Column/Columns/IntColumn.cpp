@@ -29,6 +29,10 @@ IntColumnCreator::IntColumnCreator(): ColumnCreator(ColumnType::INT) {}
 
 Column* IntColumnCreator::create(const std::vector<String>& args) const
 {
+	if (args.size() != 2) {
+		throw std::exception("invalid arguments count");
+	}
+
 	return new IntColumn(args[0], getColumnTypeAsEnum(args[1]));
 }
 
