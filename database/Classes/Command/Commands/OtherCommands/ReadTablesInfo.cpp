@@ -1,8 +1,6 @@
 #include "ReadTablesInfo.h"
 
-ReadTablesInfo::ReadTablesInfo(const String& fileName, std::vector<StringPair>* tablesInfo) : fileName(fileName), tablesInfo(tablesInfo) {}
-
-void ReadTablesInfo::execute() const
+void ReadTablesInfo::execute(const String& fileName, std::vector<StringPair>* tablesInfo)
 {
 	std::ifstream ifile(fileName, std::ios::in | std::ios::binary);
 	if (!ifile.is_open()) {

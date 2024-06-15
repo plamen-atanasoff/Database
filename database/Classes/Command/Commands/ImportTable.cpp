@@ -1,6 +1,6 @@
 #include "ImportTable.h"
 
-#include "WriteTableInfo.h"
+#include "OtherCommands/WriteTableInfo.h"
 
 ImportTable::ImportTable(const String& fileName, std::vector<StringPair>& tables, Table* table, const String& tablesFileName)
 	: fileName(fileName), tables(tables), table(table), tablesFileName(tablesFileName) {}
@@ -21,8 +21,7 @@ void ImportTable::execute() const
 	tableTemp->readFromFile(ifile);
 
 	StringPair temp(tableTemp->getName(), fileName.c_str());
-	WriteTableInfo command(temp, tablesFileName, tables.size());
-	command.execute();
+	WriteTableInfo::execute(temp, tablesFileName, tables.size());
 
 	tables.push_back(temp);
 

@@ -2,18 +2,18 @@
 
 #include "../Command.h"
 
-class SaveTable : public Command {
+class SaveTableAs : public Command {
 public:
-	SaveTable(const String& fileName, Table* table);
+	SaveTableAs(const String& fileName, const Table* table);
 
 	virtual void execute() const;
 private:
 	String fileName;
-	Table* table = nullptr;
+	const Table* table = nullptr;
 };
 
-class SaveTableCreator : public CommandCreator {
+class SaveTableAsCreator : public CommandCreator {
 public:
-	SaveTableCreator();
+	SaveTableAsCreator();
 	virtual Command* create(const std::vector<String>& args, Database& database) const override;
 };

@@ -2,4 +2,5 @@
 
 #include "Column/Column.h"
 
-void getRecordsPositions(const Column* col, const String& value, std::vector<int> res);
+// brakes the abstraction
+//std::vector<int> getRecordsPositions(const Column* col, const String& value);

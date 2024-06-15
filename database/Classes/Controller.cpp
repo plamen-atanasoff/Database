@@ -1,20 +1,11 @@
 #include "Controller.h"
 
 #include "Command/CommandFactory.h"
-#include "Command/Commands/ReadTablesInfo.h"
+#include "Command/Commands/OtherCommands/ReadTablesInfo.h"
 
 Controller::Controller()
 {
-	Command* command = nullptr;
-	try {
-		command = new ReadTablesInfo(database.getTablesInfoFileName(), &database.getTablesInfo());
-		command->execute();
-	}
-	catch (const std::exception&) {
-		delete command;
-		throw;
-	}
-	delete command;
+	ReadTablesInfo::execute(database.getTablesInfoFileName(), &database.getTablesInfo());
 }
 
 void Controller::executeCommand(const String& input)

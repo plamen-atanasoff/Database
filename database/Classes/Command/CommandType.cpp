@@ -23,10 +23,10 @@ String getCommandTypeAsString(CommandType type) {
 		return "addcolumn"; // addcolumn {tableName} <columnName> <columnType>
 	case CommandType::ADD_RECORD:
 		return "insert"; // insert {tableName} <column1> ... <columnN>
-	case CommandType::SAVE_TABLE:
-		return "save"; // save {tableName}
+	//case CommandType::SAVE_TABLE:
+	//	return "save"; // save {tableName}
 	case CommandType::READ_TABLE: // reads the table from the given file
-		return "read"; // read <fileName>
+		return "read"; // read <filePath>
 	/*case CommandType::DELETE_RECORDS:
 		return "delete";*/
 	case CommandType::PRINT_TABLE:
@@ -43,8 +43,8 @@ String getCommandTypeAsString(CommandType type) {
 	//	return "update";
 	//case CommandType::SELECT_RECORDS:
 	//	return "select";
-	//case CommandType::SAVE_TABLE_TO_FILE:
-	//	return "saveas";*/
+	case CommandType::SAVE_TABLE_TO_FILE:
+		return "saveas"; //saveas filePath
 	case CommandType::SELECT_ONTO:
 		return "select_onto";
 	}

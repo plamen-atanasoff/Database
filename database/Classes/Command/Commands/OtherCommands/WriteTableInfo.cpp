@@ -1,9 +1,6 @@
 #include "WriteTableInfo.h"
 
-WriteTableInfo::WriteTableInfo(const StringPair& tableInfo, const String& tablesFileName, size_t tablesCount)
-	: tableInfo(tableInfo), tablesFileName(tablesFileName), tablesCount(tablesCount) {}
-
-void WriteTableInfo::execute() const
+void WriteTableInfo::execute(const StringPair& tableInfo, const String& tablesFileName, size_t tablesCount)
 {
 	std::fstream file(tablesFileName, std::ios::out | std::ios::app | std::ios::binary);
 	if (!file.is_open()) {

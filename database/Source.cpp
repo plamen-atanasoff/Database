@@ -1,3 +1,10 @@
+#include "Classes/Column/ColumnFactory.h"
+#include "Classes/Column/ColumnType.h"
+#include "Classes/Set/Set.h"
+#include "Classes/Command/Command.h"
+#include "Classes/Command/Commands/SaveTableAs.h"
+#include "Classes/Command/Commands/ReadIntoTable.h"
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -16,6 +23,42 @@
 
 using String = std::string;
 
+int main() {
+#if 0
+	Table t;
+	Column* col1 = ColumnFactory::getFactory().createColumn("Col1", ColumnType::INT);
+	Column* col2 = ColumnFactory::getFactory().createColumn("Col2", ColumnType::INT);
+	Column* col3 = ColumnFactory::getFactory().createColumn("Col3", ColumnType::INT);
+	t.addColumn(*col1);
+	t.addColumn(*col2);
+
+	t.addRecord({ "1", "2" });
+	t.addRecord({ "3", "4" });
+
+	t.addColumn(*col3);
+	t.addRecord({ "5", "6", "7" });
+
+	Command* c1 = new SaveTableAs("testTable.dat", &t);
+	c1->execute();
+
+	delete col1;
+	delete col2;
+	delete col3;
+	delete c1;
+#endif
+#if 0
+	Table t;
+
+	Command* c1 = new ReadIntoTable("testTable.dat", &t);
+	c1->execute();
+
+	t.printTable();
+
+	delete c1;
+#endif
+}
+
+#if 0
 int main()
 {
 	//size_t count = 3;
@@ -26,11 +69,6 @@ int main()
 	//if (!ofile.is_open()) {
 	//	return 1;
 	//}
-	//ofile.write(reinterpret_cast<const char*>(&count), sizeof(count));
-	//ofile.write(reinterpret_cast<const char*>(&p1), sizeof(p1));
-	//ofile.write(reinterpret_cast<const char*>(&p2), sizeof(p2));
-	//ofile.write(reinterpret_cast<const char*>(&p3), sizeof(p3));
-	//
 	//ofile.close();
 	{
 		try
@@ -38,17 +76,34 @@ int main()
 			Controller c;
 			String line;
 
-			//c.execute(Command(CommandType::CREATE_TABLE, { "MyTable" }));
+			//c.execute(Command(CommandType::CREATE_TABLE, { "test1" }));
 			//c.execute(Command(CommandType::ADD_COLUMN, { "Column1", "int"}));
 			//c.execute(Command(CommandType::ADD_COLUMN, { "Column2", "int" }));
 			//c.execute(Command(CommandType::ADD_RECORD, { "12", "33" }));
 			//c.execute(Command(CommandType::ADD_RECORD, { "13", "34" }));
 			//c.execute(Command(CommandType::SAVE_TABLE, {}));
 
-			c.execute(Command(CommandType::READ_TABLE, { "MyTable.dat" }));
-			c.execute(Command(CommandType::ADD_RECORD, { "11", "11" }));
-			c.execute(Command(CommandType::ADD_COLUMN, { "Column3", "int" }));
-			c.execute(Command(CommandType::ADD_RECORD, { "1", "2", "3"}));
+			//c.execute(Command(CommandType::READ_TABLE, { "test1.dat" }));
+			//c.execute(Command(CommandType::ADD_RECORD, { "11", "11" }));
+			//c.execute(Command(CommandType::ADD_COLUMN, { "Column3", "int" }));
+			//c.execute(Command(CommandType::ADD_RECORD, { "1", "2", "3"}));
+
+			//c.executeCommand("read newT.dat");
+			//c.executeCommand("insert 12 44");
+			//c.executeCommand("insert 12 45");
+			//c.executeCommand("insert 4 33");
+			//c.executeCommand("insert 12 46");
+
+			//c.executeCommand("select_onto resTable [2, 1, 1] 1 12");
+
+			// test ShowTables
+			//c.executeCommand("showtables");
+
+			// test OpenTable
+			//c.executeCommand("open ");
+
+			// test ImportTable
+			//c.executeCommand("import newT.dat");
 
 			while (true)
 			{
@@ -59,13 +114,11 @@ int main()
 				if (line == "exit")
 					break;
 
-				// add exception for wrong command format in execute()
 				try {
-					Command command = Command::create(line);
-					c.execute(command);
+					c.executeCommand(line);
 				}
-				catch (const std::exception&) {
-					std::cout << "Wrong command\n" << std::endl;
+				catch (const std::exception& e) {
+					std::cout << "Wrong command\n" << e.what() << std::endl << std::endl;
 				}
 			}
 		}
@@ -81,3 +134,4 @@ int main()
 	
 	_CrtDumpMemoryLeaks();
 }
+#endif
