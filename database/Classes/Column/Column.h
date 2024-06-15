@@ -19,10 +19,9 @@ public:
 	virtual ~Column() = default;
 
 	virtual void addValue(const String& val) = 0;
-	virtual void deleteValue(size_t pos) = 0;
 	virtual void changeValue(size_t pos, const String& newVal) = 0;
+	virtual void deleteValue(size_t pos) = 0;
 
-	//virtual void printValues() const = 0;
 	virtual void printValueAt(size_t pos) const = 0;
 	virtual void printValueAtToStream(size_t pos, std::ostream& ofile) const = 0;
 
@@ -37,13 +36,13 @@ public:
 
 	virtual Column* clone() const = 0;
 
-	ColumnType getType() const { return type; }
-	const char* getName() const { return name; }
-	size_t getWidth() const { return width; }
-
 	virtual String getValue(size_t pos) const = 0;
 
 	virtual void deleteRecords() = 0;
+
+	ColumnType getType() const { return type; }
+	const char* getName() const { return name; }
+	size_t getWidth() const { return width; }
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
 	ColumnType type;
