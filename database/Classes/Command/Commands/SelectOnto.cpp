@@ -1,5 +1,7 @@
 #include "SelectOnto.h"
 
+#include "OtherCommands/GetRecordsPositions.h"
+
 SelectOnto::SelectOnto(const String& resultTableName, const std::vector<int>& columnsInd, 
 	size_t searchColInd, const String& value, Table* table) 
 	: resultTableName(resultTableName), columnsInd(columnsInd), searchColInd(searchColInd), value(value), table(table) {}
@@ -16,7 +18,7 @@ void SelectOnto::execute() const
 		delete curCol;
 	}
 
-	std::vector<int> recordsPositions = table->getRecordsPositions(searchColInd, value);
+	std::vector<size_t> recordsPositions = GetRecordsPositions::execute(table->getColumn(searchColInd), value);
 
 	for (size_t i = 0; i < recordsPositions.size(); i++) {
 		std::vector<String> curValues = table->getRecordValues(recordsPositions[i], columnsInd);

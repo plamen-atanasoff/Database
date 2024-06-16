@@ -1,11 +1,13 @@
 #include "UpdateRecords.h"
 
+#include "OtherCommands/GetRecordsPositions.h"
+
 UpdateRecords::UpdateRecords(int colPosFrom, const String& value, int colPosTo, const String& newValue, Table* table)
 	: colPosFrom(colPosFrom), value(value), colPosTo(colPosTo), newValue(newValue), table(table) {}
 
 void UpdateRecords::execute() const
 {
-	std::vector<int> recordsPositions = table->getRecordsPositions(colPosFrom, value);
+	std::vector<size_t> recordsPositions = GetRecordsPositions::execute(table->getColumn(colPosFrom), value);
 	table->updateValues(colPosTo, recordsPositions, newValue);
 }
 

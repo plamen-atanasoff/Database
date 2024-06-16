@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-// add dynamic shrink
 class Set {
 public:
     bool add(bool isNull);

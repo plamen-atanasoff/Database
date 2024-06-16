@@ -1,11 +1,13 @@
 #include "SelectRecords.h"
 
+#include "OtherCommands/GetRecordsPositions.h"
+
 SelectRecords::SelectRecords(int colPos, const String& value, Table* table) 
 	: colPos(colPos), value(value), table(table) {}
 
 void SelectRecords::execute() const
 {
-	std::vector<int> recordsPositions = table->getRecordsPositions(colPos, value);
+	std::vector<size_t> recordsPositions = GetRecordsPositions::execute(table->getColumn(colPos), value);
 	table->printTableSelect(recordsPositions);
 }
 
