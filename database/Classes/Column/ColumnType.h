@@ -6,6 +6,8 @@ using String = std::string;
 
 enum class ColumnType {
 	INT,
+	DOUBLE,
+	STRING,
 
 	COLUMN_TYPES_COUNT
 };

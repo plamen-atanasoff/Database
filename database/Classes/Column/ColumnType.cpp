@@ -17,6 +17,10 @@ String getColumnTypeAsString(ColumnType type) {
 	{
 	case ColumnType::INT:
 		return "int";
+	case ColumnType::DOUBLE:
+		return "double";
+	case ColumnType::STRING:
+		return "string";
 	}
 
 	throw std::invalid_argument("type is invalid");
