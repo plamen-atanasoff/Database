@@ -43,6 +43,8 @@ public:
 	ColumnType getType() const { return type; }
 	const char* getName() const { return name; }
 	size_t getWidth() const { return width; }
+
+	virtual size_t getSize() const = 0;
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
 	ColumnType type;

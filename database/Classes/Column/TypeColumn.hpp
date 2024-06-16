@@ -12,7 +12,7 @@ public:
 	// is there a way to see the type of the template variable?
 	TypeColumn(const String& name, ColumnType type);
 
-	//bool hasValue(size_t pos) const; // do I need this?
+	bool hasValue(size_t pos) const;
 
 	virtual void deleteValue(size_t pos) override;
 
@@ -33,6 +33,8 @@ public:
 	virtual std::vector<int> getRecordsPositions(const String& val) const override;
 
 	virtual void deleteRecords() override;
+
+	virtual size_t getSize() const override { return values.size(); }
 protected:
 	std::vector<Type> values;
 	Set setValues;
@@ -43,15 +45,15 @@ protected:
 template<typename Type>
 TypeColumn<Type>::TypeColumn(const String& name, ColumnType type) : Column(name, type, name.size()) {}
 
-//template<typename Type>
-//bool TypeColumn<Type>::hasValue(size_t pos) const
-//{
-//	if (pos >= values.size()) {
-//		throw std::exception("invalid argument");
-//	}
-//
-//	return setValues.contains(pos);
-//}
+template<typename Type>
+bool TypeColumn<Type>::hasValue(size_t pos) const
+{
+	if (pos >= values.size()) {
+		throw std::exception("invalid argument");
+	}
+
+	return setValues.contains(pos);
+}
 
 template<typename Type>
 void TypeColumn<Type>::deleteValue(size_t pos)
@@ -67,17 +69,19 @@ template<typename Type>
 void TypeColumn<Type>::addValue(const String& val)
 {
 	bool flag;
+	Type v = Type();
 	if (val == "NULL") {
 		flag = true;
 	}
 	else {
-		values.push_back(convert(val));
+		v = convert(val);
 		flag = false;
 		if (val.size() < 16 && val.size() > width) {
 			width = val.size();
 		}
 	}
 
+	values.push_back(v);
 	setValues.add(flag);
 
 	//REMOVE THIS
