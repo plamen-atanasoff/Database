@@ -1,23 +1,10 @@
 #include "IntColumn.h"
 
-#include <string>
-#include <iostream>
-#include <cassert>
-
-IntColumn::IntColumn(const String& name, ColumnType type) : TypeColumn<int>(name, type) {}
+IntColumn::IntColumn(const String& name) : TypeColumn<int>(name, ColumnType::INT) {}
 
 Column* IntColumn::clone() const
 {
 	return new IntColumn(*this);
-}
-
-String IntColumn::getValue(size_t pos) const
-{
-	if (pos >= values.size()) {
-		throw std::exception("invalid argument");
-	}
-
-	return setValues.contains(pos) ? std::to_string(values[pos]) : "NULL";
 }
 
 int IntColumn::convert(const String& value) const
@@ -29,16 +16,16 @@ IntColumnCreator::IntColumnCreator(): ColumnCreator(ColumnType::INT) {}
 
 Column* IntColumnCreator::create(const std::vector<String>& args) const
 {
-	if (args.size() != 2) {
+	if (args.size() != 1) {
 		throw std::exception("invalid arguments count");
 	}
 
-	return new IntColumn(args[0], getColumnTypeAsEnum(args[1]));
+	return new IntColumn(args[0]);
 }
 
-Column* IntColumnCreator::create(const String& name, ColumnType type) const
+Column* IntColumnCreator::create(const String& name) const
 {
-	return new IntColumn(name, type);
+	return new IntColumn(name);
 }
 
 static IntColumnCreator __;

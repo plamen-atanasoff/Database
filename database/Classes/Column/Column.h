@@ -17,6 +17,10 @@ public:
 		}
 	}
 	virtual ~Column() = default;
+	virtual Column* clone() const = 0;
+
+	virtual bool hasValue(size_t pos) const = 0;
+	virtual String getValue(size_t pos) const = 0;
 
 	virtual void addValue(const String& val) = 0;
 	virtual void changeValue(size_t pos, const String& newVal) = 0;
@@ -28,22 +32,16 @@ public:
 	virtual void writeToFile(std::ofstream& ofile) const = 0;
 	virtual void readFromFile(std::ifstream& ifile) = 0;
 
-	virtual std::vector<int> getRecordsPositions(const String& val) const = 0;
-	virtual void deleteRecords(const std::vector<int>& recordsPositions) = 0;
-	virtual void updateValues(const std::vector<int>& recordsPositions, const String& newVal) = 0;
+	//virtual std::vector<int> getRecordsPositions(const String& val) const = 0;
+	virtual void deleteRecords(const std::vector<size_t>& recordsPositions) = 0;
+	virtual void updateValues(const std::vector<size_t>& recordsPositions, const String& newVal) = 0;
 
 	virtual void initializeValues(size_t recordsCount) = 0;
-
-	virtual Column* clone() const = 0;
-
-	virtual String getValue(size_t pos) const = 0;
-
 	virtual void deleteRecords() = 0;
 
 	ColumnType getType() const { return type; }
 	const char* getName() const { return name; }
 	size_t getWidth() const { return width; }
-
 	virtual size_t getSize() const = 0;
 protected:
 	static constexpr int MAX_NAME_LENGTH = 33;
@@ -58,7 +56,7 @@ public:
 	virtual ~ColumnCreator() = default;
 
 	virtual Column* create(const std::vector<String>&args) const = 0;
-	virtual Column* create(const String& name, ColumnType type) const = 0;
+	virtual Column* create(const String& name) const = 0;
 
 	ColumnType getColumnType() const;
 private:

@@ -1,19 +1,10 @@
 #include "StringColumn.h"
 
-StringColumn::StringColumn(const String& name, ColumnType type) : TypeColumn<String>(name, type) {}
+StringColumn::StringColumn(const String& name) : TypeColumn<String>(name, ColumnType::STRING) {}
 
 Column* StringColumn::clone() const
 {
 	return new StringColumn(*this);
-}
-
-String StringColumn::getValue(size_t pos) const
-{
-	if (pos >= values.size()) {
-		throw std::exception("invalid argument");
-	}
-
-	return setValues.contains(pos) ? values[pos] : "NULL";
 }
 
 String StringColumn::convert(const String& value) const
@@ -25,16 +16,16 @@ StringColumnCreator::StringColumnCreator() : ColumnCreator(ColumnType::STRING) {
 
 Column* StringColumnCreator::create(const std::vector<String>& args) const
 {
-	if (args.size() != 2) {
+	if (args.size() != 1) {
 		throw std::exception("invalid arguments count");
 	}
 
-	return new StringColumn(args[0], getColumnTypeAsEnum(args[1]));
+	return new StringColumn(args[0]);
 }
 
-Column* StringColumnCreator::create(const String& name, ColumnType type) const
+Column* StringColumnCreator::create(const String& name) const
 {
-	return new StringColumn(name, type);
+	return new StringColumn(name);
 }
 
 static StringColumnCreator __;

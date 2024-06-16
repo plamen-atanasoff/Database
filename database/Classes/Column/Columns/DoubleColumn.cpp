@@ -1,20 +1,10 @@
 #include "DoubleColumn.h"
 
-DoubleColumn::DoubleColumn(const String& name, ColumnType type) : TypeColumn<double>(name, type) {}
+DoubleColumn::DoubleColumn(const String& name) : TypeColumn<double>(name, ColumnType::DOUBLE) {}
 
 Column* DoubleColumn::clone() const
 {
 	return new DoubleColumn(*this);
-}
-
-//same as in IntColumn, should this be in TypeColumn ?
-String DoubleColumn::getValue(size_t pos) const
-{
-	if (pos >= values.size()) {
-		throw std::exception("invalid argument");
-	}
-
-	return setValues.contains(pos) ? std::to_string(values[pos]) : "NULL";
 }
 
 double DoubleColumn::convert(const String& value) const
@@ -26,16 +16,16 @@ DoubleColumnCreator::DoubleColumnCreator() : ColumnCreator(ColumnType::DOUBLE) {
 
 Column* DoubleColumnCreator::create(const std::vector<String>& args) const
 {
-	if (args.size() != 2) {
+	if (args.size() != 1) {
 		throw std::exception("invalid arguments count");
 	}
 
-	return new DoubleColumn(args[0], getColumnTypeAsEnum(args[1]));
+	return new DoubleColumn(args[0]);
 }
 
-Column* DoubleColumnCreator::create(const String& name, ColumnType type) const
+Column* DoubleColumnCreator::create(const String& name) const
 {
-	return new DoubleColumn(name, type);
+	return new DoubleColumn(name);
 }
 
 static DoubleColumnCreator __;

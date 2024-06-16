@@ -12,14 +12,12 @@ public:
 	// is there a way to see the type of the template variable?
 	TypeColumn(const String& name, ColumnType type);
 
-	bool hasValue(size_t pos) const;
-
-	virtual void deleteValue(size_t pos) override;
+	virtual bool hasValue(size_t pos) const override;
+	virtual String getValue(size_t pos) const override;
 
 	virtual void addValue(const String& val) override;
-	virtual void initializeValues(size_t recordsCount) override;
-
 	virtual void changeValue(size_t pos, const String& newVal) override;
+	virtual void deleteValue(size_t pos) override;
 
 	virtual void printValueAt(size_t pos) const override;
 	virtual void printValueAtToStream(size_t pos, std::ostream& os) const override;
@@ -27,14 +25,17 @@ public:
 	virtual void readFromFile(std::ifstream& ifile) override;
 	virtual void writeToFile(std::ofstream& ofile) const override;
 
-	virtual void deleteRecords(const std::vector<int>& recordsPositions) override;
-	virtual void updateValues(const std::vector<int>& recordsPositions, const String& newVal) override;
+	virtual void deleteRecords(const std::vector<size_t>& recordsPositions) override;
+	virtual void updateValues(const std::vector<size_t>& recordsPositions, const String& newVal) override;
 
-	virtual std::vector<int> getRecordsPositions(const String& val) const override;
+	//virtual std::vector<int> getRecordsPositions(const String& val) const override;
 
+	virtual void initializeValues(size_t recordsCount) override;
 	virtual void deleteRecords() override;
 
 	virtual size_t getSize() const override { return values.size(); }
+
+	void addValue(Type val);
 protected:
 	std::vector<Type> values;
 	Set setValues;
@@ -56,6 +57,16 @@ bool TypeColumn<Type>::hasValue(size_t pos) const
 }
 
 template<typename Type>
+String TypeColumn<Type>::getValue(size_t pos) const
+{
+	if (pos >= values.size()) {
+		throw std::exception("invalid argument");
+	}
+
+	return setValues.contains(pos) ? std::to_string(values[pos]) : "NULL";
+}
+
+template<typename Type>
 void TypeColumn<Type>::deleteValue(size_t pos)
 {
 	if (pos >= values.size()) {
@@ -68,24 +79,18 @@ void TypeColumn<Type>::deleteValue(size_t pos)
 template<typename Type>
 void TypeColumn<Type>::addValue(const String& val)
 {
-	bool flag;
-	Type v = Type();
 	if (val == "NULL") {
-		flag = true;
+		values.push_back(Type());
+		setValues.add(true);
+		//REMOVE THIS
+		std::cout << name << ": " << setValues << std::endl;
 	}
 	else {
-		v = convert(val);
-		flag = false;
+		addValue(convert(val));
 		if (val.size() < 16 && val.size() > width) {
 			width = val.size();
 		}
 	}
-
-	values.push_back(v);
-	setValues.add(flag);
-
-	//REMOVE THIS
-	std::cout << name << ": " << setValues << std::endl;
 }
 
 template<typename Type>
@@ -179,7 +184,7 @@ void TypeColumn<Type>::writeToFile(std::ofstream& ofile) const
 }
 
 template<typename Type>
-void TypeColumn<Type>::deleteRecords(const std::vector<int>& recordsPositions)
+void TypeColumn<Type>::deleteRecords(const std::vector<size_t>& recordsPositions)
 {
 	assert(recordsPositions.size() <= values.size());
 	// ptr is pointer to the current record to be removed,
@@ -205,42 +210,52 @@ void TypeColumn<Type>::deleteRecords(const std::vector<int>& recordsPositions)
 }
 
 template<typename Type>
-void TypeColumn<Type>::updateValues(const std::vector<int>& recordsPositions, const String& newVal)
+void TypeColumn<Type>::updateValues(const std::vector<size_t>& recordsPositions, const String& newVal)
 {
 	// make validations
-	for (int pos : recordsPositions) {
+	for (size_t pos : recordsPositions) {
 		assert(pos < values.size());
 		changeValue(pos, newVal);
 	}
 }
 
-template<typename Type>
-std::vector<int> TypeColumn<Type>::getRecordsPositions(const String& val) const
-{
-	std::vector<int> res;
-
-	if (val == "NULL") {
-		for (int i = 0; i < values.size(); i++) {
-			if (!setValues.contains(i)) {
-				res.push_back(i);
-			}
-		}
-	}
-	else {
-		Type value = convert(val);
-
-		for (int i = 0; i < values.size(); i++) {
-			if (setValues.contains(i) && values[i] == value) {
-				res.push_back(i);
-			}
-		}
-	}
-
-	return res;
-}
+//template<typename Type>
+//std::vector<int> TypeColumn<Type>::getRecordsPositions(const String& val) const
+//{
+//	std::vector<int> res;
+//
+//	if (val == "NULL") {
+//		for (int i = 0; i < values.size(); i++) {
+//			if (!setValues.contains(i)) {
+//				res.push_back(i);
+//			}
+//		}
+//	}
+//	else {
+//		Type value = convert(val);
+//
+//		for (int i = 0; i < values.size(); i++) {
+//			if (setValues.contains(i) && values[i] == value) {
+//				res.push_back(i);
+//			}
+//		}
+//	}
+//
+//	return res;
+//}
 
 template<typename Type>
 void TypeColumn<Type>::deleteRecords()
 {
 	values.clear();
+}
+
+template<typename Type>
+void TypeColumn<Type>::addValue(Type val)
+{
+	values.push_back(val);
+	setValues.add(false);
+
+	//REMOVE THIS
+	std::cout << name << ": " << setValues << std::endl;
 }
