@@ -37,13 +37,13 @@ private:
 class Database
 {
 public:
+	Database(const String& tablesInfoFilePath);
 	std::vector<StringPair>& getTablesInfo();
 	Table& getTable();
-	const char* getTablesInfoFileName() const;
+	const String& getTablesInfoFileName() const;
 private:
 	std::vector<StringPair> tablesInfo;
 	Table table;
-
-	static constexpr const char* TABLES_FILE = "tablesInfo.dat";
+	String tablesInfoFilePath;
 };
 

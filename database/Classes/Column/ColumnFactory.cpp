@@ -23,7 +23,7 @@ Column* ColumnFactory::createColumn(const String& name, ColumnType type) const
 	const ColumnCreator* creator = getCreator(type);
 
 	if (creator) {
-		return creator->create(name, type);
+		return creator->create(name);
 	}
 	else {
 		return nullptr;
@@ -44,7 +44,7 @@ Column* ColumnFactory::readColumnFromStream(std::istream& is)
 
 	const ColumnCreator* creator = getCreator(cType);
 
-	return creator->create(name, cType);
+	return creator->create(name);
 }
 
 const ColumnCreator* ColumnFactory::getCreator(ColumnType type) const

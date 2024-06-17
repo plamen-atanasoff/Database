@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "../Column/Column.h"
+#include "../Column/Columns/IntColumn.h"
 
 using String = std::string;
 using PrimaryKeyColumn = std::vector<unsigned>;
@@ -29,23 +30,16 @@ public:
 	void addRecord(const std::vector<String>& values);
 	void addColumn(const Column& col);
 
-	// create I\O manager and move these there?
 	void writeToFile(std::ofstream& ofile) const;
 	void readFromFile(std::ifstream& ifile);
 
-	std::vector<int> getRecordsPositions(size_t colPos, const String& val) const;
-
-	void deleteRecords(const std::vector<int>& recordsPositions);
-	void updateValues(int colPos, const std::vector<int>& recordsPositions, const String& newVal);
-
-	void printTable() const;
-	void printTableToFile(std::ostream& ofile) const;
-	void printColumnInfo() const;
-	void describeColumns() const;
-	void printTableSelect(const std::vector<int>& recordsPositions) const;
+	void deleteRecords(const std::vector<size_t>& recordsPositions);
+	void updateValues(int colPos, const std::vector<size_t>& recordsPositions, const String& newVal);
 
 	const char* getName() const;
+	const PrimaryKeyColumn& getRecordsId() const;
 	const Column* getColumn(size_t pos) const;
+	size_t getColumnsSize() const;
 
 	std::vector<String> getRecordValues(size_t recPos, const std::vector<int>& colsPos) const;
 private:
@@ -57,10 +51,8 @@ private:
 	PrimaryKeyColumn recordsId;
 	ColumnArray cols;
 
-	unsigned recordsPerPage = 2;
-
 	void copyFrom(const Table& other);
 	void free();
 
-	void deleteRecordsFromRecordsId(const std::vector<int>& recordsPositions);
+	void deleteRecordsFromRecordsId(const std::vector<size_t>& recordsPositions);
 };
