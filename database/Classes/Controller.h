@@ -8,13 +8,21 @@
 
 using String = std::string;
 
-// make singleton
 class Controller
 {
 public:
-	Controller();
+	static Controller& getInstance();
+	void loadDatabase(const String& databaseFilePath);
+	void closeDatabase();
 
 	void executeCommand(const String& input);
 private:
-	Database database;
+	Database* database = nullptr;
+
+	Controller() = default;
+	~Controller();
+	Controller(const Controller&) = delete;
+	Controller& operator=(const Controller&) = delete;
+
+	void free();
 };
