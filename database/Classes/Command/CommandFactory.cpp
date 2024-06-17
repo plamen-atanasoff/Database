@@ -61,17 +61,3 @@ const CommandCreator* CommandFactory::getCreator(CommandType type) const
 
 	return nullptr;
 }
-
-std::vector<String> splitString(const String& str, char delimiter)
-{
-	std::vector<String> tokens;
-	std::stringstream ss(str);
-	String token;
-
-	while (std::getline(ss, token, delimiter))
-	{
-		tokens.push_back(token);
-	}
-
-	return tokens;
-}

@@ -1,10 +1,12 @@
 #include "SaveTable.h"
 
+#include "OtherCommands/GetFileName.h"
+
 SaveTable::SaveTable(const std::vector<StringPair>& tables, const Table* table) : tables(tables), table(table) {}
 
 void SaveTable::execute() const
 {
-	String fileName = getFileName();
+	String fileName = GetFileName::execute(table->getName(), tables);
 	if (fileName == "") {
 		throw std::exception("table does not exist in database");
 	}
@@ -16,18 +18,6 @@ void SaveTable::execute() const
 	table->writeToFile(ofile);
 
 	ofile.close();
-}
-
-String SaveTable::getFileName() const
-{
-	size_t n = tables.size();
-	for (size_t i = 0; i < n; i++) {
-		if (table->getName() == tables[i].tableName) {
-			return tables[i].fileName;
-		}
-	}
-
-	return "";
 }
 
 SaveTableCreator::SaveTableCreator() : CommandCreator(CommandType::SAVE_TABLE) {}

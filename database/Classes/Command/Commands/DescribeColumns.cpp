@@ -6,8 +6,6 @@ DescribeColumns::DescribeColumns(Table* table) : table(table) {}
 
 void DescribeColumns::execute() const
 {
-	const char* separator = " | ";
-	std::cout << std::setw(3) << std::right << "Id" << separator;
 	size_t n = table->getColumnsSize();
 	for (size_t i = 0; i < n; i++) {
 		const Column* col = table->getColumn(i);

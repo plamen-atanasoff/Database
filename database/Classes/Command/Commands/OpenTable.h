@@ -11,8 +11,6 @@ private:
 	String tableName;
 	const std::vector<StringPair>& tables;
 	Table* table = nullptr;
-
-	String getFileName() const;
 };
 
 class OpenTableCreator : public CommandCreator {

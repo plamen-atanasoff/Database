@@ -10,8 +10,6 @@ public:
 private:
 	const std::vector<StringPair>& tables;
 	const Table* table = nullptr;
-
-	String getFileName() const;
 };
 
 class SaveTableCreator : public CommandCreator {

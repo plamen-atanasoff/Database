@@ -20,6 +20,3 @@ public:
 	SelectOntoCreator();
 	virtual Command* create(const std::vector<String>& args, Database& database) const override;
 };
-
-// move this
-std::vector<int> parseArray(const String& string);

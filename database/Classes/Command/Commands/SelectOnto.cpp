@@ -1,6 +1,7 @@
 #include "SelectOnto.h"
 
 #include "OtherCommands/GetRecordsPositions.h"
+#include "OtherCommands/ParseStringToIntArray.h"
 
 SelectOnto::SelectOnto(const String& resultTableName, const std::vector<int>& columnsInd, 
 	size_t searchColInd, const String& value, Table* table) 
@@ -36,20 +37,7 @@ Command* SelectOntoCreator::create(const std::vector<String>& args, Database& da
 		throw std::exception("invalid arguments count");
 	}
 
-	return new SelectOnto(args[0], parseArray(args[1]), static_cast<size_t>(std::stoull(args[2])), args[3], &database.getTable());
+	return new SelectOnto(args[0], ParseStringToIntArray::execute(args[1], ','), static_cast<size_t>(std::stoull(args[2])), args[3], &database.getTable());
 }
 
 static SelectOntoCreator __;
-
-std::vector<String> splitString(const String& string, char delimiter);
-
-std::vector<int> parseArray(const String& string) {
-	std::vector<String> tokens = splitString(string, ',');
-	std::vector<int> res(tokens.size());
-
-	for (size_t i = 0; i < tokens.size(); i++) {
-		res[i] = std::stoi(tokens[i]);
-	}
-
-	return res;
-}

@@ -9,6 +9,8 @@ public:
 	virtual void execute() const;
 private:
 	Table* table = nullptr;
+
+	static constexpr const char* separator = " | ";
 };
 
 class DescribeColumnsCreator : public CommandCreator {
