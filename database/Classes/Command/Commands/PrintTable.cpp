@@ -1,10 +1,69 @@
 #include "PrintTable.h"
 
-PrintTable::PrintTable(Table* table) : table(table) {}
+PrintTable::PrintTable(Table* table, unsigned recordsPerPage = 2) 
+	: table(table), recordsPerPage(recordsPerPage) {}
 
 void PrintTable::execute() const
 {
-	table->printTable();
+	char command[8]{};
+	size_t i = 0, n = table->getRecordsId().size(), m = table->getColumnsSize();
+	unsigned r = recordsPerPage;
+	do {
+		printColumnInfo();
+
+		for (; i < n; i++) {
+			if (i == r) {
+				break;
+			}
+			for (size_t j = 0; j < m; j++) {
+				table->getColumn(j + 1)->printValueAt(i);
+				std::cout << separator;
+			}
+			std::cout << std::endl;
+		}
+
+		std::cout << "Enter command(prev, next, exit): ";
+		std::cin >> command;
+		if (strcmp(command, "prev") == 0) {
+			if (i == recordsPerPage) {
+				i = 0;
+				system("cls");
+				continue;
+			}
+			if (i % recordsPerPage == 0) {
+				i = i - (size_t)2 * recordsPerPage;
+			}
+			else {
+				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
+			}
+			r = (unsigned)i + recordsPerPage;
+		}
+		else if (strcmp(command, "next") == 0) {
+			if (i >= n) {
+				if (i % recordsPerPage == 0) {
+					i -= recordsPerPage;
+				}
+				else {
+					i = (i + (recordsPerPage - (i % recordsPerPage))) - recordsPerPage;
+				}
+				system("cls");
+				continue;
+			}
+			r += recordsPerPage;
+		}
+
+		system("cls");
+	} while (strcmp(command, "exit") != 0);
+	std::cin.ignore();
+}
+
+void PrintTable::printColumnInfo() const
+{
+	size_t n = table->getColumnsSize();
+	for (size_t i = 0; i < n; i++) {
+		std::cout << std::setw(table->getColumn(i + 1)->getWidth()) << table->getColumn(i + 1)->getName() << separator;
+	}
+	std::cout << std::endl;
 }
 
 PrintTableCreator::PrintTableCreator() : CommandCreator(CommandType::PRINT_TABLE) {}

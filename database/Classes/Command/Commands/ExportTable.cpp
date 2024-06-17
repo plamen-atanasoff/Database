@@ -9,7 +9,19 @@ void ExportTable::execute() const
 		return;
 	}
 
-	table->printTableToFile(ofile);
+	size_t n = table->getColumnsSize(), m = table->getRecordsId().size();
+	for (size_t i = 0; i < n; i++) {
+		ofile << std::setw(table->getColumn(i + 1)->getWidth()) << table->getColumn(i + 1)->getName() << separator;
+	}
+	ofile << std::endl;
+
+	for (size_t i = 0; i < m; i++) {
+		for (size_t j = 0; j < n; j++) {
+			table->getColumn(j + 1)->printValueAtToStream(i, ofile);
+			ofile << separator;
+		}
+		ofile << std::endl;
+	}
 
 	ofile.close();
 }

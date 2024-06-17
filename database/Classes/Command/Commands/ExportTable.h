@@ -10,6 +10,8 @@ public:
 private:
 	String filePath;
 	Table* table = nullptr;
+
+	static constexpr const char* separator = " | ";
 };
 
 class ExportTableCreator : public CommandCreator {
