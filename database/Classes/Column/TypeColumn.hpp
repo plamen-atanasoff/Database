@@ -35,12 +35,13 @@ public:
 
 	virtual size_t getSize() const override { return values.size(); }
 
-	void addValue(Type val);
+	void addValueType(const Type& val);
 protected:
 	std::vector<Type> values;
 	Set setValues;
 
-	virtual Type convert(const String& value) const = 0;
+	virtual Type convertFromString(const String& value) const = 0;
+	virtual String convertToString(const Type& value) const = 0;
 };
 
 template<typename Type>
@@ -63,8 +64,9 @@ String TypeColumn<Type>::getValue(size_t pos) const
 		throw std::exception("invalid argument");
 	}
 
-	return setValues.contains(pos) ? std::to_string(values[pos]) : "NULL";
+	return setValues.contains(pos) ? convertToString(values[pos]) : "NULL";
 }
+
 
 template<typename Type>
 void TypeColumn<Type>::deleteValue(size_t pos)
@@ -86,7 +88,7 @@ void TypeColumn<Type>::addValue(const String& val)
 		std::cout << name << ": " << setValues << std::endl;
 	}
 	else {
-		addValue(convert(val));
+		addValueType(convertFromString(val));
 		if (val.size() < 16 && val.size() > width) {
 			width = val.size();
 		}
@@ -113,7 +115,7 @@ void TypeColumn<Type>::changeValue(size_t pos, const String& newVal)
 		setValues.remove(pos);
 	}
 	else {
-		values[pos] = convert(newVal);
+		values[pos] = convertFromString(newVal);
 	}
 }
 
@@ -251,7 +253,7 @@ void TypeColumn<Type>::deleteRecords()
 }
 
 template<typename Type>
-void TypeColumn<Type>::addValue(Type val)
+void TypeColumn<Type>::addValueType(const Type& val)
 {
 	values.push_back(val);
 	setValues.add(false);

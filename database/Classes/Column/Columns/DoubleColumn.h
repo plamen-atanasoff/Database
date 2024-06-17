@@ -8,7 +8,8 @@ public:
 
 	virtual Column* clone() const override;
 private:
-	virtual double convert(const String& value) const;
+	virtual double convertFromString(const String& value) const override;
+	virtual String convertToString(const double& value) const override;
 };
 
 class DoubleColumnCreator : public ColumnCreator {

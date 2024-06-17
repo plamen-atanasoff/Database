@@ -10,7 +10,8 @@ public:
 
 	virtual Column* clone() const override;
 private:
-	virtual String convert(const String& value) const;
+	virtual String convertFromString(const String& value) const;
+	virtual String convertToString(const String& value) const;
 };
 
 class StringColumnCreator : public ColumnCreator {

@@ -7,7 +7,12 @@ Column* StringColumn::clone() const
 	return new StringColumn(*this);
 }
 
-String StringColumn::convert(const String& value) const
+String StringColumn::convertFromString(const String& value) const
+{
+	return value;
+}
+
+String StringColumn::convertToString(const String& value) const
 {
 	return value;
 }

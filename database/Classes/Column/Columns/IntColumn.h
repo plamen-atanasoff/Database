@@ -8,7 +8,8 @@ public:
 
 	virtual Column* clone() const override;
 private:
-	virtual int convert(const String& value) const;
+	virtual int convertFromString(const String& value) const override;
+	virtual String convertToString(const int& value) const override;
 };
 
 class IntColumnCreator : public ColumnCreator {

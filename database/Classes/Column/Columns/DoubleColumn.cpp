@@ -7,9 +7,14 @@ Column* DoubleColumn::clone() const
 	return new DoubleColumn(*this);
 }
 
-double DoubleColumn::convert(const String& value) const
+double DoubleColumn::convertFromString(const String& value) const
 {
 	return std::stod(value);
+}
+
+String DoubleColumn::convertToString(const double& value) const
+{
+	return std::to_string(value);
 }
 
 DoubleColumnCreator::DoubleColumnCreator() : ColumnCreator(ColumnType::DOUBLE) {}

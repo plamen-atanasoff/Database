@@ -7,9 +7,14 @@ Column* IntColumn::clone() const
 	return new IntColumn(*this);
 }
 
-int IntColumn::convert(const String& value) const
+int IntColumn::convertFromString(const String& value) const
 {
 	return std::stoi(value);
+}
+
+String IntColumn::convertToString(const int& value) const
+{
+	return std::to_string(value);
 }
 
 IntColumnCreator::IntColumnCreator(): ColumnCreator(ColumnType::INT) {}
