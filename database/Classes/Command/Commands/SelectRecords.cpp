@@ -19,8 +19,8 @@ void SelectRecords::execute() const
 			if (i == r) {
 				break;
 			}
-			for (size_t j = 0; j < m; j++) {
-				table->getColumn(j + 1)->printValueAt(recordsPositions[i]);
+			for (size_t j = 1; j <+ m; j++) {
+				table->getColumn(j)->printValueAt(recordsPositions[i]);
 				std::cout << separator;
 			}
 			std::cout << std::endl;
@@ -64,8 +64,8 @@ void SelectRecords::execute() const
 void SelectRecords::printColumnInfo() const
 {
 	size_t n = table->getColumnsSize();
-	for (size_t i = 0; i < n; i++) {
-		std::cout << std::setw(table->getColumn(i + 1)->getWidth()) << table->getColumn(i + 1)->getName() << separator;
+	for (size_t i = 1; i <= n; i++) {
+		std::cout << std::setw(table->getColumn(i)->getWidth()) << table->getColumn(i)->getName() << separator;
 	}
 	std::cout << std::endl;
 }

@@ -7,7 +7,7 @@ DescribeColumns::DescribeColumns(Table* table) : table(table) {}
 void DescribeColumns::execute() const
 {
 	size_t n = table->getColumnsSize();
-	for (size_t i = 0; i < n; i++) {
+	for (size_t i = 1; i <= n; i++) {
 		const Column* col = table->getColumn(i);
 		std::cout << std::setw(col->getWidth()) << col->getName() << ": " << getColumnTypeAsString(col->getType()) << separator;
 	}

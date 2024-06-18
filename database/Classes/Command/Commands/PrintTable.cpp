@@ -22,14 +22,15 @@ void PrintTable::execute() const
 				if (i == r) {
 					break;
 				}
-				for (size_t j = 0; j < m; j++) {
-					table->getColumn(j + 1)->printValueAt(i);
+				for (size_t j = 1; j <= m; j++) {
+					table->getColumn(j)->printValueAt(i);
 					std::cout << separator;
 				}
 				std::cout << std::endl;
 			}
 		}
 
+		std::cout << "Page " << r / recordsPerPage << std::endl;
 		std::cout << "Enter command(prev, next, exit): ";
 		std::cin >> command;
 		if (strcmp(command, "prev") == 0) {
@@ -63,8 +64,8 @@ void PrintTable::execute() const
 void PrintTable::printColumnInfo() const
 {
 	size_t n = table->getColumnsSize();
-	for (size_t i = 0; i < n; i++) {
-		std::cout << std::setw(table->getColumn(i + 1)->getWidth()) << table->getColumn(i + 1)->getName() << separator;
+	for (size_t i = 1; i <= n; i++) {
+		std::cout << std::setw(table->getColumn(i)->getWidth()) << table->getColumn(i)->getName() << separator;
 	}
 	std::cout << std::endl;
 }
