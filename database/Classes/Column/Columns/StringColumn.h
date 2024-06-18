@@ -9,6 +9,9 @@ public:
 	StringColumn(const String& name);
 
 	virtual Column* clone() const override;
+
+	virtual void readFromFile(std::ifstream& ifile) override;
+	virtual void writeToFile(std::ofstream& ofile) const override;
 private:
 	virtual String convertFromString(const String& value) const;
 	virtual String convertToString(const String& value) const;

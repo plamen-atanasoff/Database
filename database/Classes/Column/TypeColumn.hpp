@@ -149,7 +149,6 @@ void TypeColumn<Type>::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(&size), sizeof(size));
 	values.clear();
 	values.reserve(size);
-	//ifile.read(reinterpret_cast<char*>(values.data()), sizeof(Optional<int>) * size);
 	Type temp;
 	bool hasValue;
 	for (size_t i = 0; i < size; i++) {
@@ -177,7 +176,6 @@ void TypeColumn<Type>::writeToFile(std::ofstream& ofile) const
 
 	size_t size = values.size();
 	ofile.write(reinterpret_cast<const char*>(&size), sizeof(size));
-	//ofile.write(reinterpret_cast<const char*>(values.data()), sizeof(Optional<int>) * size);
 	for (size_t i = 0; i < size; i++) {
 		ofile.write(reinterpret_cast<const char*>(&values[i]), sizeof(values[i]));
 		bool flag = setValues.contains(i) ? true : false;
