@@ -9,29 +9,37 @@ void SelectRecords::execute() const
 {
 	std::vector<size_t> recordsPositions = GetRecordsPositions::execute(table->getColumn(colPos), value);
 
-	char command[8]{};
 	size_t i = 0, n = recordsPositions.size(), m = table->getColumnsSize();
+	if (n == 0) {
+		std::cout << "Table is empty" << std::endl;
+		return;
+	}
+
+	char command[8]{};
 	unsigned r = recordsPerPage;
+	bool atBorder = false;
 	do {
-		printColumnInfo();
+		if (!atBorder) {
+			printColumnInfo();
 
-		for (; i < n; i++) {
-			if (i == r) {
-				break;
+			for (; i < n; i++) {
+				if (i == r) {
+					break;
+				}
+				for (size_t j = 1; j <= m; j++) {
+					table->getColumn(j)->printValueAt(recordsPositions[i]);
+					std::cout << separator;
+				}
+				std::cout << std::endl;
 			}
-			for (size_t j = 1; j <+ m; j++) {
-				table->getColumn(j)->printValueAt(recordsPositions[i]);
-				std::cout << separator;
-			}
-			std::cout << std::endl;
 		}
-
+		
+		std::cout << "Page " << r / recordsPerPage << std::endl;
 		std::cout << "Enter command(prev, next, exit): ";
 		std::cin >> command;
 		if (strcmp(command, "prev") == 0) {
 			if (i == recordsPerPage) {
-				i = 0;
-				system("cls");
+				atBorder = true;
 				continue;
 			}
 			if (i % recordsPerPage == 0) {
@@ -41,19 +49,15 @@ void SelectRecords::execute() const
 				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
 			}
 			r = (unsigned)i + recordsPerPage;
+			atBorder = false;
 		}
 		else if (strcmp(command, "next") == 0) {
-			if (i >= n) {
-				if (i % recordsPerPage == 0) {
-					i -= recordsPerPage;
-				}
-				else {
-					i = (i + (recordsPerPage - (i % recordsPerPage))) - recordsPerPage;
-				}
-				system("cls");
+			if (i == n) {
+				atBorder = true;
 				continue;
 			}
 			r += recordsPerPage;
+			atBorder = false;
 		}
 
 		system("cls");

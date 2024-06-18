@@ -259,6 +259,7 @@ template<typename Type>
 void TypeColumn<Type>::deleteRecords()
 {
 	values.clear();
+	setValues.clear();
 }
 
 template<typename Type>
