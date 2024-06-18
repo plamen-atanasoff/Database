@@ -21,12 +21,8 @@ bool Set::add(bool isNull)
     return true;
 }
 
-bool Set::remove(size_t number)
+bool Set::flip(size_t number)
 {
-    if (!contains(number)) {
-        return false;
-    }
-
     if (number >= maxNum)
     {
         return false;

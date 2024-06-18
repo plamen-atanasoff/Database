@@ -98,7 +98,7 @@ void Table::deleteRecords(const std::vector<size_t>& recordsPositions)
 
 void Table::updateValues(int colPos, const std::vector<size_t>& recordsPositions, const String& newVal)
 {
-	cols[colPos]->updateValues(recordsPositions, newVal);
+	cols[colPos - 1]->updateValues(recordsPositions, newVal);
 }
 
 void Table::deleteRecordsFromRecordsId(const std::vector<size_t>& recordsPositions)

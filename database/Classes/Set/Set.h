@@ -6,7 +6,7 @@
 class Set {
 public:
     bool add(bool isNull);
-    bool remove(size_t number);
+    bool flip(size_t number);
     bool contains(size_t number) const;
 private:
     std::vector<unsigned char> set;
