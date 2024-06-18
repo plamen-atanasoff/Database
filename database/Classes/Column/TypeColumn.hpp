@@ -112,10 +112,15 @@ template<typename Type>
 void TypeColumn<Type>::changeValue(size_t pos, const String& newVal)
 {
 	if (newVal == "NULL") {
-		setValues.remove(pos);
+		if (setValues.contains(pos)) {
+			setValues.flip(pos);
+		}
 	}
 	else {
 		values[pos] = convertFromString(newVal);
+		if (!setValues.contains(pos)) {
+			setValues.flip(pos);
+		}
 	}
 }
 
@@ -187,7 +192,7 @@ template<typename Type>
 void TypeColumn<Type>::deleteRecords(const std::vector<size_t>& recordsPositions)
 {
 	assert(recordsPositions.size() <= values.size());
-	// ptr is pointer to the current record to be removed,
+	// ptr is pointer to the current index in recordsPositions,
 	// i is pointer to the current valid pos,
 	// j is pointer to the current value in values
 	size_t i = 0, j = 0;
@@ -199,11 +204,17 @@ void TypeColumn<Type>::deleteRecords(const std::vector<size_t>& recordsPositions
 		}
 		else {
 			values[i] = values[j];
+			if ((setValues.contains(j) && !setValues.contains(i)) || (!setValues.contains(j) && setValues.contains(i))) {
+				setValues.flip(i);
+			}
 			i++;
 		}
 	}
 	for (; j < values.size(); j++, i++) {
 		values[i] = values[j];
+		if ((setValues.contains(j) && !setValues.contains(i)) || (!setValues.contains(j) && setValues.contains(i))) {
+			setValues.flip(i);
+		}
 	}
 
 	values.resize(i);
