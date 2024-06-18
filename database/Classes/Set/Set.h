@@ -8,6 +8,7 @@ public:
     bool add(bool isNull);
     bool flip(size_t number);
     bool contains(size_t number) const;
+    void clear();
 private:
     std::vector<unsigned char> set;
     size_t maxNum = 0;

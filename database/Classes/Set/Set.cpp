@@ -46,6 +46,12 @@ bool Set::contains(size_t number) const
     return (mask & set[bucketIndex]);
 }
 
+void Set::clear()
+{
+    set.clear();
+    maxNum = 0;
+}
+
 size_t Set::getBucketIndex(size_t number) const
 {
 	return number / bitsInByte;
