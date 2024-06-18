@@ -13,6 +13,8 @@ public:
 	static void test7();
 	static void test8();
 	static void test9();
+	static void test10();
+	static void test11();
 private:
 	static const char* FILE_PATH;
 	static Controller& controller;

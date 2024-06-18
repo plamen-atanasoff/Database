@@ -151,6 +151,32 @@ void Tests::test9()
 	controller.closeDatabase();
 }
 
+
+void Tests::test10()
+{
+	controller.loadDatabase(FILE_PATH);
+
+	createTableBigger1();
+	controller.executeCommand("print");
+
+	controller.executeCommand("select 3 NULL");
+
+	controller.closeDatabase();
+}
+
+void Tests::test11()
+{
+	controller.loadDatabase(FILE_PATH);
+
+	createTableBigger1();
+	controller.executeCommand("print");
+
+	controller.executeCommand("select_onto ResultTable [3, 2, 1, 2] 3 NULL");
+	controller.executeCommand("print");
+
+	controller.closeDatabase();
+}
+
 void Tests::createTable1()
 {
 	controller.executeCommand("create TestTable1");
