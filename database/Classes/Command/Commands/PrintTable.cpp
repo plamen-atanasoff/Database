@@ -5,29 +5,36 @@ PrintTable::PrintTable(Table* table, unsigned recordsPerPage = 2)
 
 void PrintTable::execute() const
 {
-	char command[8]{};
 	size_t i = 0, n = table->getRecordsId().size(), m = table->getColumnsSize();
-	unsigned r = recordsPerPage;
-	do {
-		printColumnInfo();
+	if (n == 0) {
+		std::cout << "Table is empty" << std::endl;
+		return;
+	}
 
-		for (; i < n; i++) {
-			if (i == r) {
-				break;
+	char command[8]{};
+	unsigned r = recordsPerPage;
+	bool atBorder = false;
+	do {
+		if (!atBorder) {
+			printColumnInfo();
+
+			for (; i < n; i++) {
+				if (i == r) {
+					break;
+				}
+				for (size_t j = 0; j < m; j++) {
+					table->getColumn(j + 1)->printValueAt(i);
+					std::cout << separator;
+				}
+				std::cout << std::endl;
 			}
-			for (size_t j = 0; j < m; j++) {
-				table->getColumn(j + 1)->printValueAt(i);
-				std::cout << separator;
-			}
-			std::cout << std::endl;
 		}
 
 		std::cout << "Enter command(prev, next, exit): ";
 		std::cin >> command;
 		if (strcmp(command, "prev") == 0) {
 			if (i == recordsPerPage) {
-				i = 0;
-				system("cls");
+				atBorder = true;
 				continue;
 			}
 			if (i % recordsPerPage == 0) {
@@ -37,19 +44,15 @@ void PrintTable::execute() const
 				i = (i + (recordsPerPage - (i % recordsPerPage))) - (size_t)2 * recordsPerPage;
 			}
 			r = (unsigned)i + recordsPerPage;
+			atBorder = false;
 		}
 		else if (strcmp(command, "next") == 0) {
-			if (i >= n) {
-				if (i % recordsPerPage == 0) {
-					i -= recordsPerPage;
-				}
-				else {
-					i = (i + (recordsPerPage - (i % recordsPerPage))) - recordsPerPage;
-				}
-				system("cls");
+			if (i == n) {
+				atBorder = true;
 				continue;
 			}
 			r += recordsPerPage;
+			atBorder = false;
 		}
 
 		system("cls");

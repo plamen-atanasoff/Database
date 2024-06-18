@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 
+#include "Commands/OtherCommands/SplitString.h"
+
 CommandFactory& CommandFactory::getFactory()
 {
 	static CommandFactory factory;
@@ -33,13 +35,13 @@ Command* CommandFactory::createCommand(const String& input, Database& database) 
 			size_t startArrInd = mInput.find_first_of('[');
 			size_t endArrInd = mInput.find_first_of(']');
 
-			tokens = splitString(mInput.substr(0, startArrInd - 1), DELIMITER);
+			tokens = SplitString::execute(mInput.substr(0, startArrInd - 1), DELIMITER);
 			tokens.insert(tokens.end(), mInput.substr(startArrInd + 1, endArrInd - startArrInd - 1));
-			std::vector<String> temp = splitString(mInput.substr(endArrInd + 2), DELIMITER);
+			std::vector<String> temp = SplitString::execute(mInput.substr(endArrInd + 2), DELIMITER);
 			tokens.insert(tokens.end(), temp.begin(), temp.end());
 		}
 		else {
-			tokens = splitString(mInput, DELIMITER);
+			tokens = SplitString::execute(mInput, DELIMITER);
 		}
 	}
 

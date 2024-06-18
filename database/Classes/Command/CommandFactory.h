@@ -28,5 +28,3 @@ private:
 
 	const CommandCreator* getCreator(CommandType type) const;
 };
-
-std::vector<String> splitString(const String& str, char delimiter);
