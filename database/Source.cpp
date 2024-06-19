@@ -27,13 +27,14 @@ constexpr const char* TABLES_FILE = "tablesInfo.dat";
 
 using String = std::string;
 
+bool commandIsLoad(const String& line) {
+	size_t commandEnd = line.find_first_of(' ');
+	return line.substr(0, commandEnd) == "load";
+}
+
 int main()
 {
-	{
-		Tests::test11();
-	}
-
-#if 0
+#if 1
 	{
 		try
 		{
@@ -46,14 +47,21 @@ int main()
 				std::getline(std::cin, line);
 				system("cls");
 
-				if (line == "exit")
+				if (line == "exit") {
 					break;
-
-				try {
-					c.executeCommand(line);
 				}
-				catch (const std::exception& e) {
-					std::cout << "Wrong command\n" << e.what() << std::endl << std::endl;
+				else if (commandIsLoad(line)) {
+					size_t commandEnd = line.find_first_of(' ');
+					String databaseFileName = line.substr(commandEnd + 1);
+					c.loadDatabase(databaseFileName);
+				}
+				else {
+					try {
+						c.executeCommand(line);
+					}
+					catch (const std::exception& e) {
+						std::cout << "Wrong command\n" << e.what() << std::endl << std::endl;
+					}
 				}
 			}
 		}

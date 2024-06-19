@@ -1,6 +1,17 @@
 #include "Database.h"
 
-Database::Database(const String& tablesInfoFilePath) : tablesInfoFilePath(tablesInfoFilePath) {}
+Database::Database(const String& tablesInfoFilePath) : tablesInfoFilePath(tablesInfoFilePath) {
+	std::fstream file(tablesInfoFilePath, std::ios::in | std::ios::out | std::ios::binary);
+	if (!file.is_open()) {
+		file.open(tablesInfoFilePath, std::ios::out | std::ios::binary);
+		file.close();
+
+		file.open(tablesInfoFilePath, std::ios::in | std::ios::out | std::ios::binary);
+		if (!file.is_open()) {
+			throw std::exception("file could not be opened");
+		}
+	}
+}
 
 std::vector<StringPair>& Database::getTablesInfo()
 {

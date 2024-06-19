@@ -47,6 +47,8 @@ String getCommandTypeAsString(CommandType type) {
 		return "saveas"; //saveas filePath
 	case CommandType::SELECT_ONTO:
 		return "select_onto";
+	case CommandType::CLOSE_DATABASE:
+		return "close";
 	}
 
 	throw std::invalid_argument("type is invalid");
