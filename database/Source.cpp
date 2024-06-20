@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <stdlib.h>
 
 #include "Classes/Controller.h"
 #include "Tests.h"
@@ -13,52 +11,19 @@
 #include <assert.h>
 #endif
 
-constexpr const char* TABLES_FILE = "tablesInfo.dat";
-
-using String = std::string;
-
-bool commandIsLoad(const String& line) {
-	size_t commandEnd = line.find_first_of(' ');
-	return line.substr(0, commandEnd) == "load";
-}
-
 int main()
 {
-#if 1
+#if 0
 	{
 		Tests::scenario1();
 	}
 #endif
-#if 0
+#if 1
 	{
 		try
 		{
 			Controller& c = Controller::getInstance();
-			String line;
-
-			while (true)
-			{
-				std::cout << "Enter command: ";
-				std::getline(std::cin, line);
-				system("cls");
-
-				if (line == "exit") {
-					break;
-				}
-				else if (commandIsLoad(line)) {
-					size_t commandEnd = line.find_first_of(' ');
-					String databaseFileName = line.substr(commandEnd + 1);
-					c.loadDatabase(databaseFileName);
-				}
-				else {
-					try {
-						c.executeCommand(line);
-					}
-					catch (const std::exception& e) {
-						std::cout << e.what() << std::endl << std::endl;
-					}
-				}
-			}
+			c.run();
 		}
 		catch (std::exception& err)
 		{

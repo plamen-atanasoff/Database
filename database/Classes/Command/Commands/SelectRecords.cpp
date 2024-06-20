@@ -2,7 +2,7 @@
 
 #include "OtherCommands/GetRecordsPositions.h"
 
-SelectRecords::SelectRecords(int colPos, const String& value, Table* table, unsigned recordsPerPage = 2)
+SelectRecords::SelectRecords(int colPos, const String& value, Table* table, unsigned recordsPerPage = 10)
 	: colPos(colPos), value(value), table(table), recordsPerPage(recordsPerPage) {}
 
 void SelectRecords::execute() const

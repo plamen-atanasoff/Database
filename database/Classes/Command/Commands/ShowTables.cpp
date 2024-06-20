@@ -5,6 +5,12 @@ ShowTables::ShowTables(const std::vector<StringPair>& tables) : tables(tables) {
 void ShowTables::execute() const
 {
 	size_t n = tables.size();
+
+	if (n == 0) {
+		std::cout << "There are no tables in the catalog" << std::endl;
+		return;
+	}
+
 	for (size_t i = 0; i < n; i++) {
 		std::cout << tables[i].tableName << '\n';
 	}

@@ -14,6 +14,41 @@ Controller& Controller::getInstance()
 	return controller;
 }
 
+void Controller::run()
+{
+	String line;
+
+	while (true)
+	{
+		std::cout << "Enter command: ";
+		std::getline(std::cin, line);
+		system("cls");
+
+		if (line == "exit") {
+			char answer;
+			std::cout << "Do you want to save the current table(y/n)?";
+			std::cin >> answer;
+			if (answer == 'y') {
+				this->executeCommand("save");
+			}
+			break;
+		}
+		else if (commandIsLoad(line)) {
+			size_t commandEnd = line.find_first_of(' ');
+			String databaseFileName = line.substr(commandEnd + 1);
+			this->loadDatabase(databaseFileName);
+		}
+		else {
+			try {
+				this->executeCommand(line);
+			}
+			catch (const std::exception& e) {
+				std::cout << e.what() << std::endl << std::endl;
+			}
+		}
+	}
+}
+
 void Controller::loadDatabase(const String& databaseFilePath)
 {
 	closeDatabase();
@@ -54,4 +89,10 @@ void Controller::free()
 {
 	delete database;
 	database = nullptr;
+}
+
+bool Controller::commandIsLoad(const String& line) const
+{
+	size_t commandEnd = line.find_first_of(' ');
+	return line.substr(0, commandEnd) == "load";
 }

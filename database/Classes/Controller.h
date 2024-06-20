@@ -12,6 +12,9 @@ class Controller
 {
 public:
 	static Controller& getInstance();
+
+	void run();
+
 	void loadDatabase(const String& databaseFilePath);
 	void closeDatabase();
 
@@ -25,4 +28,6 @@ private:
 	Controller& operator=(const Controller&) = delete;
 
 	void free();
+
+	bool commandIsLoad(const String& line) const;
 };
