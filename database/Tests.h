@@ -4,6 +4,8 @@
 
 class Tests {
 public:
+	static void scenario1();
+
 	static void test1();
 	static void test2();
 	static void test3();
@@ -20,7 +22,8 @@ private:
 	static Controller& controller;
 
 	static void createTable1();
-	static void createTableBigger1();
+	static void createTable1Bigger();
 	static void createTable2();
 	static void createTable3();
+	static void createTable3Bigger();
 };

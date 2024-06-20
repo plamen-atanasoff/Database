@@ -26,6 +26,11 @@ int main()
 {
 #if 1
 	{
+		Tests::scenario1();
+	}
+#endif
+#if 0
+	{
 		try
 		{
 			Controller& c = Controller::getInstance();
@@ -50,7 +55,7 @@ int main()
 						c.executeCommand(line);
 					}
 					catch (const std::exception& e) {
-						std::cout << "Wrong command\n" << e.what() << std::endl << std::endl;
+						std::cout << e.what() << std::endl << std::endl;
 					}
 				}
 			}

@@ -5,6 +5,16 @@
 const char* Tests::FILE_PATH = "tablesInfo.dat";
 Controller& Tests::controller = Controller::getInstance();
 
+void Tests::scenario1()
+{
+	controller.loadDatabase(FILE_PATH);
+
+	createTable3Bigger();
+	controller.executeCommand("print");
+
+	controller.closeDatabase();
+}
+
 void Tests::test1() {
 	controller.loadDatabase(FILE_PATH);
 	controller.closeDatabase();
@@ -74,7 +84,7 @@ void Tests::test6()
 {
 	controller.loadDatabase(FILE_PATH);
 
-	createTableBigger1();
+	createTable1Bigger();
 	controller.executeCommand("addcolumn Col4 string");
 
 	controller.executeCommand("update 3 NULL 4 Other");
@@ -88,7 +98,7 @@ void Tests::test7()
 {
 	controller.loadDatabase(FILE_PATH);
 
-	createTableBigger1();
+	createTable1Bigger();
 
 	controller.executeCommand("delete 3 NULL");
 
@@ -101,7 +111,7 @@ void Tests::test8()
 {
 	controller.loadDatabase(FILE_PATH);
 
-	createTableBigger1();
+	createTable1Bigger();
 	controller.executeCommand("saveas TestTableBigger1.dat");
 	controller.executeCommand("import TestTableBigger1.dat");
 	
@@ -156,7 +166,7 @@ void Tests::test10()
 {
 	controller.loadDatabase(FILE_PATH);
 
-	createTableBigger1();
+	createTable1Bigger();
 	controller.executeCommand("print");
 
 	controller.executeCommand("select 3 NULL");
@@ -168,7 +178,7 @@ void Tests::test11()
 {
 	controller.loadDatabase(FILE_PATH);
 
-	createTableBigger1();
+	createTable1Bigger();
 	controller.executeCommand("print");
 
 	controller.executeCommand("select_onto ResultTable [3, 2, 1, 2] 3 NULL");
@@ -188,7 +198,7 @@ void Tests::createTable1()
 	controller.executeCommand("insert 56 10.567 Name");
 }
 
-void Tests::createTableBigger1()
+void Tests::createTable1Bigger()
 {
 	createTable1();
 	controller.executeCommand("insert 89 60.567 NULL");
@@ -224,4 +234,34 @@ void Tests::createTable3()
 	controller.executeCommand("insert Someone Else Silistra 45 3.23");
 	controller.executeCommand("insert Petq Georgieva Pleven 17 6");
 	controller.executeCommand("insert Stoqn Petkov Plovdiv 99 5.45");
+}
+
+void Tests::createTable3Bigger() {
+	createTable3();
+
+	controller.executeCommand("insert John Smith NewYork 24 3.5");
+	controller.executeCommand("insert Jane Doe LosAngeles 22 4.0");
+	controller.executeCommand("insert Michael Johnson Chicago 30 2.8");
+	controller.executeCommand("insert Emily Brown Houston 28 3.7");
+	controller.executeCommand("insert David Jones Phoenix 21 4.2");
+	controller.executeCommand("insert Sarah Garcia Philadelphia 26 3.9");
+	controller.executeCommand("insert Robert Miller SanAntonio 23 4.5");
+	controller.executeCommand("insert Jessica Davis SanDiego 29 3.3");
+	controller.executeCommand("insert Daniel Martinez Dallas 25 3.8");
+	controller.executeCommand("insert Laura Rodriguez SanJose 27 4.1");
+	controller.executeCommand("insert James Wilson Austin 31 2.9");
+	controller.executeCommand("insert Linda Martinez Jacksonville 32 4.6");
+	controller.executeCommand("insert Thomas Anderson SanFrancisco 22 3.2");
+	controller.executeCommand("insert Barbara Thomas Columbus 24 4.0");
+	controller.executeCommand("insert Paul Hernandez FortWorth 26 3.4");
+	controller.executeCommand("insert Nancy Lopez Charlotte 28 3.6");
+	controller.executeCommand("insert Mark Harris Detroit 30 3.1");
+	controller.executeCommand("insert Lisa Clark ElPaso 21 4.3");
+	controller.executeCommand("insert Steven Lewis Denver 27 3.5");
+	controller.executeCommand("insert Karen Walker Seattle 25 3.7");
+	controller.executeCommand("insert Kevin Hall Boston 29 4.2");
+	controller.executeCommand("insert Mary Allen Washington 32 3.0");
+	controller.executeCommand("insert Richard Young Memphis 28 3.8");
+	controller.executeCommand("insert Patricia King Nashville 24 4.1");
+	controller.executeCommand("insert Christopher Wright Portland 26 3.9");
 }

@@ -1,6 +1,6 @@
 #include "PrintTable.h"
 
-PrintTable::PrintTable(Table* table, unsigned recordsPerPage = 2) 
+PrintTable::PrintTable(Table* table, unsigned recordsPerPage = 10) 
 	: table(table), recordsPerPage(recordsPerPage) {}
 
 void PrintTable::execute() const
