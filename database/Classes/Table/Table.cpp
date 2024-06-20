@@ -63,7 +63,7 @@ void Table::writeToFile(std::ofstream& ofile) const
 	ofile.write(reinterpret_cast<const char*>(recordsId.data()), sizeof(unsigned) * sizeRecords);
 	size_t sizeColumns = cols.size();
 	ofile.write(reinterpret_cast<const char*>(&sizeColumns), sizeof(sizeColumns));
-	for (int i = 0; i < sizeColumns; i++) {
+	for (size_t i = 0; i < sizeColumns; i++) {
 		cols[i]->writeToFile(ofile);
 	}
 }
@@ -81,7 +81,7 @@ void Table::readFromFile(std::ifstream& ifile)
 	ifile.read(reinterpret_cast<char*>(&sizeColumns), sizeof(sizeColumns));
 	free();
 	cols.resize(sizeColumns);
-	for (int i = 0; i < sizeColumns; i++) {
+	for (size_t i = 0; i < sizeColumns; i++) {
 		cols[i] = ColumnFactory::getFactory().readColumnFromStream(ifile);
 		cols[i]->readFromFile(ifile);
 	}
@@ -163,14 +163,14 @@ std::vector<String> Table::getRecordValues(size_t recPos, const std::vector<int>
 void Table::copyFrom(const Table& other)
 {
 	cols.reserve(other.cols.size());
-	int i = 0;
+	size_t i = 0;
 	try {
 		for (; i < other.cols.size(); i++) {
 			cols.push_back(other.cols[i]->clone());
 		}
 	}
 	catch (const std::bad_alloc&) {
-		for (int j = 0; j < i; j++) {
+		for (size_t j = 0; j < i; j++) {
 			delete cols[i];
 		}
 	}
@@ -182,7 +182,7 @@ void Table::copyFrom(const Table& other)
 
 void Table::free()
 {
-	for (int i = 0; i < cols.size(); i++) {
+	for (size_t i = 0; i < cols.size(); i++) {
 		delete cols[i];
 	}
 

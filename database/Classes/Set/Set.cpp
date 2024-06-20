@@ -70,7 +70,7 @@ std::ostream& operator<<(std::ostream& os, const Set& set)
     unsigned char last = 1 << (bitsInByte - 1);
 
     os << "{ ";
-    for (int i = 0; i < bucketsCount; i++)
+    for (size_t i = 0; i < bucketsCount; i++)
     {
         for (unsigned char j = 1; j <= last && j != 0; j <<= 1)
         {

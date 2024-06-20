@@ -102,7 +102,7 @@ void TypeColumn<Type>::initializeValues(size_t recordsCount)
 	values.resize(recordsCount);
 
 	//there is a better way to do this
-	for (int i = 1; i <= recordsCount; i++) {
+	for (size_t i = 1; i <= recordsCount; i++) {
 		setValues.add(true);
 	}
 }

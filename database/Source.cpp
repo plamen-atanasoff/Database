@@ -1,16 +1,6 @@
-#include "Classes/Column/ColumnFactory.h"
-#include "Classes/Column/ColumnType.h"
-#include "Classes/Set/Set.h"
-#include "Classes/Command/Command.h"
-#include "Classes/Command/Commands/SaveTableAs.h"
-#include "Classes/Command/Commands/ReadIntoTable.h"
-#include "Classes/Column/TypeColumn.hpp"
-
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <stdlib.h> // TODO: ask is it's okay to use <stdlib.h>(to clear console), <iomanip>(to print table columns better),
-// <limits>(to mark null for int and double), <sstream>(for splitting strings by ' ' easily) and <cassert>(for asserting certain invariants)
+#include <stdlib.h>
 
 #include "Classes/Controller.h"
 #include "Tests.h"
