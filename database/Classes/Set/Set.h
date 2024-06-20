@@ -17,4 +17,6 @@ private:
     unsigned char getMask(size_t number) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Set& set);
+
+    static constexpr unsigned short DEFAULT_STATE = 0;
 };

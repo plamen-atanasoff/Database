@@ -8,7 +8,7 @@ Database::Database(const String& tablesInfoFilePath) : tablesInfoFilePath(tables
 
 		file.open(tablesInfoFilePath, std::ios::in | std::ios::out | std::ios::binary);
 		if (!file.is_open()) {
-			throw std::exception("file could not be opened");
+			throw std::exception(FILE_COULD_NOT_BE_OPENED_MESSAGE);
 		}
 	}
 }

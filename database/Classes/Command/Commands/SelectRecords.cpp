@@ -32,13 +32,13 @@ void SelectRecords::execute() const
 				}
 				std::cout << std::endl;
 			}
+			std::cout << "Page " << r / recordsPerPage << std::endl;
 		}
 		
-		std::cout << "Page " << r / recordsPerPage << std::endl;
 		std::cout << "Enter command(prev, next, exit): ";
 		std::cin >> command;
 		if (strcmp(command, "prev") == 0) {
-			if (i == recordsPerPage) {
+			if (i == recordsPerPage || (i == n && r == recordsPerPage)) {
 				atBorder = true;
 				continue;
 			}
@@ -63,6 +63,11 @@ void SelectRecords::execute() const
 		system("cls");
 	} while (strcmp(command, "exit") != 0);
 	std::cin.ignore();
+}
+
+Command* SelectRecords::clone() const
+{
+	return new SelectRecords(*this);
 }
 
 void SelectRecords::printColumnInfo() const

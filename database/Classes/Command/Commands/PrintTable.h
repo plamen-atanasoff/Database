@@ -10,6 +10,7 @@ public:
 	PrintTable(Table* table, unsigned recordsPerPage);
 
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	Table* table = nullptr;
 	const unsigned recordsPerPage;

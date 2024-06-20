@@ -9,20 +9,13 @@
 #include "../Column/Columns/IntColumn.h"
 
 using String = std::string;
-using PrimaryKeyColumn = std::vector<unsigned>;
 using ColumnArray = std::vector<Column*>;
-
-// name,
-// nextRecordId,
-// recordsId: size, elements,
-// cols: size,
-// col: type, name, values: size, elements
 
 class Table
 {
 public:
 	Table() : Table(DEFAULT_NAME) {}
-	Table(const String& name);
+	Table(const char* name);
 	Table(const Table& other);
 	Table& operator=(const Table& other);
 	~Table();
@@ -34,10 +27,10 @@ public:
 	void readFromFile(std::ifstream& ifile);
 
 	void deleteRecords(const std::vector<size_t>& recordsPositions);
-	void updateValues(int colPos, const std::vector<size_t>& recordsPositions, const String& newVal);
+	void updateValues(size_t colPos, const std::vector<size_t>& recordsPositions, const String& newVal);
 
 	const char* getName() const;
-	const PrimaryKeyColumn& getRecordsId() const;
+	size_t getRecordsCount() const;
 	const Column* getColumn(size_t pos) const;
 	size_t getColumnsSize() const;
 
@@ -45,14 +38,15 @@ public:
 private:
 	static constexpr int MAX_NAME_LENGTH = 33;
 	static constexpr const char* DEFAULT_NAME = "NoName";
+	static constexpr const char* INVALID_INDEX_MESSAGE = "invalid index";
+	static constexpr const char* INVALID_ARGUMENTS_COUNT_MESSAGE = "invalid arguments count";
+	static constexpr const char* IS_EMPTY_MESSAGE = "name cannot be empty";
+	static constexpr const char* IS_TOO_LONG_MESSAGE = "name length must be less than ";
 
 	char name[MAX_NAME_LENGTH]{};
-	unsigned nextRecordId = 0;
-	PrimaryKeyColumn recordsId;
+	size_t recordsCount = 0;
 	ColumnArray cols;
 
 	void copyFrom(const Table& other);
 	void free();
-
-	void deleteRecordsFromRecordsId(const std::vector<size_t>& recordsPositions);
 };

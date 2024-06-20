@@ -7,6 +7,7 @@ public:
 	CloseDatabase() = default;
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 };
 
 class CloseDatabaseCreator : public CommandCreator {

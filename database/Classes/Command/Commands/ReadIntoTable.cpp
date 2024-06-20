@@ -15,6 +15,11 @@ void ReadIntoTable::execute() const
 	ifile.close();
 }
 
+Command* ReadIntoTable::clone() const
+{
+	return new ReadIntoTable(*this);
+}
+
 ReadIntoTableCreator::ReadIntoTableCreator() : CommandCreator(CommandType::READ_TABLE) {}
 
 Command* ReadIntoTableCreator::create(const std::vector<String>& args, Database& database) const

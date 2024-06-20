@@ -12,6 +12,11 @@ void AddColumn::execute() const
 	delete column;
 }
 
+Command* AddColumn::clone() const
+{
+	return new AddColumn(*this);
+}
+
 AddColumnCreator::AddColumnCreator() : CommandCreator(CommandType::ADD_COLUMN) {}
 
 Command* AddColumnCreator::create(const std::vector<String>& args, Database& database) const

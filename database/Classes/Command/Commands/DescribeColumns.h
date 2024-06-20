@@ -7,6 +7,7 @@ public:
 	DescribeColumns(Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	Table* table = nullptr;
 

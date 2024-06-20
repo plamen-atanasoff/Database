@@ -5,7 +5,9 @@
 class CreateTable : public Command {
 public:
 	CreateTable(const String& name, Table* table);
+
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	String name;
 	Table* table = nullptr;

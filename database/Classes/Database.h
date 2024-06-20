@@ -22,16 +22,18 @@ struct StringPair {
 private:
 	void validate(const char* str, const char* fieldName) {
 		if (str == nullptr || strlen(str) == 0) {
-			throw std::invalid_argument(String(fieldName) + " cannot be empty");
+			throw std::invalid_argument(String(fieldName) + IS_EMPTY_MESSAGE);
 		}
 
 		if (std::strlen(str) >= MAX_SIZE_STRING) {
-			throw std::invalid_argument(String(fieldName) + " length must be less than " + std::to_string(MAX_SIZE_STRING));
+			throw std::invalid_argument(String(fieldName) + IS_TOO_LONG_MESSAGE + std::to_string(MAX_SIZE_STRING));
 		}
 	}
 
 	static constexpr const char* TABLE_NAME = "tableName";
 	static constexpr const char* FILE_NAME = "fileName";
+	static constexpr const char* IS_EMPTY_MESSAGE = " cannot be empty";
+	static constexpr const char* IS_TOO_LONG_MESSAGE = " length must be less than ";
 };
 
 class Database
@@ -45,5 +47,7 @@ private:
 	std::vector<StringPair> tablesInfo;
 	Table table;
 	String tablesInfoFilePath;
+
+	static constexpr const char* FILE_COULD_NOT_BE_OPENED_MESSAGE = "file could not be opened";
 };
 

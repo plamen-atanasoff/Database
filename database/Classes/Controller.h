@@ -30,4 +30,6 @@ private:
 	void free();
 
 	bool commandIsLoad(const String& line) const;
+
+	static constexpr const char* DATABASE_NOT_LOADED_MESSAGE = "Database is not loaded";
 };

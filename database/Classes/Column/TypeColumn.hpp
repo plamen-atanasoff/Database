@@ -9,7 +9,6 @@
 template <typename Type>
 class TypeColumn : public Column {
 public:
-	// is there a way to see the type of the template variable?
 	TypeColumn(const String& name, ColumnType type);
 
 	virtual bool hasValue(size_t pos) const override;
@@ -27,8 +26,6 @@ public:
 
 	virtual void deleteRecords(const std::vector<size_t>& recordsPositions) override;
 	virtual void updateValues(const std::vector<size_t>& recordsPositions, const String& newVal) override;
-
-	//virtual std::vector<int> getRecordsPositions(const String& val) const override;
 
 	virtual void initializeValues(size_t recordsCount) override;
 	virtual void deleteRecords() override;
@@ -84,8 +81,6 @@ void TypeColumn<Type>::addValue(const String& val)
 	if (val == "NULL") {
 		values.push_back(Type());
 		setValues.add(true);
-		//REMOVE THIS
-		std::cout << name << ": " << setValues << std::endl;
 	}
 	else {
 		addValueType(convertFromString(val));
@@ -101,13 +96,11 @@ void TypeColumn<Type>::initializeValues(size_t recordsCount)
 	values.reserve(recordsCount);
 	values.resize(recordsCount);
 
-	//there is a better way to do this
 	for (size_t i = 1; i <= recordsCount; i++) {
 		setValues.add(true);
 	}
 }
 
-//TEST THIS
 template<typename Type>
 void TypeColumn<Type>::changeValue(size_t pos, const String& newVal)
 {
@@ -147,7 +140,6 @@ template<typename Type>
 void TypeColumn<Type>::readFromFile(std::ifstream& ifile)
 {
 	assert(ifile.good());
-	// move to base class
 	ifile.read(reinterpret_cast<char*>(&width), sizeof(width));
 
 	size_t size;
@@ -173,7 +165,6 @@ template<typename Type>
 void TypeColumn<Type>::writeToFile(std::ofstream& ofile) const
 {
 	assert(ofile.good());
-	// move to base class
 	int type = static_cast<int>(getType());
 	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
 	ofile.write(getName(), MAX_NAME_LENGTH);
@@ -223,37 +214,11 @@ void TypeColumn<Type>::deleteRecords(const std::vector<size_t>& recordsPositions
 template<typename Type>
 void TypeColumn<Type>::updateValues(const std::vector<size_t>& recordsPositions, const String& newVal)
 {
-	// make validations
 	for (size_t pos : recordsPositions) {
 		assert(pos < values.size());
 		changeValue(pos, newVal);
 	}
 }
-
-//template<typename Type>
-//std::vector<int> TypeColumn<Type>::getRecordsPositions(const String& val) const
-//{
-//	std::vector<int> res;
-//
-//	if (val == "NULL") {
-//		for (int i = 0; i < values.size(); i++) {
-//			if (!setValues.contains(i)) {
-//				res.push_back(i);
-//			}
-//		}
-//	}
-//	else {
-//		Type value = convert(val);
-//
-//		for (int i = 0; i < values.size(); i++) {
-//			if (setValues.contains(i) && values[i] == value) {
-//				res.push_back(i);
-//			}
-//		}
-//	}
-//
-//	return res;
-//}
 
 template<typename Type>
 void TypeColumn<Type>::deleteRecords()
@@ -267,7 +232,4 @@ void TypeColumn<Type>::addValueType(const Type& val)
 {
 	values.push_back(val);
 	setValues.add(false);
-
-	//REMOVE THIS
-	std::cout << name << ": " << setValues << std::endl;
 }

@@ -7,6 +7,7 @@ public:
 	ExportTable(const String& filePath, Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	String filePath;
 	Table* table = nullptr;

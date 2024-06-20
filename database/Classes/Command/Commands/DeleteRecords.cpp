@@ -11,6 +11,11 @@ void DeleteRecords::execute() const
 	table->deleteRecords(recordsPositions);
 }
 
+Command* DeleteRecords::clone() const
+{
+	return new DeleteRecords(*this);
+}
+
 DeleteRecordsCreator::DeleteRecordsCreator() : CommandCreator(CommandType::DELETE_RECORDS) {}
 
 Command* DeleteRecordsCreator::create(const std::vector<String>& args, Database& database) const

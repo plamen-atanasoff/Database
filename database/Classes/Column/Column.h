@@ -12,7 +12,7 @@ class Column {
 public:
 	Column(const String& name, ColumnType type, size_t width) : type(type) {
 		strcpy_s(this->name, name.c_str());
-		if (width <= 16) {
+		if (width <= MAX_COLUMN_WIDTH) {
 			this->width = width;
 		}
 	}
@@ -32,7 +32,6 @@ public:
 	virtual void writeToFile(std::ofstream& ofile) const = 0;
 	virtual void readFromFile(std::ifstream& ifile) = 0;
 
-	//virtual std::vector<int> getRecordsPositions(const String& val) const = 0;
 	virtual void deleteRecords(const std::vector<size_t>& recordsPositions) = 0;
 	virtual void updateValues(const std::vector<size_t>& recordsPositions, const String& newVal) = 0;
 
@@ -43,8 +42,10 @@ public:
 	const char* getName() const { return name; }
 	size_t getWidth() const { return width; }
 	virtual size_t getSize() const = 0;
-protected:
+
 	static constexpr int MAX_NAME_LENGTH = 33;
+	static constexpr int MAX_COLUMN_WIDTH = 16;
+protected:
 	ColumnType type;
 	char name[MAX_NAME_LENGTH]{};
 	size_t width = 8;

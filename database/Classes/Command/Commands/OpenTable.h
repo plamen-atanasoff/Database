@@ -7,6 +7,7 @@ public:
 	OpenTable(const String& tableName, const std::vector<StringPair>& tables, Table* table);
 
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	String tableName;
 	const std::vector<StringPair>& tables;

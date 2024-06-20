@@ -12,6 +12,7 @@ public:
 	ReadIntoTable(const String& fileName, Table* table);
 
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	String fileName;
 	Table* table = nullptr;

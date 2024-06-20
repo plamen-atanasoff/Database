@@ -7,6 +7,7 @@ public:
 	AddRecord(const std::vector<String>& args, Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	const std::vector<String> args;
 	Table* table = nullptr;

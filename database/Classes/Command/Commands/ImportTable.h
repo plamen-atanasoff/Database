@@ -6,6 +6,7 @@ class ImportTable : public Command {
 public:
 	ImportTable(const String& fileName, std::vector<StringPair>& tables, Table* table, const String& tablesFileName);
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	String fileName;
 	std::vector<StringPair>& tables;

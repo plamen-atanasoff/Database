@@ -4,7 +4,12 @@ CreateTable::CreateTable(const String& name, Table* table) : name(name), table(t
 
 void CreateTable::execute() const
 {
-    *table = Table(name);
+    *table = Table(name.c_str());
+}
+
+Command* CreateTable::clone() const
+{
+    return new CreateTable(*this);
 }
 
 CreateTableCreator::CreateTableCreator() : CommandCreator(CommandType::CREATE_TABLE) {}

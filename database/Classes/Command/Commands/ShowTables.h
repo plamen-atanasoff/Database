@@ -7,6 +7,7 @@ public:
 	ShowTables(const std::vector<StringPair>& tables);
 
 	virtual void execute() const override;
+	virtual Command* clone() const override;
 private:
 	const std::vector<StringPair>& tables;
 };

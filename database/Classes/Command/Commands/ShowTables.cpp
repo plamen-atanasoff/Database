@@ -17,6 +17,11 @@ void ShowTables::execute() const
 	std::cout << std::endl;
 }
 
+Command* ShowTables::clone() const 
+{
+	return new ShowTables(*this);
+}
+
 ShowTablesCreator::ShowTablesCreator() : CommandCreator(CommandType::SHOW_TABLES) {}
 
 Command* ShowTablesCreator::create(const std::vector<String>& args, Database& database) const

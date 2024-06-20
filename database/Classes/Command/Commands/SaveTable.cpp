@@ -20,6 +20,11 @@ void SaveTable::execute() const
 	ofile.close();
 }
 
+Command* SaveTable::clone() const
+{
+	return new SaveTable(*this);
+}
+
 SaveTableCreator::SaveTableCreator() : CommandCreator(CommandType::SAVE_TABLE) {}
 
 Command* SaveTableCreator::create(const std::vector<String>& args, Database& database) const

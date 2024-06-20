@@ -10,10 +10,9 @@ class Command {
 public:
 	virtual ~Command() = default;
 	virtual void execute() const = 0;
-	// create clone method
+	virtual Command* clone() const = 0;
 };
 
-//put this in private Command?(to avoid creating clone() method)
 class CommandCreator {
 public:
 	CommandCreator(CommandType type);

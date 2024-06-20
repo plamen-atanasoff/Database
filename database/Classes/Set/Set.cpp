@@ -1,14 +1,14 @@
 #include "Set.h"
 
 namespace {
-	constexpr unsigned short bitsInByte = 8;
+    constexpr unsigned short BITS_IN_BYTE = 8;
 }
 
 bool Set::add(bool isNull)
 {
-    if (maxNum >= set.size() * bitsInByte)
+    if (maxNum >= set.size() * BITS_IN_BYTE)
     {
-        set.push_back(0);
+        set.push_back(DEFAULT_STATE);
     }
 
     if (!isNull) {
@@ -54,20 +54,20 @@ void Set::clear()
 
 size_t Set::getBucketIndex(size_t number) const
 {
-	return number / bitsInByte;
+	return number / BITS_IN_BYTE;
 }
 
 unsigned char Set::getMask(size_t number) const
 {
-    unsigned short indInBucket = number % bitsInByte;
-    unsigned char mask = 1<<indInBucket;
+    unsigned short indInBucket = number % BITS_IN_BYTE;
+    unsigned char mask = 1 << indInBucket;
     return mask;
 }
 
 std::ostream& operator<<(std::ostream& os, const Set& set)
 {
     size_t bucketsCount = set.set.size();
-    unsigned char last = 1 << (bitsInByte - 1);
+    unsigned char last = 1 << (BITS_IN_BYTE - 1);
 
     os << "{ ";
     for (size_t i = 0; i < bucketsCount; i++)

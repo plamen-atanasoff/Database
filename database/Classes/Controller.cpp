@@ -67,7 +67,7 @@ void Controller::closeDatabase()
 void Controller::executeCommand(const String& input)
 {
 	if (!database) {
-		throw std::exception("Database is not loaded");
+		throw std::exception(DATABASE_NOT_LOADED_MESSAGE);
 	}
 	
 	Command* command = nullptr;

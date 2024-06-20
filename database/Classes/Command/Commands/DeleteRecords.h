@@ -7,6 +7,7 @@ public:
 	DeleteRecords(int colPos, const String& value, Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	int colPos;
 	String value;

@@ -7,6 +7,7 @@ public:
 	AddColumn(const String& name, ColumnType type, Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	String name;
 	ColumnType type;

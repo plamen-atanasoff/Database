@@ -10,7 +10,6 @@ Column* StringColumn::clone() const
 void StringColumn::readFromFile(std::ifstream& ifile)
 {
 	assert(ifile.good());
-	// move to base class
 	ifile.read(reinterpret_cast<char*>(&width), sizeof(width));
 
 	size_t size;
@@ -38,7 +37,6 @@ void StringColumn::readFromFile(std::ifstream& ifile)
 void StringColumn::writeToFile(std::ofstream& ofile) const
 {
 	assert(ofile.good());
-	// move to base class
 	int type = static_cast<int>(getType());
 	ofile.write(reinterpret_cast<const char*>(&type), sizeof(type));
 	ofile.write(getName(), MAX_NAME_LENGTH);

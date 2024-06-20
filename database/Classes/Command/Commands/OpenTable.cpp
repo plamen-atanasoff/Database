@@ -17,6 +17,11 @@ void OpenTable::execute() const
 	command.execute();
 }
 
+Command* OpenTable::clone() const
+{
+	return new OpenTable(*this);
+}
+
 OpenTableCreator::OpenTableCreator() : CommandCreator(CommandType::OPEN_TABLE) {}
 
 Command* OpenTableCreator::create(const std::vector<String>& args, Database& database) const

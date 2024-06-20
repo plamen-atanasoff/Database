@@ -9,14 +9,18 @@ SelectOnto::SelectOnto(const String& resultTableName, const std::vector<int>& co
 
 void SelectOnto::execute() const
 {
-	Table resTable(resultTableName);
+	Table resTable(resultTableName.c_str());
 
 	for (size_t i = 0; i < columnsInd.size(); i++) {
-		//find a better way to add columns
 		Column* curCol = table->getColumn(columnsInd[i])->clone();
 		curCol->deleteRecords();
-		resTable.addColumn(*curCol); // add try catch if you leave it like this
-		delete curCol;
+		try {
+			resTable.addColumn(*curCol);
+		}
+		catch (const std::exception&) {
+			delete curCol;
+			throw;
+		}
 	}
 
 	std::vector<size_t> recordsPositions = GetRecordsPositions::execute(table->getColumn(searchColInd), value);
@@ -27,6 +31,11 @@ void SelectOnto::execute() const
 	}
 
 	*table = resTable;
+}
+
+Command* SelectOnto::clone() const
+{
+	return new SelectOnto(*this);
 }
 
 SelectOntoCreator::SelectOntoCreator() : CommandCreator(CommandType::SELECT_ONTO) {}

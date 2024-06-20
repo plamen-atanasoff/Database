@@ -13,6 +13,11 @@ void SaveTableAs::execute() const
 	ofile.close();
 }
 
+Command* SaveTableAs::clone() const
+{
+	return new SaveTableAs(*this);
+}
+
 SaveTableAsCreator::SaveTableAsCreator() : CommandCreator(CommandType::SAVE_TABLE_TO_FILE) {}
 
 Command* SaveTableAsCreator::create(const std::vector<String>& args, Database& database) const

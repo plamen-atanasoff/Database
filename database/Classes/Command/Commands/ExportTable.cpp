@@ -9,7 +9,7 @@ void ExportTable::execute() const
 		return;
 	}
 
-	size_t n = table->getColumnsSize(), m = table->getRecordsId().size();
+	size_t n = table->getColumnsSize(), m = table->getRecordsCount();
 	for (size_t i = 0; i < n; i++) {
 		ofile << std::setw(table->getColumn(i + 1)->getWidth()) << table->getColumn(i + 1)->getName() << separator;
 	}
@@ -24,6 +24,11 @@ void ExportTable::execute() const
 	}
 
 	ofile.close();
+}
+
+Command* ExportTable::clone() const
+{
+	return new ExportTable(*this);
 }
 
 ExportTableCreator::ExportTableCreator() : CommandCreator(CommandType::EXPORT_TABLE) {}

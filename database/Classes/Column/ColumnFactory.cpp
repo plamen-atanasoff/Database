@@ -15,9 +15,6 @@ void ColumnFactory::addCreator(const ColumnCreator& creator)
 	creators[size++] = &creator;
 }
 
-// move this from ColumnFactory to another file
-std::vector<String> splitString(const String& input, char delimiter);
-
 Column* ColumnFactory::createColumn(const String& name, ColumnType type) const
 {
 	const ColumnCreator* creator = getCreator(type);
@@ -34,11 +31,11 @@ Column* ColumnFactory::readColumnFromStream(std::istream& is)
 {
 	assert(is.good());
 
-	char name[33]; // remove magic number, set same as Column MAX_SIZE_NAME
+	char name[Column::MAX_NAME_LENGTH];
 	int type;
 
 	is.read(reinterpret_cast<char*>(&type), sizeof(type));
-	is.read(reinterpret_cast<char*>(name), 33); // remove magic number, set same as Column MAX_SIZE_NAME
+	is.read(reinterpret_cast<char*>(name), Column::MAX_NAME_LENGTH);
 
 	ColumnType cType = static_cast<ColumnType>(type);
 

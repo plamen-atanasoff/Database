@@ -5,7 +5,7 @@ PrintTable::PrintTable(Table* table, unsigned recordsPerPage = 10)
 
 void PrintTable::execute() const
 {
-	size_t i = 0, n = table->getRecordsId().size(), m = table->getColumnsSize();
+	size_t i = 0, n = table->getRecordsCount(), m = table->getColumnsSize();
 	if (n == 0) {
 		std::cout << "Table is empty" << std::endl;
 		return;
@@ -28,13 +28,13 @@ void PrintTable::execute() const
 				}
 				std::cout << std::endl;
 			}
+			std::cout << "Page " << r / recordsPerPage << std::endl;
 		}
 
-		std::cout << "Page " << r / recordsPerPage << std::endl;
 		std::cout << "Enter command(prev, next, exit): ";
 		std::cin >> command;
 		if (strcmp(command, "prev") == 0) {
-			if (i == recordsPerPage) {
+			if (i == recordsPerPage || (i == n && r == recordsPerPage)) {
 				atBorder = true;
 				continue;
 			}
@@ -59,6 +59,11 @@ void PrintTable::execute() const
 		system("cls");
 	} while (strcmp(command, "exit") != 0);
 	std::cin.ignore();
+}
+
+Command* PrintTable::clone() const
+{
+	return new PrintTable(*this);
 }
 
 void PrintTable::printColumnInfo() const

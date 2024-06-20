@@ -11,6 +11,11 @@ void UpdateRecords::execute() const
 	table->updateValues(colPosTo, recordsPositions, newValue);
 }
 
+Command* UpdateRecords::clone() const
+{
+	return new UpdateRecords(*this);
+}
+
 UpdateRecordsCreator::UpdateRecordsCreator() : CommandCreator(CommandType::UPDATE_RECORDS) {}
 
 Command* UpdateRecordsCreator::create(const std::vector<String>& args, Database& database) const

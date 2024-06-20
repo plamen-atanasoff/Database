@@ -7,6 +7,7 @@ public:
 	SaveTableAs(const String& fileName, const Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	String fileName;
 	const Table* table = nullptr;

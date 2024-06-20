@@ -16,7 +16,6 @@ void ImportTable::execute() const
 		throw std::exception("file could not be opened");
 	}
 
-	// is there a better way to check if a table file is correct?
 	Table* tableTemp = new Table();
 	tableTemp->readFromFile(ifile);
 
@@ -27,6 +26,11 @@ void ImportTable::execute() const
 
 	delete tableTemp;
 	ifile.close();
+}
+
+Command* ImportTable::clone() const
+{
+	return new ImportTable(*this);
 }
 
 bool ImportTable::fileNameExists() const

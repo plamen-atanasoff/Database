@@ -7,6 +7,7 @@ public:
 	UpdateRecords(int colPosFrom, const String& value, int colPosTo, const String& newValue, Table* table);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	int colPosFrom;
 	String value;

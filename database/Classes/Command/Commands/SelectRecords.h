@@ -7,6 +7,7 @@ public:
 	SelectRecords(int colPos, const String& value, Table* table, unsigned recordsPerPage);
 
 	virtual void execute() const;
+	virtual Command* clone() const override;
 private:
 	int colPos;
 	String value;

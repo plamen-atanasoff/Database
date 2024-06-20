@@ -14,6 +14,11 @@ void DescribeColumns::execute() const
 	std::cout << std::endl;
 }
 
+Command* DescribeColumns::clone() const
+{
+	return new DescribeColumns(*this);
+}
+
 DescribeColumnsCreator::DescribeColumnsCreator() : CommandCreator(CommandType::DESCRIBE_COLUMNS) {}
 
 Command* DescribeColumnsCreator::create(const std::vector<String>& args, Database& database) const

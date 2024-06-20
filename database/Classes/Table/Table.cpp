@@ -7,19 +7,24 @@
 #include "../Column/ColumnFactory.h"
 #include "../Command/Commands/OtherCommands/GetRecordsPositions.h"
 
-Table::Table(const String& name)
+Table::Table(const char* name)
 {
-	// add validation of name
-	strcpy_s(this->name,  name.c_str());
+	if (name == nullptr || strlen(name) == 0) {
+		throw std::invalid_argument(IS_EMPTY_MESSAGE);
+	}
+
+	if (std::strlen(name) >= MAX_NAME_LENGTH) {
+		throw std::invalid_argument(IS_TOO_LONG_MESSAGE + std::to_string(MAX_NAME_LENGTH));
+	}
+
+	strcpy_s(this->name,  name);
 }
 
-// currently only weak exception safety
 Table::Table(const Table& other)
 {
 	copyFrom(other);
 }
 
-// currently only weak exception safety
 Table& Table::operator=(const Table& other)
 {
 	if (this != &other) {
@@ -38,29 +43,26 @@ Table::~Table()
 void Table::addRecord(const std::vector<String>& values)
 {
 	if (values.size() != cols.size()) {
-		throw std::exception("invalid arguments count");
+		throw std::exception(INVALID_ARGUMENTS_COUNT_MESSAGE);
 	}
 
 	for (size_t i = 0; i < cols.size(); i++) {
 		cols[i]->addValue(values[i]);
 	}
 
-	recordsId.push_back(nextRecordId++);
+	recordsCount++;
 }
 
 void Table::addColumn(const Column& col)
 {
 	cols.push_back(col.clone());
-	cols.back()->initializeValues(recordsId.size());
+	cols.back()->initializeValues(recordsCount);
 }
 
 void Table::writeToFile(std::ofstream& ofile) const
 {
 	ofile.write(name, MAX_NAME_LENGTH);
-	ofile.write(reinterpret_cast<const char*>(&nextRecordId), sizeof(nextRecordId));
-	size_t sizeRecords = recordsId.size();
-	ofile.write(reinterpret_cast<const char*>(&sizeRecords), sizeof(sizeRecords));
-	ofile.write(reinterpret_cast<const char*>(recordsId.data()), sizeof(unsigned) * sizeRecords);
+	ofile.write(reinterpret_cast<const char*>(&recordsCount), sizeof(recordsCount));
 	size_t sizeColumns = cols.size();
 	ofile.write(reinterpret_cast<const char*>(&sizeColumns), sizeof(sizeColumns));
 	for (size_t i = 0; i < sizeColumns; i++) {
@@ -71,12 +73,7 @@ void Table::writeToFile(std::ofstream& ofile) const
 void Table::readFromFile(std::ifstream& ifile)
 {
 	ifile.read(name, MAX_NAME_LENGTH);
-	ifile.read(reinterpret_cast<char*>(&nextRecordId), sizeof(nextRecordId));
-	size_t sizeRecords;
-	ifile.read(reinterpret_cast<char*>(&sizeRecords), sizeof(sizeRecords));
-	recordsId.clear();
-	recordsId.resize(sizeRecords);
-	ifile.read(reinterpret_cast<char*>(recordsId.data()), sizeof(unsigned) * sizeRecords);
+	ifile.read(reinterpret_cast<char*>(&recordsCount), sizeof(recordsCount));
 	size_t sizeColumns;
 	ifile.read(reinterpret_cast<char*>(&sizeColumns), sizeof(sizeColumns));
 	free();
@@ -89,41 +86,15 @@ void Table::readFromFile(std::ifstream& ifile)
 
 void Table::deleteRecords(const std::vector<size_t>& recordsPositions)
 {
-	deleteRecordsFromRecordsId(recordsPositions);
-
 	for (size_t i = 0; i < cols.size(); i++) {
 		cols[i]->deleteRecords(recordsPositions);
 	}
+	recordsCount -= recordsPositions.size();
 }
 
-void Table::updateValues(int colPos, const std::vector<size_t>& recordsPositions, const String& newVal)
+void Table::updateValues(size_t colPos, const std::vector<size_t>& recordsPositions, const String& newVal)
 {
 	cols[colPos - 1]->updateValues(recordsPositions, newVal);
-}
-
-void Table::deleteRecordsFromRecordsId(const std::vector<size_t>& recordsPositions)
-{
-	assert(recordsPositions.size() <= recordsId.size());
-	// ptr is pointer to the current record to be removed,
-	// i is pointer to the current valid pos,
-	// j is pointer to the current value in values
-	size_t i = 0, j = 0;
-	for (size_t ptr = 0; ptr < recordsPositions.size(); j++) {
-		assert(recordsPositions[ptr] < recordsId.size());
-
-		if (recordsPositions[ptr] == j) {
-			ptr++;
-		}
-		else {
-			recordsId[i] = recordsId[j];
-			i++;
-		}
-	}
-	for (; j < recordsId.size(); j++, i++) {
-		recordsId[i] = recordsId[j];
-	}
-
-	recordsId.resize(i);
 }
 
 const char* Table::getName() const
@@ -131,15 +102,15 @@ const char* Table::getName() const
 	return name;
 }
 
-const PrimaryKeyColumn& Table::getRecordsId() const
+size_t Table::getRecordsCount() const
 {
-	return recordsId;
+	return recordsCount;
 }
 
 const Column* Table::getColumn(size_t pos) const
 {
-	if (pos - 1 >= cols.size()) { // cols start from 1
-		throw std::exception("invalid index");
+	if (pos - 1 >= cols.size()) { // cols start from 1 for the user
+		throw std::exception(INVALID_INDEX_MESSAGE);
 	}
 
 	return cols[pos - 1];
@@ -162,22 +133,24 @@ std::vector<String> Table::getRecordValues(size_t recPos, const std::vector<int>
 
 void Table::copyFrom(const Table& other)
 {
-	cols.reserve(other.cols.size());
-	size_t i = 0;
+	ColumnArray newCols;
+	size_t newSize = other.cols.size(), i = 0;
 	try {
-		for (; i < other.cols.size(); i++) {
-			cols.push_back(other.cols[i]->clone());
+		newCols.reserve(newSize);
+		for (; i < newSize; i++) {
+			newCols.push_back(other.cols[i]->clone());
 		}
 	}
-	catch (const std::bad_alloc&) {
+	catch (const std::exception&) {
 		for (size_t j = 0; j < i; j++) {
-			delete cols[i];
+			delete cols[j];
 		}
+		throw;
 	}
 
+	cols = std::move(newCols);
 	strcpy_s(name, other.name);
-	recordsId = other.recordsId;
-	nextRecordId = other.nextRecordId;
+	recordsCount = other.recordsCount;
 }
 
 void Table::free()
